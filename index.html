@@ -419,7 +419,7 @@ input,textarea{font-family:inherit}
     <a href="assets/cv-donato-ayala.pdf" download="" style="flex:1 1 210px;display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:nowrap;font-size:18px;font-weight:500;padding:17px 28px;border-radius:999px;border:1px solid rgba(0,0,0,0.16);transition:transform 250ms cubic-bezier(.22,1,.36,1),background 250ms" style-hover="transform:scale(1.04);background:#F5F5F7"><svg width="21" height="21" viewBox="0 0 24 24" aria-hidden="true" style="fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="M12 4v11"></path><path d="M7 10.5l5 4.5 5-4.5"></path><path d="M5 20h14"></path></svg>{{ tx.cv }}</a>
   </div>
   <div style="display:flex;gap:12px 28px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:40px;font-size:16px">
-    <span style="display:inline-flex;align-items:center;gap:10px"><a ref="{{ emailRef }}" href="{{ mailHref }}">donatonicolasosorio@gmail.com</a><button onClick="{{ copyEmail }}" style="font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:5px 10px;border-radius:999px;border:1px solid {{ copyBorder }};background:{{ copyBg }};color:{{ copyFg }};transition:all 250ms">{{ copyLabel }}</button><span role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">{{ copyMsg }}</span></span>
+    <span style="display:inline-flex;align-items:center;gap:10px"><a ref="{{ emailRef }}" href="{{ mailHref }}">{{ email }}</a><button onClick="{{ copyEmail }}" style="font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:5px 10px;border-radius:999px;border:1px solid {{ copyBorder }};background:{{ copyBg }};color:{{ copyFg }};transition:all 250ms">{{ copyLabel }}</button><span role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">{{ copyMsg }}</span></span>
     <a href="{{ waHref }}" target="_blank" rel="noopener">+57 318 840 1253</a>
     <a href="https://www.linkedin.com/in/donatonicolasayalaosorio" target="_blank" rel="noopener">LinkedIn ↗</a>
     <a href="https://github.com/DonatoNicolasAyalaOsorio73" target="_blank" rel="noopener">GitHub ↗</a>
@@ -491,7 +491,7 @@ input,textarea{font-family:inherit}
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
         <div style="min-width:0">
           <h2 id="mail-title" style="font-size:clamp(28px,4vw,40px);line-height:1;letter-spacing:-0.045em;font-weight:800;margin:0">{{ tx.mTitle }}</h2>
-          <div style="font-size:15px;color:#6E6E73;margin-top:10px;overflow-wrap:anywhere">{{ tx.mTo }} donatonicolasosorio@gmail.com</div>
+          <div style="font-size:15px;color:#6E6E73;margin-top:10px;overflow-wrap:anywhere">{{ tx.mTo }} {{ email }}</div>
         </div>
         <button type="button" onClick="{{ closeMail }}" aria-label="{{ tx.close }}" style="font:inherit;cursor:pointer;flex-shrink:0;width:44px;height:44px;border-radius:50%;border:0;background:#F5F5F7;color:#111111;display:flex;align-items:center;justify-content:center" style-hover="background:#E8E8ED"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
       </div>
@@ -950,6 +950,7 @@ class Component extends DCLogic {
       navLinks: [{ label: t(L('Work', 'Trabajo')), href: '#work' }, { label: 'Stack', href: '#stack' }, { label: t(L('Journey', 'Trayectoria')), href: '#journey' }, { label: t(L('About', 'Sobre mí')), href: '#about' }],
       seqRef: this.seqRef, closeRef: this.closeRef, emailRef: this.emailRef, seqS, seqHeight: rm ? 'auto' : '360vh', heroScale: on('heroImg') ? 1 : 1.08,
       sceneH: rm ? '100vh' : '300vh', dnaH: this.state.wide && !rm ? '560vh' : 'auto', dnaPos: this.state.wide && !rm ? 'sticky' : 'relative',
+      email: EMAIL,
       mailHref: 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(lang === 'en' ? 'Hello Donato' : 'Hola Donato'),
       waHref: 'https://wa.me/573188401253?text=' + encodeURIComponent(lang === 'en' ? 'Hi Donato, I saw your portfolio.' : 'Hola Donato, vi tu portafolio.'),
       copyEmail: this.copyEmail, copyLabel: cp === 'ok' ? tx.copied : cp === 'fail' ? tx.copyFail : tx.copy, copyBg: cp === 'ok' ? '#111111' : 'transparent', copyFg: cp === 'ok' ? '#FFFFFF' : cp === 'fail' ? '#B42318' : '#111111',
