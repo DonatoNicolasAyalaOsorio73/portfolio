@@ -1,20 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Donato Ayala — Software Engineer</title>
+<meta name="description" content="Donato Nicolás Ayala Osorio. Master's in Software Engineering. Full Stack, software architecture, web and mobile.">
+<link rel="canonical" href="https://donacode.link/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Donato Ayala">
+<meta property="og:title" content="Donato Ayala — Software Engineer">
+<meta property="og:description" content="Donato Nicolás Ayala Osorio. Master's in Software Engineering. Full Stack, software architecture, web and mobile.">
+<meta property="og:url" content="https://donacode.link/">
+<meta property="og:image" content="https://donacode.link/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Donato Ayala, Software Engineer · Full Stack">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_CO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Donato Ayala — Software Engineer">
+<meta name="twitter:description" content="Donato Nicolás Ayala Osorio. Master's in Software Engineering. Full Stack, software architecture, web and mobile.">
+<meta name="twitter:image" content="https://donacode.link/assets/og-image.jpg">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <script src="./support.js"></script>
 </head>
 <body>
+<noscript>
+  <div style="max-width:720px;margin:0 auto;padding:64px 24px;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:#111111;line-height:1.6">
+    <h1 style="font-size:40px;line-height:1.1;margin:0">Donato Nicolás Ayala Osorio</h1>
+    <p style="font-size:19px;color:#3A3A3C;margin:12px 0 0">Software Engineer · Master's in Software Engineering. Full Stack, software architecture, web and mobile.<br>Ingeniero de Software · Magíster en Ingeniería de Software. Full Stack, arquitectura de software, web y móvil.</p>
+    <p style="font-size:17px;margin:24px 0 0">Email / Correo: <a href="mailto:donatonicolasosorio@gmail.com" style="color:#111111">donatonicolasosorio@gmail.com</a></p>
+    <p style="font-size:17px;margin:8px 0 0"><a href="assets/cv-donato-ayala.pdf" style="color:#111111">Download CV / Descargar CV</a> · <a href="https://www.linkedin.com/in/donatonicolasayalaosorio" style="color:#111111">LinkedIn</a> · <a href="https://github.com/DonatoNicolasAyalaOsorio73" style="color:#111111">GitHub</a></p>
+    <p style="font-size:15px;color:#6E6E73;margin:24px 0 0">This site needs JavaScript for the full portfolio. / Este sitio necesita JavaScript para mostrar el portafolio completo.</p>
+  </div>
+</noscript>
 <x-dc>
 <helmet>
-<link rel="canonical" href="https://donacode.link/">
-<meta property="og:title" content="Donato Ayala — Software Engineer">
-<meta property="og:url" content="https://donacode.link/">
-<meta property="og:image" content="https://donacode.link/assets/donato.png">
-<meta name="twitter:card" content="summary_large_image">
-<title>Donato Ayala — Software Engineer</title>
-<meta name="description" content="Donato Nicolás Ayala Osorio. Master's in Software Engineering. Full Stack, software architecture, web and mobile.">
 <style>
 html{scroll-behavior:smooth}
 html,body{margin:0;background:#FFFFFF;color:#111111;font-family:-apple-system,BlinkMacSystemFont,system-ui,ui-sans-serif,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -26,11 +50,14 @@ html,body{overflow-x:clip}
 input,textarea{font-family:inherit}
 :focus-visible{outline:2px solid oklch(0.55 0.19 255);outline-offset:3px;border-radius:8px}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition-duration:1ms !important}}
+@media print{header,[data-skip],[data-halo]{display:none !important}[data-reveal],[data-reveal] *,[data-rv],[data-rv] *{opacity:1 !important;transform:none !important;filter:none !important}[data-print-seq],[data-print-seq] *{position:static !important;height:auto !important;min-height:0 !important;overflow:visible !important;opacity:1 !important;transform:none !important}[data-print-seq] [aria-hidden="true"]{display:none !important}[data-dna]{height:auto !important}[data-dna]>div{position:static !important;min-height:0 !important}[data-print-dna]{display:flex !important;flex-direction:column;gap:24px}[data-print-dna]>*,[data-print-dna] li{grid-area:auto !important;opacity:1 !important;transform:none !important}}
 </style>
 </helmet>
 
-<header style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:center;padding:{{ nav.pad }};pointer-events:none;transform:{{ nav.tf }};transition:transform 500ms cubic-bezier(.22,1,.36,1),padding 500ms cubic-bezier(.22,1,.36,1)">
-  <nav aria-label="Primary" style="pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;max-width:{{ nav.max }};padding:{{ nav.inner }};border-radius:{{ nav.radius }};color:{{ nav.fg }};background:{{ nav.bg }};backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border:1px solid {{ nav.border }};box-shadow:{{ nav.shadow }};transition:max-width 700ms cubic-bezier(.22,1,.36,1),border-radius 700ms cubic-bezier(.22,1,.36,1),padding 700ms cubic-bezier(.22,1,.36,1),background 500ms,color 500ms,border-color 500ms,box-shadow 500ms">
+<a href="#top" data-skip="1" style="position:fixed;top:12px;left:12px;z-index:200;padding:12px 18px;border-radius:999px;background:#111111;color:#FFFFFF;font-size:15px;font-weight:600;transform:translateY(-200%);transition:transform 200ms" style-focus="transform:none;color:#FFFFFF">{{ tx.skip }}</a>
+
+<header onFocus="{{ showNav }}" style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:center;padding:{{ nav.pad }};pointer-events:none;transform:{{ nav.tf }};transition:transform 500ms cubic-bezier(.22,1,.36,1),padding 500ms cubic-bezier(.22,1,.36,1)" style-focus-within="transform:none">
+  <nav aria-label="{{ tx.navLabel }}" style="pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;max-width:{{ nav.max }};padding:{{ nav.inner }};border-radius:{{ nav.radius }};color:{{ nav.fg }};background:{{ nav.bg }};backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border:1px solid {{ nav.border }};box-shadow:{{ nav.shadow }};transition:max-width 700ms cubic-bezier(.22,1,.36,1),border-radius 700ms cubic-bezier(.22,1,.36,1),padding 700ms cubic-bezier(.22,1,.36,1),background 500ms,color 500ms,border-color 500ms,box-shadow 500ms">
     <a href="#top" style="font-weight:700;font-size:17px;letter-spacing:-0.02em;white-space:nowrap;color:{{ nav.fg }};transition:color 500ms">Donato Ayala</a>
     <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
       <div style="display:flex;gap:2px">
@@ -40,7 +67,7 @@ input,textarea{font-family:inherit}
       </div>
     </sc-if>
     <div style="display:flex;gap:8px;align-items:center">
-      <div role="group" aria-label="Language" style="display:flex;padding:3px;border-radius:999px;background:{{ nav.toggle }};transition:background 500ms">
+      <div role="group" aria-label="{{ tx.langLabel }}" style="display:flex;padding:3px;border-radius:999px;background:{{ nav.toggle }};transition:background 500ms">
         <sc-for list="{{ langs }}" as="g" hint-placeholder-count="2">
           <button onClick="{{ g.set }}" aria-pressed="{{ g.active }}" style="font:inherit;font-size:14px;font-weight:600;cursor:pointer;border:0;border-radius:999px;padding:6px 10px;background:{{ g.bg }};color:{{ g.fg }};box-shadow:{{ g.shadow }};transition:all 250ms">{{ g.label }}</button>
         </sc-for>
@@ -52,21 +79,21 @@ input,textarea{font-family:inherit}
 
 <main id="top">
 
-<section aria-label="Introduction" style="min-height:100vh;display:flex;align-items:center;padding:120px 24px 64px">
+<section aria-label="{{ tx.introLabel }}" style="min-height:100vh;display:flex;align-items:center;padding:120px 24px 64px">
   <div style="max-width:1240px;margin:0 auto;width:100%">
     <div style="display:flex;flex-wrap:wrap;gap:clamp(24px,3vw,48px);align-items:flex-end;justify-content:flex-start">
       <div style="flex:0 1 auto;min-width:0">
-        <div style="font-size:15px;letter-spacing:0.14em;font-weight:600;color:#6E6E73;opacity:{{ rv.heroA.op }};transform:{{ rv.heroA.tf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1) {{ rv.heroA.dl }},transform 900ms cubic-bezier(.22,1,.36,1) {{ rv.heroA.dl }}">{{ tx.eyebrow }}</div>
-        <h1 style="font-size:clamp(3.2rem,8vw,8rem);line-height:0.92;letter-spacing:-0.055em;font-weight:800;margin:24px 0 0;opacity:{{ rv.heroB.op }};transform:{{ rv.heroB.tf }};transition:opacity 1100ms cubic-bezier(.22,1,.36,1) {{ rv.heroB.dl }},transform 1100ms cubic-bezier(.22,1,.36,1) {{ rv.heroB.dl }}"><span style="display:block">{{ tx.h1a }}</span><span style="display:block">{{ tx.h1b }}</span></h1>
+        <div data-rv="1" style="font-size:15px;letter-spacing:0.14em;font-weight:600;color:#6E6E73;opacity:{{ rv.heroA.op }};transform:{{ rv.heroA.tf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1) {{ rv.heroA.dl }},transform 900ms cubic-bezier(.22,1,.36,1) {{ rv.heroA.dl }}">{{ tx.eyebrow }}</div>
+        <h1 data-rv="1" style="font-size:clamp(3.2rem,8vw,8rem);line-height:0.92;letter-spacing:-0.055em;font-weight:800;margin:24px 0 0;opacity:{{ rv.heroB.op }};transform:{{ rv.heroB.tf }};transition:opacity 1100ms cubic-bezier(.22,1,.36,1) {{ rv.heroB.dl }},transform 1100ms cubic-bezier(.22,1,.36,1) {{ rv.heroB.dl }}"><span style="display:block">{{ tx.h1a }}</span><span style="display:block">{{ tx.h1b }}</span></h1>
       </div>
-      <figure style="margin:0 0 calc(-1 * clamp(16px,2.4vw,40px));flex:0 0 auto;width:clamp(170px,20vw,280px);opacity:{{ rv.heroImg.op }};transform:{{ rv.heroImg.tf }};transition:opacity 1400ms cubic-bezier(.22,1,.36,1) {{ rv.heroImg.dl }},transform 1400ms cubic-bezier(.22,1,.36,1) {{ rv.heroImg.dl }}">
+      <figure data-rv="1" style="margin:0 0 calc(-1 * clamp(16px,2.4vw,40px));flex:0 0 auto;width:clamp(170px,20vw,280px);opacity:{{ rv.heroImg.op }};transform:{{ rv.heroImg.tf }};transition:opacity 1400ms cubic-bezier(.22,1,.36,1) {{ rv.heroImg.dl }},transform 1400ms cubic-bezier(.22,1,.36,1) {{ rv.heroImg.dl }}">
         <div style="aspect-ratio:4/5;border-radius:32px;overflow:hidden;background:#F5F5F7;box-shadow:0 30px 60px -20px rgba(0,0,0,0.2),0 0 0 1px rgba(0,0,0,0.04)">
-          <img src="assets/donato.png" alt="Donato Nicolás Ayala Osorio" width="1086" height="1448" fetchpriority="high" style="width:100%;height:100%;object-fit:cover;object-position:50% 28%;display:block;transform:scale({{ heroScale }});transition:transform 1800ms cubic-bezier(.22,1,.36,1)">
+          <img src="assets/donato.webp" alt="Donato Nicolás Ayala Osorio" width="560" height="747" fetchpriority="high" style="width:100%;height:100%;object-fit:cover;object-position:50% 28%;display:block;transform:scale({{ heroScale }});transition:transform 1800ms cubic-bezier(.22,1,.36,1)">
         </div>
         <figcaption style="display:flex;justify-content:space-between;gap:8px;margin-top:12px;font-size:14px;color:#6E6E73"><span>{{ tx.caption }}</span><span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:#1F9D55"></span>{{ tx.open }}</span></figcaption>
       </figure>
     </div>
-    <div style="margin-top:clamp(56px,6vw,96px);padding-top:clamp(24px,3vw,36px);border-top:1px solid rgba(0,0,0,0.08);opacity:{{ rv.heroC.op }};transform:{{ rv.heroC.tf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1) {{ rv.heroC.dl }},transform 900ms cubic-bezier(.22,1,.36,1) {{ rv.heroC.dl }}">
+    <div data-rv="1" style="margin-top:clamp(56px,6vw,96px);padding-top:clamp(24px,3vw,36px);border-top:1px solid rgba(0,0,0,0.08);opacity:{{ rv.heroC.op }};transform:{{ rv.heroC.tf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1) {{ rv.heroC.dl }},transform 900ms cubic-bezier(.22,1,.36,1) {{ rv.heroC.dl }}">
       <p style="font-size:clamp(18px,1.55vw,22px);line-height:1.6;color:#3A3A3C;margin:0;text-align:justify;hyphens:auto;-webkit-hyphens:auto">{{ tx.intro }}</p>
       <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-top:32px">
         <div style="display:flex;gap:12px;flex-wrap:wrap">
@@ -79,11 +106,11 @@ input,textarea{font-family:inherit}
   </div>
 </section>
 
-<section ref="{{ seqRef }}" aria-label="{{ tx.seqLabel }}" style="height:{{ seqHeight }};position:relative">
-  <div style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px;overflow:hidden">
-    <div style="position:relative;width:100%;max-width:1200px;height:clamp(220px,40vh,420px)">
+<section ref="{{ seqRef }}" data-print-seq="1" aria-label="{{ tx.seqLabel }}" style="height:{{ seqHeight }};position:relative">
+  <div style="position:{{ seqS.pos }};top:0;height:{{ seqS.h }};display:flex;flex-direction:column;align-items:center;justify-content:center;padding:{{ seqS.pad }};overflow:hidden">
+    <div style="position:relative;width:100%;max-width:1200px;height:{{ seqS.box }};display:flex;flex-direction:column;gap:{{ seqS.gap }}">
       <sc-for list="{{ seq }}" as="s" hint-placeholder-count="5">
-        <p style="position:absolute;inset:0;margin:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(2.6rem,7vw,7rem);line-height:0.98;letter-spacing:-0.05em;font-weight:800;text-wrap:balance;opacity:{{ s.op }};transform:{{ s.tf }};transition:opacity 700ms cubic-bezier(.22,1,.36,1),transform 900ms cubic-bezier(.22,1,.36,1)">{{ s.t }}</p>
+        <p style="position:{{ seqS.pPos }};inset:0;margin:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(2.6rem,7vw,7rem);line-height:0.98;letter-spacing:-0.05em;font-weight:800;text-wrap:balance;opacity:{{ s.op }};transform:{{ s.tf }};transition:opacity 700ms cubic-bezier(.22,1,.36,1),transform 900ms cubic-bezier(.22,1,.36,1)">{{ s.t }}</p>
       </sc-for>
     </div>
     <div style="display:flex;gap:10px;margin-top:48px" aria-hidden="true">
@@ -97,7 +124,7 @@ input,textarea{font-family:inherit}
   </div>
 </section>
 
-<section aria-label="Philosophy" style="padding:clamp(96px,14vw,200px) 24px;background:linear-gradient(#FFFFFF,#F5F5F7)">
+<section aria-label="{{ tx.philLabel }}" style="padding:clamp(96px,14vw,200px) 24px;background:linear-gradient(#FFFFFF,#F5F5F7)">
   <div style="max-width:1100px;margin:0 auto">
     <h2 data-reveal="phil" style="font-size:clamp(2.8rem,6.5vw,6rem);line-height:0.98;letter-spacing:-0.05em;font-weight:800;margin:0;max-width:960px;text-wrap:balance;opacity:{{ rv.phil.op }};transform:{{ rv.phil.tf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1),transform 900ms cubic-bezier(.22,1,.36,1)">{{ tx.philH }}</h2>
     <p data-reveal="philP" style="font-size:clamp(19px,2vw,23px);line-height:1.55;color:#3A3A3C;max-width:680px;margin:32px 0 0;text-wrap:pretty;opacity:{{ rv.philP.op }};transform:{{ rv.philP.tf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1) 120ms,transform 900ms cubic-bezier(.22,1,.36,1) 120ms">{{ tx.philP }}</p>
@@ -138,7 +165,7 @@ input,textarea{font-family:inherit}
                 <sc-if value="{{ p.hasShot }}" hint-placeholder-val="{{ true }}">
                   <div data-logo-target="1" style="width:clamp(96px,14vh,140px);aspect-ratio:1"></div>
                 </sc-if>
-                <div style="display:flex;flex-direction:column;gap:clamp(10px,1.8vh,18px);opacity:var(--c,0);transform:translateY(calc((1 - var(--c,0)) * 48px))">
+                <div data-rv="1" style="display:flex;flex-direction:column;gap:clamp(10px,1.8vh,18px);opacity:var(--c,0);transform:translateY(calc((1 - var(--c,0)) * 48px))">
                   <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;color:#6E6E73">{{ p.n }}</span><span style="font-size:14px;font-weight:600;letter-spacing:0.1em;color:#6E6E73">{{ p.kind }}</span></div>
                   <h3 style="font-size:clamp(2rem,min(4vw,6vh),3.6rem);line-height:1;letter-spacing:-0.045em;font-weight:800;margin:0">{{ p.name }}</h3>
                   <p style="font-size:clamp(15px,2.2vh,18px);line-height:1.5;margin:0;color:#3A3A3C;text-wrap:pretty">{{ p.summary }}</p>
@@ -155,13 +182,13 @@ input,textarea{font-family:inherit}
               </div>
               <div style="display:flex;align-items:center;justify-content:center">
                 <sc-if value="{{ p.hasShot }}" hint-placeholder-val="{{ true }}">
-                  <figure style="margin:0;width:100%;opacity:calc(var(--b,0) * 1.6);transform:translateY(calc((1 - var(--b,0)) * 70vh)) perspective(1600px) rotateX(calc((1 - var(--b,0)) * 26deg)) scale(calc(0.86 + var(--b,0) * 0.14));transform-origin:50% 100%;will-change:transform">
+                  <figure data-rv="1" style="margin:0;width:100%;opacity:calc(var(--b,0) * 1.6);transform:translateY(calc((1 - var(--b,0)) * 70vh)) perspective(1600px) rotateX(calc((1 - var(--b,0)) * 26deg)) scale(calc(0.86 + var(--b,0) * 0.14));transform-origin:50% 100%;will-change:transform">
                     <div style="border-radius:18px;overflow:hidden;background:#FFFFFF;box-shadow:0 60px 120px -30px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.08)">
                       <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#F5F5F7;border-bottom:1px solid rgba(0,0,0,0.06)">
                         <div style="display:flex;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#E0E0E3"></span><span style="width:10px;height:10px;border-radius:50%;background:#E0E0E3"></span><span style="width:10px;height:10px;border-radius:50%;background:#E0E0E3"></span></div>
                         <div style="flex:1;min-width:0;text-align:center;font-size:14px;color:#6E6E73;background:#FFFFFF;border-radius:8px;padding:5px 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.domain }}</div>
                       </div>
-                      <img src="{{ p.shot }}" alt="{{ p.name }}" loading="lazy" width="{{ p.shotW }}" height="{{ p.shotH }}" style="width:100%;height:auto;display:block">
+                      <img src="{{ p.shot }}" alt="{{ p.name }}" loading="lazy" decoding="async" width="{{ p.shotW }}" height="{{ p.shotH }}" style="width:100%;height:auto;display:block">
                     </div>
                   </figure>
                 </sc-if>
@@ -171,7 +198,7 @@ input,textarea{font-family:inherit}
               </div>
             </div>
             <div data-logo="1" style="position:absolute;left:calc(50% * (1 - var(--a,0)) + var(--lx,50vw) * var(--a,0));top:calc(50% * (1 - var(--a,0)) + var(--ly,50vh) * var(--a,0));width:min(48vmin,500px);aspect-ratio:1;transform:translate(-50%,-50%) scale(calc(1 - var(--a,0) * (1 - var(--ls,0.3)))) rotate(calc((1 - var(--a,0)) * -5deg));will-change:transform;pointer-events:none">
-              <img src="{{ p.logo }}" alt="" style="width:100%;height:100%;object-fit:contain;display:block;border-radius:{{ p.logoRadius }};mix-blend-mode:{{ p.blend }};filter:drop-shadow(0 40px 60px rgba(0,0,0,0.16))">
+              <img src="{{ p.logo }}" alt="" loading="lazy" decoding="async" width="{{ p.lw }}" height="{{ p.lh }}" style="width:100%;height:100%;object-fit:contain;display:block;border-radius:{{ p.logoRadius }};mix-blend-mode:{{ p.blend }};filter:drop-shadow(0 40px 60px rgba(0,0,0,0.16))">
             </div>
           </div>
         </article>
@@ -183,7 +210,7 @@ input,textarea{font-family:inherit}
     <div style="display:flex;flex-direction:column;gap:96px;padding:24px 24px 0">
       <sc-for list="{{ featured }}" as="p" hint-placeholder-count="3">
         <article data-reveal="{{ p.rk }}" style="display:flex;flex-direction:column;gap:18px">
-          <img src="{{ p.logo }}" alt="{{ p.name }}" style="width:min(62vw,280px);aspect-ratio:1;object-fit:contain;align-self:center;border-radius:{{ p.logoRadius }};mix-blend-mode:{{ p.blend }};filter:drop-shadow(0 30px 40px rgba(0,0,0,0.16));opacity:{{ p.op }};transform:{{ p.logoTf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1),transform 1200ms cubic-bezier(.22,1,.36,1)">
+          <img src="{{ p.logo }}" alt="{{ p.name }}" loading="lazy" decoding="async" width="{{ p.lw }}" height="{{ p.lh }}" style="width:min(62vw,280px);height:auto;aspect-ratio:1;object-fit:contain;align-self:center;border-radius:{{ p.logoRadius }};mix-blend-mode:{{ p.blend }};filter:drop-shadow(0 30px 40px rgba(0,0,0,0.16));opacity:{{ p.op }};transform:{{ p.logoTf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1),transform 1200ms cubic-bezier(.22,1,.36,1)">
           <div style="font-size:14px;font-weight:600;letter-spacing:0.1em;color:#6E6E73;margin-top:16px">{{ p.n }} · {{ p.kind }}</div>
           <h3 style="font-size:2.6rem;line-height:1;letter-spacing:-0.045em;font-weight:800;margin:0">{{ p.name }}</h3>
           <p style="font-size:17px;line-height:1.5;margin:0;color:#3A3A3C">{{ p.summary }}</p>
@@ -193,7 +220,7 @@ input,textarea{font-family:inherit}
             <button onClick="{{ p.openArch }}" style="font:inherit;white-space:nowrap;font-size:16px;font-weight:500;cursor:pointer;padding:14px 22px;border-radius:999px;background:transparent;color:#111111;border:1px solid rgba(0,0,0,0.16)">{{ tx.archBtn }}</button>
           </div>
           <sc-if value="{{ p.hasShot }}" hint-placeholder-val="{{ true }}">
-            <div style="border-radius:14px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,0.25),0 0 0 1px rgba(0,0,0,0.08);opacity:{{ p.op }};transform:{{ p.shotTf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1) 200ms,transform 1200ms cubic-bezier(.22,1,.36,1) 200ms"><img src="{{ p.shot }}" alt="{{ p.name }}" loading="lazy" width="{{ p.shotW }}" height="{{ p.shotH }}" style="width:100%;height:auto;display:block"></div>
+            <div style="border-radius:14px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,0.25),0 0 0 1px rgba(0,0,0,0.08);opacity:{{ p.op }};transform:{{ p.shotTf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1) 200ms,transform 1200ms cubic-bezier(.22,1,.36,1) 200ms"><img src="{{ p.shot }}" alt="{{ p.name }}" loading="lazy" decoding="async" width="{{ p.shotW }}" height="{{ p.shotH }}" style="width:100%;height:auto;display:block"></div>
           </sc-if>
         </article>
       </sc-for>
@@ -206,7 +233,7 @@ input,textarea{font-family:inherit}
       <sc-for list="{{ others }}" as="p" hint-placeholder-count="3">
         <article data-reveal="{{ p.rk }}" style="display:flex;flex-direction:column;gap:18px;opacity:{{ p.op }};transform:{{ p.tf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1) {{ p.dl }},transform 900ms cubic-bezier(.22,1,.36,1) {{ p.dl }}">
           <div style="height:clamp(180px,20vw,240px);display:flex;align-items:center;justify-content:flex-start;transform:translateY(calc((0.5 - var(--p,0.5)) * {{ p.speed }}px))">
-            <img onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" src="{{ p.logo }}" alt="{{ p.name }}" loading="lazy" style="max-width:100%;max-height:100%;height:{{ p.logoH }};object-fit:contain;border-radius:{{ p.logoRadius }};mix-blend-mode:{{ p.blend }};filter:drop-shadow(0 28px 36px rgba(0,0,0,0.14))">
+            <img onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" src="{{ p.logo }}" alt="{{ p.name }}" loading="lazy" decoding="async" width="{{ p.lw }}" height="{{ p.lh }}" style="max-width:100%;max-height:100%;width:auto;height:{{ p.logoH }};object-fit:contain;border-radius:{{ p.logoRadius }};mix-blend-mode:{{ p.blend }};filter:drop-shadow(0 28px 36px rgba(0,0,0,0.14))">
           </div>
           <div style="font-size:14px;font-weight:600;letter-spacing:0.1em;color:#6E6E73">{{ p.n }} · {{ p.kind }}</div>
           <h4 style="font-size:30px;line-height:1.05;letter-spacing:-0.035em;font-weight:800;margin:0">{{ p.name }}</h4>
@@ -238,16 +265,17 @@ input,textarea{font-family:inherit}
           <p style="font-size:17px;line-height:1.5;color:#6E6E73;max-width:420px;margin:0">{{ tx.dnaP }}</p>
           <div role="tablist" aria-label="{{ tx.dnaEyebrow }}" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:28px">
             <sc-for list="{{ dnaGroups }}" as="g" hint-placeholder-count="5">
-              <button role="tab" aria-selected="{{ g.active }}" onClick="{{ g.go }}" style="font:inherit;cursor:pointer;border:0;background:transparent;padding:8px 4px;display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+              <button role="tab" id="{{ g.tabId }}" aria-selected="{{ g.active }}" aria-controls="{{ g.panelId }}" tabIndex="{{ g.tabIdx }}" onClick="{{ g.go }}" onKeyDown="{{ dnaKey }}" style="font:inherit;cursor:pointer;border:0;background:transparent;padding:8px 4px;display:flex;flex-direction:column;gap:8px;align-items:flex-start">
                 <span style="height:3px;border-radius:2px;background:{{ g.bar }};width:{{ g.barW }};transition:width 500ms cubic-bezier(.22,1,.36,1),background 500ms"></span>
                 <span style="font-size:14px;font-weight:600;letter-spacing:0.06em;color:{{ g.lab }};transition:color 400ms;white-space:nowrap">{{ g.short }}</span>
               </button>
             </sc-for>
           </div>
         </div>
-        <div style="display:grid">
+        <div data-print-dna="1" style="display:grid">
           <sc-for list="{{ dnaGroups }}" as="g" hint-placeholder-count="1">
-            <ul aria-hidden="{{ g.hidden }}" style="grid-area:1/1;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;justify-content:center;pointer-events:{{ g.pe }}">
+            <div role="tabpanel" id="{{ g.panelId }}" aria-labelledby="{{ g.tabId }}" aria-hidden="{{ g.hidden }}" tabIndex="{{ g.panelIdx }}" style="grid-area:1/1;display:flex;flex-direction:column;justify-content:center;pointer-events:{{ g.pe }}">
+            <ul style="list-style:none;margin:0;padding:0">
               <sc-for list="{{ g.items }}" as="t" hint-placeholder-count="6">
                 <li onMouseEnter="{{ t.on }}" onMouseLeave="{{ t.off }}" style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 0;cursor:default;border-bottom:1px solid {{ t.line }};opacity:{{ t.op }};transform:{{ t.tf }};transition:opacity 600ms cubic-bezier(.22,1,.36,1) {{ t.dl }},transform 800ms cubic-bezier(.22,1,.36,1) {{ t.dl }},border-color 600ms">
                   <span style="display:flex;flex-direction:column;min-width:0"><span style="font-size:clamp(20px,2.2vw,30px);font-weight:700;letter-spacing:-0.03em;line-height:1.15;white-space:nowrap;color:{{ t.color }};transition:color 300ms">{{ t.name }}</span><span style="font-size:15px;color:#6E6E73;margin-top:2px">{{ t.purpose }}</span></span>
@@ -257,6 +285,7 @@ input,textarea{font-family:inherit}
                 </li>
               </sc-for>
             </ul>
+            </div>
           </sc-for>
         </div>
       </div>
@@ -265,7 +294,7 @@ input,textarea{font-family:inherit}
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr));gap:12px;margin-top:14px">
           <sc-for list="{{ dnaProjects }}" as="p" hint-placeholder-count="6">
             <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:14px 8px;border-radius:24px;background:{{ p.bg }};transform:{{ p.tf }};transition:all 450ms cubic-bezier(.22,1,.36,1)">
-              <img src="{{ p.logo }}" alt="" style="height:clamp(48px,7vh,72px);max-width:100%;object-fit:contain;border-radius:{{ p.radius }};mix-blend-mode:{{ p.blend }};filter:{{ p.filter }};opacity:{{ p.op }};transition:filter 450ms,opacity 450ms">
+              <img src="{{ p.logo }}" alt="" loading="lazy" decoding="async" width="{{ p.lw }}" height="{{ p.lh }}" style="height:clamp(48px,7vh,72px);width:auto;max-width:100%;object-fit:contain;border-radius:{{ p.radius }};mix-blend-mode:{{ p.blend }};filter:{{ p.filter }};opacity:{{ p.op }};transition:filter 450ms,opacity 450ms">
               <span style="font-size:15px;font-weight:600;text-align:center;color:{{ p.fg }};transition:color 450ms">{{ p.name }}</span>
             </div>
           </sc-for>
@@ -283,7 +312,7 @@ input,textarea{font-family:inherit}
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(40px,6vw,96px);align-items:center;margin-top:clamp(56px,7vw,96px)">
       <div style="display:flex;flex-direction:column;align-items:center;gap:28px">
         <div style="width:clamp(180px,22vw,290px);aspect-ratio:1;transform:translateY(calc((0.5 - var(--p,0.5)) * 140px)) rotate(calc((0.5 - var(--p,0.5)) * -10deg))">
-          <img onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" src="assets/bmad.png" alt="BMAD Method" loading="lazy" style="width:100%;height:100%;object-fit:contain;display:block;border-radius:12%;filter:drop-shadow(0 40px 60px rgba(46,68,112,0.35))">
+          <img onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" src="assets/bmad.webp" alt="BMAD Method" loading="lazy" decoding="async" width="580" height="580" style="width:100%;height:100%;object-fit:contain;display:block;border-radius:12%;filter:drop-shadow(0 40px 60px rgba(46,68,112,0.35))">
         </div>
         <div style="font-size:15px;line-height:1.5;color:#6E6E73;text-align:center;max-width:340px">{{ tx.bmadCaption }}</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
@@ -338,7 +367,7 @@ input,textarea{font-family:inherit}
       <sc-for list="{{ education }}" as="e" hint-placeholder-count="2">
         <article data-reveal="{{ e.rk }}" style="display:flex;flex-direction:column;align-items:center;gap:32px;opacity:{{ e.op }};transform:{{ e.tf }};transition:opacity 1000ms cubic-bezier(.22,1,.36,1) {{ e.dl }},transform 1200ms cubic-bezier(.22,1,.36,1) {{ e.dl }}">
           <div style="height:clamp(220px,24vw,300px);width:100%;display:flex;align-items:center;justify-content:center;transform:translateY(calc((0.5 - var(--p,0.5)) * {{ e.speed }}px))">
-            <img onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" src="{{ e.logo }}" alt="{{ e.school }}" loading="lazy" style="max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 30px 40px rgba(0,0,0,0.18))">
+            <img onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" src="{{ e.logo }}" alt="{{ e.school }}" loading="lazy" decoding="async" width="{{ e.lw }}" height="{{ e.lh }}" style="max-height:100%;max-width:100%;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 30px 40px rgba(0,0,0,0.18))">
           </div>
           <h3 style="font-size:clamp(28px,3vw,40px);line-height:1.05;letter-spacing:-0.035em;font-weight:800;margin:0;max-width:440px;text-wrap:balance">{{ e.school }}</h3>
           <div style="display:flex;flex-direction:column;width:100%;max-width:460px">
@@ -361,10 +390,10 @@ input,textarea{font-family:inherit}
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:clamp(48px,4vw,64px) clamp(24px,3vw,40px);margin-top:clamp(64px,8vw,120px);perspective:1200px">
       <sc-for list="{{ certs }}" as="c" hint-placeholder-count="4">
         <article data-reveal="{{ c.rk }}" style="display:flex;flex-direction:column;align-items:center;gap:28px;opacity:{{ c.op }};transform:{{ c.tf }};transition:opacity 1000ms cubic-bezier(.22,1,.36,1) {{ c.dl }},transform 1200ms cubic-bezier(.22,1,.36,1) {{ c.dl }}">
-          <a href="{{ c.href }}" target="_blank" rel="noopener" aria-label="{{ c.viewLabel }}" style="position:relative;height:clamp(200px,20vw,260px);width:100%;display:flex;align-items:center;justify-content:center;transform:translateY(calc((0.5 - var(--p,0.5)) * {{ c.speed }}px));pointer-events:{{ c.pe }}">
-            <span aria-hidden="true" style="position:absolute;left:50%;top:50%;width:min(100%,280px);aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,{{ c.glow }},rgba(255,255,255,0));opacity:{{ c.haloOp }};transform:translate(-50%,-50%) {{ c.haloS }};transition:transform 1800ms cubic-bezier(.22,1,.36,1) {{ c.dl2 }},opacity 1400ms ease {{ c.dl2 }};pointer-events:none"></span>
+          <a href="{{ c.href }}" target="_blank" rel="noopener" tabIndex="-1" aria-hidden="true" style="position:relative;height:clamp(200px,20vw,260px);width:100%;display:flex;align-items:center;justify-content:center;transform:translateY(calc((0.5 - var(--p,0.5)) * {{ c.speed }}px));pointer-events:{{ c.pe }}">
+            <span aria-hidden="true" data-halo="1" style="position:absolute;left:50%;top:50%;width:min(100%,280px);aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,{{ c.glow }},rgba(255,255,255,0));opacity:{{ c.haloOp }};transform:translate(-50%,-50%) {{ c.haloS }};transition:transform 1800ms cubic-bezier(.22,1,.36,1) {{ c.dl2 }},opacity 1400ms ease {{ c.dl2 }};pointer-events:none"></span>
             <span style="position:relative;height:100%;width:100%;display:flex;align-items:center;justify-content:center;transform:{{ c.logoTf }};transition:transform 1500ms cubic-bezier(.34,1.35,.64,1) {{ c.dl }}">
-              <img onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" src="{{ c.logo }}" alt="{{ c.name }}" loading="lazy" style="max-height:100%;max-width:100%;object-fit:contain;border-radius:{{ c.radius }};mix-blend-mode:{{ c.blend }};filter:drop-shadow(0 30px 40px rgba(0,0,0,0.18))">
+              <img onMouseMove="{{ tilt }}" onMouseLeave="{{ untilt }}" src="{{ c.logo }}" alt="{{ c.name }}" loading="lazy" decoding="async" width="{{ c.lw }}" height="{{ c.lh }}" style="max-height:100%;max-width:100%;width:auto;height:auto;object-fit:contain;border-radius:{{ c.radius }};mix-blend-mode:{{ c.blend }};filter:drop-shadow(0 30px 40px rgba(0,0,0,0.18))">
             </span>
           </a>
           <div style="display:flex;flex-direction:column;align-items:center">
@@ -372,7 +401,7 @@ input,textarea{font-family:inherit}
             <div style="font-size:14px;letter-spacing:0.1em;font-weight:600;color:#6E6E73">{{ c.issuer }} · {{ c.year }}</div>
             <h3 style="font-size:22px;line-height:1.2;letter-spacing:-0.025em;font-weight:700;margin:10px 0 0;text-wrap:balance">{{ c.name }}</h3>
             <sc-if value="{{ c.hasHref }}" hint-placeholder-val="{{ false }}">
-              <a href="{{ c.href }}" target="_blank" rel="noopener" style="display:inline-block;margin-top:14px;font-size:15px;font-weight:500;white-space:nowrap;padding:9px 16px;border-radius:999px;border:1px solid rgba(0,0,0,0.16);transition:transform 250ms cubic-bezier(.22,1,.36,1)" style-hover="transform:scale(1.04)">{{ tx.viewCert }}</a>
+              <a href="{{ c.href }}" target="_blank" rel="noopener" aria-label="{{ c.viewLabel }}" style="display:inline-block;margin-top:14px;font-size:15px;font-weight:500;white-space:nowrap;padding:9px 16px;border-radius:999px;border:1px solid rgba(0,0,0,0.16);transition:transform 250ms cubic-bezier(.22,1,.36,1)" style-hover="transform:scale(1.04)">{{ tx.viewCert }}</a>
             </sc-if>
           </div>
         </article>
@@ -390,7 +419,7 @@ input,textarea{font-family:inherit}
     <a href="assets/cv-donato-ayala.pdf" download="" style="flex:1 1 210px;display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:nowrap;font-size:18px;font-weight:500;padding:17px 28px;border-radius:999px;border:1px solid rgba(0,0,0,0.16);transition:transform 250ms cubic-bezier(.22,1,.36,1),background 250ms" style-hover="transform:scale(1.04);background:#F5F5F7"><svg width="21" height="21" viewBox="0 0 24 24" aria-hidden="true" style="fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="M12 4v11"></path><path d="M7 10.5l5 4.5 5-4.5"></path><path d="M5 20h14"></path></svg>{{ tx.cv }}</a>
   </div>
   <div style="display:flex;gap:12px 28px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:40px;font-size:16px">
-    <span style="display:inline-flex;align-items:center;gap:10px"><a href="{{ mailHref }}">donatonicolasosorio@gmail.com</a><button onClick="{{ copyEmail }}" style="font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:5px 10px;border-radius:999px;border:1px solid rgba(0,0,0,0.14);background:{{ copyBg }};color:{{ copyFg }};transition:all 250ms">{{ copyLabel }}</button></span>
+    <span style="display:inline-flex;align-items:center;gap:10px"><a ref="{{ emailRef }}" href="{{ mailHref }}">donatonicolasosorio@gmail.com</a><button onClick="{{ copyEmail }}" style="font:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:5px 10px;border-radius:999px;border:1px solid {{ copyBorder }};background:{{ copyBg }};color:{{ copyFg }};transition:all 250ms">{{ copyLabel }}</button><span role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">{{ copyMsg }}</span></span>
     <a href="{{ waHref }}" target="_blank" rel="noopener">+57 318 840 1253</a>
     <a href="https://www.linkedin.com/in/donatonicolasayalaosorio" target="_blank" rel="noopener">LinkedIn ↗</a>
     <a href="https://github.com/DonatoNicolasAyalaOsorio73" target="_blank" rel="noopener">GitHub ↗</a>
@@ -407,11 +436,11 @@ input,textarea{font-family:inherit}
 </footer>
 
 <sc-if value="{{ archOpen }}" hint-placeholder-val="{{ false }}">
-  <div role="dialog" aria-modal="true" aria-label="{{ arch.title }}" onClick="{{ closeArch }}" style="position:fixed;inset:0;z-index:100;background:{{ arch.scrim }};backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;padding:clamp(0px,2vw,24px);transition:background 400ms">
+  <div role="dialog" aria-modal="true" aria-label="{{ arch.title }}" onMouseDown="{{ scrimDown }}" onClick="{{ scrimArch }}" style="position:fixed;inset:0;z-index:100;background:{{ arch.scrim }};backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;padding:clamp(0px,2vw,24px);transition:background 400ms">
     <div onClick="{{ stop }}" style="background:#000000;color:#FFFFFF;width:100%;max-width:1240px;max-height:94vh;overflow:auto;border-radius:clamp(24px,3vw,36px);padding:clamp(24px,4vw,56px);opacity:{{ arch.op }};transform:{{ arch.tf }};transition:opacity 500ms cubic-bezier(.22,1,.36,1),transform 600ms cubic-bezier(.22,1,.36,1)">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
         <div style="display:flex;gap:20px;align-items:center;min-width:0">
-          <div style="width:72px;height:72px;flex-shrink:0;border-radius:18px;background:#FFFFFF;padding:8px;display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="{{ arch.logo }}" alt="" style="width:100%;height:100%;object-fit:contain;border-radius:{{ arch.radius }}"></div>
+          <div style="width:72px;height:72px;flex-shrink:0;border-radius:18px;background:#FFFFFF;padding:8px;display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="{{ arch.logo }}" alt="" loading="lazy" width="{{ arch.lw }}" height="{{ arch.lh }}" style="width:100%;height:100%;object-fit:contain;border-radius:{{ arch.radius }}"></div>
           <div style="min-width:0">
             <div style="font-size:14px;letter-spacing:0.14em;font-weight:600;color:#86868B">{{ tx.uth }}</div>
             <h2 style="font-size:clamp(28px,4vw,48px);line-height:1;letter-spacing:-0.045em;font-weight:800;margin:8px 0 0">{{ arch.title }}</h2>
@@ -457,7 +486,7 @@ input,textarea{font-family:inherit}
   </div>
 </sc-if>
 <sc-if value="{{ mailOpen }}" hint-placeholder-val="{{ false }}">
-  <div role="dialog" aria-modal="true" aria-labelledby="mail-title" onClick="{{ closeMail }}" style="position:fixed;inset:0;z-index:110;background:{{ mail.scrim }};backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:16px;transition:background 400ms">
+  <div role="dialog" aria-modal="true" aria-labelledby="mail-title" onMouseDown="{{ scrimDown }}" onClick="{{ scrimMail }}" style="position:fixed;inset:0;z-index:110;background:{{ mail.scrim }};backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:16px;transition:background 400ms">
     <form onSubmit="{{ sendMail }}" onClick="{{ stop }}" style="background:#FFFFFF;color:#111111;width:100%;max-width:620px;max-height:calc(100dvh - 32px);overflow:auto;border-radius:clamp(24px,3vw,32px);padding:clamp(22px,4vw,40px);box-shadow:0 40px 80px -20px rgba(0,0,0,0.35);display:flex;flex-direction:column;gap:18px;text-align:left;opacity:{{ mail.op }};transform:{{ mail.tf }};transition:opacity 450ms cubic-bezier(.22,1,.36,1),transform 600ms cubic-bezier(.22,1,.36,1)">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
         <div style="min-width:0">
@@ -470,14 +499,14 @@ input,textarea{font-family:inherit}
         <input ref="{{ mailRef }}" value="{{ mName }}" onChange="{{ setName }}" autocomplete="name" style="font-size:17px;font-weight:400;color:#111111;padding:14px 16px;border-radius:14px;border:1px solid rgba(0,0,0,0.12);background:#F5F5F7;outline:none;transition:border-color 200ms,background 200ms" style-focus="border-color:#111111;background:#FFFFFF">
       </label>
       <label style="display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:600;color:#3A3A3C">{{ tx.mSubj }}
-        <input value="{{ mSubj }}" onChange="{{ setSubj }}" required="" placeholder="{{ tx.mSubjPh }}" style="font-size:17px;font-weight:400;color:#111111;padding:14px 16px;border-radius:14px;border:1px solid rgba(0,0,0,0.12);background:#F5F5F7;outline:none;transition:border-color 200ms,background 200ms" style-focus="border-color:#111111;background:#FFFFFF">
+        <input value="{{ mSubj }}" onChange="{{ setSubj }}" required="{{ true }}" placeholder="{{ tx.mSubjPh }}" style="font-size:17px;font-weight:400;color:#111111;padding:14px 16px;border-radius:14px;border:1px solid rgba(0,0,0,0.12);background:#F5F5F7;outline:none;transition:border-color 200ms,background 200ms" style-focus="border-color:#111111;background:#FFFFFF">
       </label>
       <label style="display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:600;color:#3A3A3C">{{ tx.mBody }}
-        <textarea value="{{ mBody }}" onChange="{{ setBody }}" required="" rows="6" placeholder="{{ tx.mBodyPh }}" style="font-size:17px;font-weight:400;line-height:1.5;color:#111111;padding:14px 16px;border-radius:14px;border:1px solid rgba(0,0,0,0.12);background:#F5F5F7;outline:none;resize:vertical;min-height:140px;transition:border-color 200ms,background 200ms" style-focus="border-color:#111111;background:#FFFFFF"></textarea>
+        <textarea value="{{ mBody }}" onChange="{{ setBody }}" required="{{ true }}" rows="6" placeholder="{{ tx.mBodyPh }}" style="font-size:17px;font-weight:400;line-height:1.5;color:#111111;padding:14px 16px;border-radius:14px;border:1px solid rgba(0,0,0,0.12);background:#F5F5F7;outline:none;resize:vertical;min-height:140px;transition:border-color 200ms,background 200ms" style-focus="border-color:#111111;background:#FFFFFF"></textarea>
       </label>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button type="submit" style="font:inherit;cursor:pointer;border:0;flex:1 1 200px;display:inline-flex;align-items:center;justify-content:center;gap:10px;font-size:17px;font-weight:500;background:#111111;color:#FFFFFF;padding:16px 24px;border-radius:999px;opacity:{{ sendOp }};transition:opacity 250ms,transform 250ms cubic-bezier(.22,1,.36,1)" style-hover="transform:scale(1.02)"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true" style="fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M21 3L10 14"></path><path d="M21 3l-7 18-4-7-7-4 18-7z"></path></svg>{{ tx.mSend }}</button>
-        <a href="{{ gmailHref }}" target="_blank" rel="noopener" aria-disabled="{{ gmailDis }}" style="flex:1 1 200px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:500;padding:15px 24px;border-radius:999px;border:1px solid rgba(0,0,0,0.16);text-decoration:none;opacity:{{ sendOp }};pointer-events:{{ gmailPe }};transition:opacity 250ms,background 250ms" style-hover="background:#F5F5F7">{{ tx.mGmail }}</a>
+        <a href="{{ gmailHref }}" target="_blank" rel="noopener" role="{{ gmailRole }}" aria-disabled="{{ gmailDis }}" style="flex:1 1 200px;display:inline-flex;align-items:center;justify-content:center;font-size:17px;font-weight:500;padding:15px 24px;border-radius:999px;border:1px solid rgba(0,0,0,0.16);text-decoration:none;opacity:{{ sendOp }};pointer-events:{{ gmailPe }};transition:opacity 250ms,background 250ms" style-hover="background:#F5F5F7">{{ tx.mGmail }}</a>
       </div>
       <p aria-live="polite" style="font-size:14px;line-height:1.5;color:#6E6E73;margin:0">{{ mailNote }}</p>
     </form>
@@ -492,7 +521,7 @@ const TX = {
   intro: L("I'm Donato Nicolás Ayala Osorio, a software engineer with a Master's in Software Engineering from Pontificia Universidad Javeriana Cali. I build full stack web and mobile systems: TypeScript, React, Next.js and Angular on the front end; Supabase, PostgreSQL and Firebase for data; serverless deployments on Vercel and Cloudflare. My work covers role-based access control, audit trails, backup and rollback strategies, automated testing with Vitest, and AI-assisted development with the BMAD method, with human review on every change.", 'Soy Donato Nicolás Ayala Osorio, ingeniero de software y Magíster en Ingeniería de Software de la Pontificia Universidad Javeriana Cali. Construyo sistemas web y móviles full stack: TypeScript, React, Next.js y Angular en el front end; Supabase, PostgreSQL y Firebase para datos; despliegues serverless en Vercel y Cloudflare. Mi trabajo incluye control de acceso por roles, trazabilidad y auditoría, estrategias de backup y rollback, pruebas automatizadas con Vitest y desarrollo asistido por IA con el método BMAD, con revisión humana en cada cambio.'),
   sub: L('Full Stack · Software Architecture · Web & Mobile', 'Full Stack · Arquitectura de software · Web y móvil'),
   cta1: L('View projects', 'Ver proyectos'), cta2: L('Get in touch', 'Contactar'),
-  caption: L('Colombia · ES / EN (B2)'), open: L('Open to work', 'Disponible'),
+  caption: L('Colombia · ES / EN (B2)', 'Colombia · ES / EN (B2)'), open: L('Open to work', 'Disponible'),
   seqLabel: L('How I work', 'Cómo trabajo'),
   philH: L('Good software starts before the first commit.', 'El buen software empieza antes del primer commit.'),
   philP: L('I treat product, architecture, engineering and experience as one system: a decision in one layer changes the others.', 'Trato producto, arquitectura, ingeniería y experiencia como un solo sistema: una decisión en una capa cambia las demás.'),
@@ -513,118 +542,165 @@ const TX = {
   contactH: L("Let's build something worth engineering.", 'Construyamos algo bien pensado.'),
   contactP: L('Open to full-time roles and freelance projects. The fastest way to reach me is email or WhatsApp.', 'Disponible para cargos de tiempo completo y proyectos freelance. La forma más rápida de contactarme es por correo o WhatsApp.'),
   touch: L('Send an email', 'Enviar correo'), cv: L('Download CV', 'Descargar CV'), copy: L('Copy', 'Copiar'), copied: L('Copied ✓', 'Copiado ✓'),
+  copyFail: L('Copy failed', 'No se pudo copiar'), copiedMsg: L('Email address copied.', 'Correo copiado.'),
+  copyFailMsg: L("Couldn't copy. The address is selected so you can copy it manually.", 'No se pudo copiar. La dirección quedó seleccionada para que la copies manualmente.'),
+  mMissing: L('Add a subject and a message to continue.', 'Escribe un asunto y un mensaje para continuar.'),
+  skip: L('Skip to content', 'Saltar al contenido'), navLabel: L('Primary', 'Principal'), langLabel: L('Language', 'Idioma'),
+  introLabel: L('Introduction', 'Introducción'), philLabel: L('Philosophy', 'Filosofía'),
+  docTitle: L('Donato Ayala — Software Engineer', 'Donato Ayala — Ingeniero de Software'),
+  docDesc: L("Donato Nicolás Ayala Osorio. Master's in Software Engineering. Full Stack, software architecture, web and mobile.", 'Donato Nicolás Ayala Osorio. Magíster en Ingeniería de Software. Full Stack, arquitectura de software, web y móvil.'),
   privacy: L('Privacy policy', 'Política de privacidad'),
   role: L('Software Engineer', 'Ingeniero de Software'), uth: L('UNDER THE HOOD', 'POR DENTRO'), close: L('Close', 'Cerrar'),
-  fRole: L('ROLE', 'FUNCIÓN'), fTech: L('TECHNOLOGY', 'TECNOLOGÍA'), fWhy: L('WHY', 'POR QUÉ'), fTrade: L('TRADE-OFF'),
+  fRole: L('ROLE', 'FUNCIÓN'), fTech: L('TECHNOLOGY', 'TECNOLOGÍA'), fWhy: L('WHY', 'POR QUÉ'), fTrade: L('TRADE-OFF', 'COMPROMISO'),
 };
 const N = (code, label, sub, role, tech, why, tradeoff) => ({ code, label, sub, role, tech, why, tradeoff });
 const ARCH = {
   nh: { intro: L('A custom WordPress build where every editorial action is checked, logged and recoverable.', 'Un WordPress a medida donde cada acción editorial se verifica, se registra y se puede recuperar.'),
-    flow: [L('EDITOR'), L('ROLE CHECK', 'VERIFICACIÓN DE ROL'), L('ACTION', 'ACCIÓN'), L('AUDIT LOG', 'REGISTRO DE AUDITORÍA')],
+    flow: [L('EDITOR', 'EDITOR'), L('ROLE CHECK', 'VERIFICACIÓN DE ROL'), L('ACTION', 'ACCIÓN'), L('AUDIT LOG', 'REGISTRO DE AUDITORÍA')],
     nodes: [
       N('N1', L('Editorial team', 'Equipo editorial'), L('13 users, one role each', '13 usuarios, cada uno con su rol'), L('Editors publish 250–350 articles a month. Each account has a role that defines what it can touch.', 'Los editores publican entre 250 y 350 noticias al mes. Cada cuenta tiene un rol que define qué puede tocar.'), L('Role-based access control (RBAC) on WordPress', 'Control de acceso por roles (RBAC) sobre WordPress'), L('Role-based access eliminated accidental content loss.', 'El control por roles eliminó la pérdida accidental de contenido.')),
-      N('N2', L('Custom CMS', 'CMS a medida'), L('WordPress · PHP · JS · CSS'), L('A custom WordPress build that runs publishing, sections and the public site.', 'Un WordPress personalizado que gestiona la publicación, las secciones y el sitio público.'), L('WordPress, PHP, JavaScript, CSS')),
+      N('N2', L('Custom CMS', 'CMS a medida'), L('WordPress · PHP · JS · CSS', 'WordPress · PHP · JS · CSS'), L('A custom WordPress build that runs publishing, sections and the public site.', 'Un WordPress personalizado que gestiona la publicación, las secciones y el sitio público.'), L('WordPress, PHP, JavaScript, CSS', 'WordPress, PHP, JavaScript, CSS')),
       N('N3', L('Traceability', 'Trazabilidad'), L('Who did what, and when', 'Quién hizo qué, y cuándo'), L('A forensic timeline of every action by user, plus a weekly performance dashboard for each editor.', 'Una cronología forense de cada acción por usuario y un panel semanal de desempeño por editor.'), L('Audit logs, custom admin dashboards', 'Registros de auditoría, paneles de administración a medida')),
       N('N4', L('Recovery', 'Recuperación'), L('Backups · rollback · lockdown', 'Backups · rollback · bloqueo'), L('Audit logs are backed up every 24 hours. Changes can be rolled back, and an emergency lock protocol can freeze the system.', 'Los registros de auditoría se respaldan cada 24 horas. Los cambios se pueden revertir y un protocolo de bloqueo de emergencia puede congelar el sistema.'), L('Daily backups, rollback, database-to-content integrity checks', 'Backups diarios, rollback, validación de integridad entre base de datos y contenido'), L("Integrity checks confirm that what's in the database matches what's live.", 'Las validaciones confirman que lo que hay en la base de datos coincide con lo publicado.')),
-      N('N5', L('Delivery & health', 'Entrega y salud'), L('Cloudflare · smoke tests · SEO'), L('Cloudflare handles DNS and the domain. Smoke tests run after every deploy, and an SEO health center flags issues automatically.', 'Cloudflare gestiona el DNS y el dominio. Tras cada despliegue corren smoke tests, y un centro de salud SEO detecta problemas automáticamente.'), L('Cloudflare, post-deploy smoke tests, automated SEO checks', 'Cloudflare, smoke tests post-despliegue, revisión SEO automática')),
-      N('N6', L('How it was built', 'Cómo se construyó'), L('BMAD · Copilot · Claude'), L('Built with the BMAD method, GitHub Copilot and Claude. Every delivery went through human review.', 'Construido con el método BMAD, GitHub Copilot y Claude. Cada entrega pasó por revisión humana.'), L('BMAD, GitHub Copilot, Claude')),
+      N('N5', L('Delivery & health', 'Entrega y salud'), L('Cloudflare · smoke tests · SEO', 'Cloudflare · smoke tests · SEO'), L('Cloudflare handles DNS and the domain. Smoke tests run after every deploy, and an SEO health center flags issues automatically.', 'Cloudflare gestiona el DNS y el dominio. Tras cada despliegue corren smoke tests, y un centro de salud SEO detecta problemas automáticamente.'), L('Cloudflare, post-deploy smoke tests, automated SEO checks', 'Cloudflare, smoke tests post-despliegue, revisión SEO automática')),
+      N('N6', L('How it was built', 'Cómo se construyó'), L('BMAD · Copilot · Claude', 'BMAD · Copilot · Claude'), L('Built with the BMAD method, GitHub Copilot and Claude. Every delivery went through human review.', 'Construido con el método BMAD, GitHub Copilot y Claude. Cada entrega pasó por revisión humana.'), L('BMAD, GitHub Copilot, Claude', 'BMAD, GitHub Copilot, Claude')),
     ] },
   sg: { intro: L('A Next.js app on Vercel over Supabase, built for a client. Anyone can verify a certificate; only the organization can issue one. The code is private; the site is live.', 'Una app en Next.js sobre Vercel y Supabase, construida para un cliente. Cualquiera puede verificar un certificado; solo la organización puede emitirlo. El código es privado; el sitio está en línea.'),
     flow: [L('ADMIN LOGIN', 'LOGIN ADMIN'), L('NEW CERTIFICATE', 'NUEVO CERTIFICADO'), L('ID + QR GENERATED', 'ID + QR GENERADOS'), L('PUBLIC LOOKUP', 'VERIFICACIÓN PÚBLICA')],
     nodes: [
-      N('N1', L('Public site', 'Sitio público'), L('Next.js App Router'), L('Landing page, training programs, process, FAQ and contact. Pages are Server Components prerendered at build time; only interactive parts run on the client.', 'Landing, programas de entrenamiento, proceso, preguntas frecuentes y contacto. Las páginas son Server Components prerenderizados en el build; solo las partes interactivas corren en el cliente.'), L('Next.js 14 (App Router), React 18, TypeScript (strict), Tailwind CSS, next/font'), L('Static pages load fast and need no server at request time.', 'Las páginas estáticas cargan rápido y no necesitan servidor en cada visita.'), L('Content changes need a new deploy.', 'Cambiar el contenido requiere un nuevo despliegue.')),
-      N('N2', L('Certificate lookup', 'Verificación de certificados'), L('ID · code · QR · barcode', 'ID · código · QR · código de barras'), L('Anyone can check a certificate by typing its ID or code, or by scanning its QR code or barcode with the camera. A server endpoint returns one exact match with a fixed set of fields.', 'Cualquiera puede consultar un certificado escribiendo su ID o código, o escaneando su QR o código de barras con la cámara. Un endpoint del servidor devuelve una sola coincidencia exacta con un conjunto fijo de campos.'), L('Next.js API route, html5-qrcode, ZXing'), L('The public never touches the database directly, so the registry cannot be listed or downloaded.', 'El público nunca toca la base de datos directamente, así que el registro no se puede listar ni descargar.'), L('Each lookup is a serverless function call instead of a direct query.', 'Cada consulta es una llamada a una función serverless en lugar de una consulta directa.')),
-      N('N3', L('Admin panel', 'Panel administrativo'), L('Private · signed session', 'Privado · sesión firmada'), L('The organization signs in to issue, edit and revoke certificates. IDs, verification codes, QR codes and barcodes are generated automatically; photos and vaccination records are attached to each certificate.', 'La organización inicia sesión para emitir, editar y revocar certificados. Los IDs, códigos de verificación, QR y códigos de barras se generan solos; las fotos y los registros de vacunas se adjuntan a cada certificado.'), L('API routes, JSON Web Tokens, qrcode, JsBarcode'), L('One administrator and no user management: nothing extra to run or secure.', 'Un administrador y sin gestión de usuarios: nada extra que operar ni proteger.'), L('A single shared account, with no password recovery or per-user audit.', 'Una sola cuenta compartida, sin recuperación de contraseña ni auditoría por usuario.')),
-      N('N4', L('Data & files', 'Datos y archivos'), L('Supabase Postgres + Storage'), L('A certifications table with indexes, a trigger that keeps updated_at current, and a bucket for photos and PDFs. Row Level Security denies every direct request made with the public key; only the server reads and writes.', 'Una tabla de certificaciones con índices, un trigger que mantiene updated_at y un bucket para fotos y PDFs. Row Level Security rechaza toda petición directa con la clave pública; solo el servidor lee y escribe.'), L('PostgreSQL, PL/pgSQL, Row Level Security, Supabase Storage, signed upload URLs'), L('Access rules hold even if the public key leaks. Signed upload URLs let large PDFs skip serverless body limits.', 'Las reglas se mantienen aunque la clave pública se filtre. Las URLs firmadas permiten subir PDFs grandes sin el límite de las funciones serverless.'), L('Authorization lives in server code, not in database policies per role.', 'La autorización vive en el código del servidor, no en políticas de base de datos por rol.')),
-      N('N5', L('Delivery', 'Entrega'), L('Vercel · Cloudflare · Resend'), L('Serverless hosting on Vercel with a preview build for every pull request, DNS on Cloudflare, and contact email through Resend. Secrets live only in server environment variables, and main only changes through reviewed pull requests.', 'Hosting serverless en Vercel con un build de prueba por cada pull request, DNS en Cloudflare y correo de contacto con Resend. Los secretos viven solo en variables de entorno del servidor, y main solo cambia por pull requests revisados.'), L('Vercel, Cloudflare DNS, Resend, GitHub'), L('Every change is built and checked before it reaches production.', 'Cada cambio se compila y revisa antes de llegar a producción.'), L('Depends on a serverless platform instead of free static hosting.', 'Depende de una plataforma serverless en lugar de hosting estático gratuito.')),
-      N('N6', L('How it was built', 'Cómo se construyó'), L('BMAD · Claude Code'), L('Changes follow the BMAD method: a plan with acceptance criteria first, then implementation, then independent review passes before merge. A security review moved every read and write behind the server and rotated the keys.', 'Los cambios siguen el método BMAD: primero un plan con criterios de aceptación, luego la implementación y después revisiones independientes antes de integrar. Una revisión de seguridad llevó toda lectura y escritura al servidor y rotó las claves.'), L('BMAD Method, Claude Code'), L('Agents draft; every change gets human review.', 'Los agentes proponen; cada cambio pasa por revisión humana.')),
+      N('N1', L('Public site', 'Sitio público'), L('Next.js App Router', 'Next.js App Router'), L('Landing page, training programs, process, FAQ and contact. Pages are Server Components prerendered at build time; only interactive parts run on the client.', 'Landing, programas de entrenamiento, proceso, preguntas frecuentes y contacto. Las páginas son Server Components prerenderizados en el build; solo las partes interactivas corren en el cliente.'), L('Next.js 14 (App Router), React 18, TypeScript (strict), Tailwind CSS, next/font', 'Next.js 14 (App Router), React 18, TypeScript (estricto), Tailwind CSS, next/font'), L('Static pages load fast and need no server at request time.', 'Las páginas estáticas cargan rápido y no necesitan servidor en cada visita.'), L('Content changes need a new deploy.', 'Cambiar el contenido requiere un nuevo despliegue.')),
+      N('N2', L('Certificate lookup', 'Verificación de certificados'), L('ID · code · QR · barcode', 'ID · código · QR · código de barras'), L('Anyone can check a certificate by typing its ID or code, or by scanning its QR code or barcode with the camera. A server endpoint returns one exact match with a fixed set of fields.', 'Cualquiera puede consultar un certificado escribiendo su ID o código, o escaneando su QR o código de barras con la cámara. Un endpoint del servidor devuelve una sola coincidencia exacta con un conjunto fijo de campos.'), L('Next.js API route, html5-qrcode, ZXing', 'Ruta API de Next.js, html5-qrcode, ZXing'), L('The public never touches the database directly, so the registry cannot be listed or downloaded.', 'El público nunca toca la base de datos directamente, así que el registro no se puede listar ni descargar.'), L('Each lookup is a serverless function call instead of a direct query.', 'Cada consulta es una llamada a una función serverless en lugar de una consulta directa.')),
+      N('N3', L('Admin panel', 'Panel administrativo'), L('Private · signed session', 'Privado · sesión firmada'), L('The organization signs in to issue, edit and revoke certificates. IDs, verification codes, QR codes and barcodes are generated automatically; photos and vaccination records are attached to each certificate.', 'La organización inicia sesión para emitir, editar y revocar certificados. Los IDs, códigos de verificación, QR y códigos de barras se generan solos; las fotos y los registros de vacunas se adjuntan a cada certificado.'), L('API routes, JSON Web Tokens, qrcode, JsBarcode', 'Rutas API, JSON Web Tokens, qrcode, JsBarcode'), L('One administrator and no user management: nothing extra to run or secure.', 'Un administrador y sin gestión de usuarios: nada extra que operar ni proteger.'), L('A single shared account, with no password recovery or per-user audit.', 'Una sola cuenta compartida, sin recuperación de contraseña ni auditoría por usuario.')),
+      N('N4', L('Data & files', 'Datos y archivos'), L('Supabase Postgres + Storage', 'Supabase Postgres + Storage'), L('A certifications table with indexes, a trigger that keeps updated_at current, and a bucket for photos and PDFs. Row Level Security denies every direct request made with the public key; only the server reads and writes.', 'Una tabla de certificaciones con índices, un trigger que mantiene updated_at y un bucket para fotos y PDFs. Row Level Security rechaza toda petición directa con la clave pública; solo el servidor lee y escribe.'), L('PostgreSQL, PL/pgSQL, Row Level Security, Supabase Storage, signed upload URLs', 'PostgreSQL, PL/pgSQL, Row Level Security, Supabase Storage, URLs de subida firmadas'), L('Access rules hold even if the public key leaks. Signed upload URLs let large PDFs skip serverless body limits.', 'Las reglas se mantienen aunque la clave pública se filtre. Las URLs firmadas permiten subir PDFs grandes sin el límite de las funciones serverless.'), L('Authorization lives in server code, not in database policies per role.', 'La autorización vive en el código del servidor, no en políticas de base de datos por rol.')),
+      N('N5', L('Delivery', 'Entrega'), L('Vercel · Cloudflare · WhatsApp', 'Vercel · Cloudflare · WhatsApp'), L('Serverless hosting on Vercel with a preview build for every pull request, DNS on Cloudflare, and a contact form that opens a WhatsApp message instead of storing requests. Secrets live only in server environment variables, and main only changes through reviewed pull requests.', 'Hosting serverless en Vercel con un build de prueba por cada pull request, DNS en Cloudflare y un formulario de contacto que abre un mensaje de WhatsApp en lugar de guardar solicitudes. Los secretos viven solo en variables de entorno del servidor, y main solo cambia por pull requests revisados.'), L('Vercel, Cloudflare DNS, WhatsApp links, GitHub', 'Vercel, Cloudflare DNS, enlaces de WhatsApp, GitHub'), L('Every change is built and checked before it reaches production.', 'Cada cambio se compila y revisa antes de llegar a producción.'), L('Depends on a serverless platform instead of free static hosting.', 'Depende de una plataforma serverless en lugar de hosting estático gratuito.')),
+      N('N6', L('How it was built', 'Cómo se construyó'), L('BMAD · Claude Code', 'BMAD · Claude Code'), L('Changes follow the BMAD method: a plan with acceptance criteria first, then implementation, then independent review passes before merge. A security review moved every read and write behind the server and rotated the keys.', 'Los cambios siguen el método BMAD: primero un plan con criterios de aceptación, luego la implementación y después revisiones independientes antes de integrar. Una revisión de seguridad llevó toda lectura y escritura al servidor y rotó las claves.'), L('BMAD Method, Claude Code', 'BMAD Method, Claude Code'), L('Agents draft; every change gets human review.', 'Los agentes proponen; cada cambio pasa por revisión humana.')),
     ] },
   eb: { intro: L('One codebase ships to iOS, Android and the web. Pick a component to see its role and the trade-off behind it.', 'Un solo código para iOS, Android y web. Elige un componente para ver su función y el trade-off detrás.'),
     nodes: [
-      N('N1', L('Clients', 'Clientes'), L('iOS · Android · Web'), L('The same app on three platforms. The web build runs inside an iPhone frame, so anyone can try it from a link.', 'La misma app en tres plataformas. La versión web corre dentro de un marco de iPhone, así cualquiera la prueba desde un enlace.'), L('Expo 49, React Native 0.72, react-native-web'), L('A no-install demo without maintaining a second project.', 'Una demo sin instalación y sin mantener un segundo proyecto.'), L('On the web, GPS tracking depends on browser location permissions.', 'En la web, el GPS depende de los permisos de ubicación del navegador.')),
+      N('N1', L('Clients', 'Clientes'), L('iOS · Android · Web', 'iOS · Android · Web'), L('The same app on three platforms. The web build runs inside an iPhone frame, so anyone can try it from a link.', 'La misma app en tres plataformas. La versión web corre dentro de un marco de iPhone, así cualquiera la prueba desde un enlace.'), L('Expo 49, React Native 0.72, react-native-web', 'Expo 49, React Native 0.72, react-native-web'), L('A no-install demo without maintaining a second project.', 'Una demo sin instalación y sin mantener un segundo proyecto.'), L('On the web, GPS tracking depends on browser location permissions.', 'En la web, el GPS depende de los permisos de ubicación del navegador.')),
       N('N2', L('Shared codebase', 'Código compartido'), L('Logic written once', 'Lógica escrita una vez'), L('Business logic (Firebase, points, navigation) lives in one place. Screens that need to differ get a *.web.js variant that the bundler picks up automatically.', 'La lógica de negocio (Firebase, puntos, navegación) vive en un solo lugar. Las pantallas que deben cambiar tienen una variante *.web.js que el empaquetador elige solo.'), L('React Navigation, TypeScript, centralized theme tokens', 'React Navigation, TypeScript, tokens de tema centralizados'), L('One source of truth for behavior; only the presentation changes per platform.', 'Una sola fuente de verdad para el comportamiento; solo cambia la presentación por plataforma.'), L('Every platform-specific screen means two UI files to keep in sync.', 'Cada pantalla específica implica dos archivos de UI que mantener sincronizados.')),
-      N('N3', L('Maps & routing', 'Mapas y rutas'), L('Live tracking + EcoRoute', 'Seguimiento en vivo + EcoRuta'), L('Tracks the ride in real time and plans a bike route to a tapped destination, with distance and time.', 'Sigue el recorrido en tiempo real y traza una ruta ciclista hasta un destino elegido, con distancia y tiempo.'), L('expo-location, react-native-maps (mobile), Leaflet + OpenStreetMap (web), OSRM'), L('On the web, Leaflet loads from a CDN to avoid native dependencies.', 'En la web, Leaflet se carga por CDN para evitar dependencias nativas.'), L('Two map implementations with different capabilities.', 'Dos implementaciones de mapa con capacidades distintas.')),
-      N('N4', L('Firebase'), L('Auth · Firestore · Storage'), L('Sign-up and login, users, partner stores, redeemed coupons and profile photos.', 'Registro e inicio de sesión, usuarios, tiendas aliadas, cupones canjeados y fotos de perfil.'), L('Firebase 10 client SDK', 'SDK cliente de Firebase 10'), L('Managed auth and data with no servers to run.', 'Autenticación y datos gestionados, sin servidores que operar.'), L('The data model is shaped around documents and subcollections.', 'El modelo de datos gira en torno a documentos y subcolecciones.')),
-      N('N5', L('Serverless API', 'API serverless'), L('Vercel · Admin SDK'), L('Handles privileged store administration. It verifies the Firebase token and the admin role before reading or updating stores.', 'Gestiona la administración privilegiada de tiendas. Verifica el token de Firebase y el rol de administrador antes de leer o actualizar.'), L('Vercel function (api/stores.js) with the Firebase Admin SDK', 'Función de Vercel (api/stores.js) con Firebase Admin SDK'), L('The service-account key lives only in a server environment variable, never in the bundle.', 'La clave de la cuenta de servicio vive solo en una variable de entorno del servidor, nunca en el bundle.'), L('On mobile there is no serverless origin, so the admin panel uses the client SDK directly.', 'En móvil no hay origen serverless, así que el panel usa el SDK cliente directamente.')),
+      N('N3', L('Maps & routing', 'Mapas y rutas'), L('Live tracking + EcoRoute', 'Seguimiento en vivo + EcoRuta'), L('Tracks the ride in real time and plans a bike route to a tapped destination, with distance and time.', 'Sigue el recorrido en tiempo real y traza una ruta ciclista hasta un destino elegido, con distancia y tiempo.'), L('expo-location, react-native-maps (mobile), Leaflet + OpenStreetMap (web), OSRM', 'expo-location, react-native-maps (móvil), Leaflet + OpenStreetMap (web), OSRM'), L('On the web, Leaflet loads from a CDN to avoid native dependencies.', 'En la web, Leaflet se carga por CDN para evitar dependencias nativas.'), L('Two map implementations with different capabilities.', 'Dos implementaciones de mapa con capacidades distintas.')),
+      N('N4', L('Firebase', 'Firebase'), L('Auth · Firestore · Storage', 'Auth · Firestore · Storage'), L('Sign-up and login, users, partner stores, redeemed coupons and profile photos.', 'Registro e inicio de sesión, usuarios, tiendas aliadas, cupones canjeados y fotos de perfil.'), L('Firebase 10 client SDK', 'SDK cliente de Firebase 10'), L('Managed auth and data with no servers to run.', 'Autenticación y datos gestionados, sin servidores que operar.'), L('The data model is shaped around documents and subcollections.', 'El modelo de datos gira en torno a documentos y subcolecciones.')),
+      N('N5', L('Serverless API', 'API serverless'), L('Vercel · Admin SDK', 'Vercel · Admin SDK'), L('Handles privileged store administration. It verifies the Firebase token and the admin role before reading or updating stores.', 'Gestiona la administración privilegiada de tiendas. Verifica el token de Firebase y el rol de administrador antes de leer o actualizar.'), L('Vercel function (api/stores.js) with the Firebase Admin SDK', 'Función de Vercel (api/stores.js) con Firebase Admin SDK'), L('The service-account key lives only in a server environment variable, never in the bundle.', 'La clave de la cuenta de servicio vive solo en una variable de entorno del servidor, nunca en el bundle.'), L('On mobile there is no serverless origin, so the admin panel uses the client SDK directly.', 'En móvil no hay origen serverless, así que el panel usa el SDK cliente directamente.')),
     ] },
   si: { intro: L('A Next.js prototype where manufacturing and quality talk to each other in both directions.', 'Un prototipo en Next.js donde manufactura y calidad se comunican en ambas direcciones.'),
     flow: [L('OPERATION DONE', 'OPERACIÓN TERMINADA'), L('INSPECTION', 'INSPECCIÓN'), L('BATCH REJECTED', 'LOTE RECHAZADO'), L('ORDER HALTED', 'ORDEN DETENIDA')],
     nodes: [
-      N('N1', L('Manufacturing', 'Manufactura'), L('8 views', '8 vistas'), L('Production orders, routings, work centers, bill of materials, cost structure, routing costs, time tracking and shop-floor progress.', 'Órdenes de producción, rutas, centros de trabajo, lista de materiales, estructura de costos, costeo de rutas, registro de tiempos y avance en planta.'), L('Next.js 14 (App Router), TypeScript, Tailwind CSS')),
-      N('N2', L('Quality', 'Calidad'), L('Inspections & traceability', 'Inspecciones y trazabilidad'), L('Pending inspections, non-conformities, traceability and quality KPIs.', 'Inspecciones pendientes, no conformidades, trazabilidad e indicadores de calidad.'), L('Next.js, Recharts')),
+      N('N1', L('Manufacturing', 'Manufactura'), L('8 views', '8 vistas'), L('Production orders, routings, work centers, bill of materials, cost structure, routing costs, time tracking and shop-floor progress.', 'Órdenes de producción, rutas, centros de trabajo, lista de materiales, estructura de costos, costeo de rutas, registro de tiempos y avance en planta.'), L('Next.js 14 (App Router), TypeScript, Tailwind CSS', 'Next.js 14 (App Router), TypeScript, Tailwind CSS')),
+      N('N2', L('Quality', 'Calidad'), L('Inspections & traceability', 'Inspecciones y trazabilidad'), L('Pending inspections, non-conformities, traceability and quality KPIs.', 'Inspecciones pendientes, no conformidades, trazabilidad e indicadores de calidad.'), L('Next.js, Recharts', 'Next.js, Recharts')),
       N('N3', L('Two-way integration', 'Integración bidireccional'), L('Manufacturing ⇄ Quality', 'Manufactura ⇄ Calidad'), L('Completing an operation automatically triggers an inspection. Rejecting a batch halts the order on the floor.', 'Completar una operación dispara automáticamente una inspección. Rechazar un lote detiene la orden en planta.'), L('Shared application state across modules', 'Estado compartido entre módulos')),
       N('N4', L('AI assistant', 'Asistente de IA'), L('Gemini + offline fallback', 'Gemini + modo offline'), L('A voice or text assistant for logging defects, plus predictive risk analysis.', 'Un asistente por voz o texto para registrar defectos, más un análisis predictivo de riesgo.'), L('Google Gemini, with an offline fallback', 'Google Gemini, con respaldo offline')),
-      N('N5', L('Data & dashboard', 'Datos y dashboard'), L('Google Sheets · Recharts'), L('An executive dashboard with KPIs, charts and live alerts. A public Google Sheet serves as the mock backend.', 'Un dashboard ejecutivo con KPIs, gráficas y alertas en vivo. Una hoja pública de Google Sheets hace de backend simulado.'), L('Recharts, Google Sheets, Vitest')),
-      N('N6', L('How it was built', 'Cómo se construyó'), L('Claude Code'), L('Built end to end with Claude Code.', 'Construido de principio a fin con Claude Code.'), L('Claude Code')),
+      N('N5', L('Data & dashboard', 'Datos y dashboard'), L('Google Sheets · Recharts', 'Google Sheets · Recharts'), L('An executive dashboard with KPIs, charts and live alerts. A public Google Sheet serves as the mock backend.', 'Un dashboard ejecutivo con KPIs, gráficas y alertas en vivo. Una hoja pública de Google Sheets hace de backend simulado.'), L('Recharts, Google Sheets, Vitest', 'Recharts, Google Sheets, Vitest')),
+      N('N6', L('How it was built', 'Cómo se construyó'), L('Claude Code', 'Claude Code'), L('Built end to end with Claude Code.', 'Construido de principio a fin con Claude Code.'), L('Claude Code', 'Claude Code')),
     ] },
   an: { intro: L("The code is private, so this view covers structure and decisions only. It's the story of a system growing, and my role growing with it.", 'El código es privado, así que esta vista cubre solo estructura y decisiones. Es la historia de un sistema que creció, y de mi rol creciendo con él.'),
-    flow: [L('V01 WEBSITE', 'V01 SITIO WEB'), L('TESTS & DOCS', 'PRUEBAS Y DOCS'), L('V02 CRM'), L('TEAM OF 4', 'EQUIPO DE 4')],
+    flow: [L('V01 WEBSITE', 'V01 SITIO WEB'), L('TESTS & DOCS', 'PRUEBAS Y DOCS'), L('V02 CRM', 'V02 CRM'), L('TEAM OF 4', 'EQUIPO DE 4')],
     nodes: [
-      N('V01', L('Institutional website', 'Sitio institucional'), L('2023 – 2024 · Junior Developer', '2023 – 2024 · Desarrollador Junior'), L("The school's website, built in Angular. I also wrote the technical documentation and user manuals.", 'El sitio web del centro, construido en Angular. También escribí la documentación técnica y los manuales de usuario.'), L('Angular, TypeScript, Bootstrap')),
-      N('V01', L('Testing', 'Pruebas'), L('Jasmine + Karma'), L('Unit tests for the Angular app.', 'Pruebas unitarias para la app en Angular.'), L('Jasmine, Karma')),
-      N('V01', L('Automation & support', 'Automatización y soporte'), L('VBA · networking', 'VBA · redes'), L('Office automation with VBA, plus network support.', 'Automatización de tareas con VBA y soporte de red.'), L('VBA')),
-      N('V02', L('Student records CRM', 'CRM de registros estudiantiles'), L('2025 · Development Lead', '2025 · Líder de desarrollo'), L('A CRM for managing student records.', 'Un CRM para gestionar los registros de estudiantes.'), L('TypeScript, Supabase')),
-      N('V02', L('Team & process', 'Equipo y proceso'), L('Scrum Master · team of 4', 'Scrum Master · equipo de 4'), L('I led a team of four as Scrum Master, with work tracked in Azure DevOps and code on GitHub.', 'Lideré un equipo de cuatro como Scrum Master, con el trabajo en Azure DevOps y el código en GitHub.'), L('Scrum, Azure DevOps, GitHub')),
+      N('V01', L('Institutional website', 'Sitio institucional'), L('2023 – 2024 · Junior Developer', '2023 – 2024 · Desarrollador Junior'), L("The school's website, built in Angular. I also wrote the technical documentation and user manuals.", 'El sitio web del centro, construido en Angular. También escribí la documentación técnica y los manuales de usuario.'), L('Angular, TypeScript, Bootstrap', 'Angular, TypeScript, Bootstrap')),
+      N('V01', L('Testing', 'Pruebas'), L('Jasmine + Karma', 'Jasmine + Karma'), L('Unit tests for the Angular app.', 'Pruebas unitarias para la app en Angular.'), L('Jasmine, Karma', 'Jasmine, Karma')),
+      N('V01', L('Automation & support', 'Automatización y soporte'), L('VBA · networking', 'VBA · redes'), L('Office automation with VBA, plus network support.', 'Automatización de tareas con VBA y soporte de red.'), L('VBA', 'VBA')),
+      N('V02', L('Student records CRM', 'CRM de registros estudiantiles'), L('2025 · Development Lead', '2025 · Líder de desarrollo'), L('A CRM for managing student records.', 'Un CRM para gestionar los registros de estudiantes.'), L('TypeScript, Supabase', 'TypeScript, Supabase')),
+      N('V02', L('Team & process', 'Equipo y proceso'), L('Scrum Master · team of 4', 'Scrum Master · equipo de 4'), L('I led a team of four as Scrum Master, with work tracked in Azure DevOps and code on GitHub.', 'Lideré un equipo de cuatro como Scrum Master, con el trabajo en Azure DevOps y el código en GitHub.'), L('Scrum, Azure DevOps, GitHub', 'Scrum, Azure DevOps, GitHub')),
     ] },
   cg: { intro: L('An internship on a full stack team: front end, services, backend and APIs.', 'Una práctica en un equipo full stack: front end, servicios, backend y APIs.'),
     nodes: [
-      N('N1', L('Interfaces'), L('HTML · CSS · Angular'), L('Responsive interfaces and Angular components.', 'Interfaces responsive y componentes en Angular.'), L('HTML, CSS, Angular')),
-      N('N2', L('Services', 'Servicios'), L('Angular + RxJS'), L('Angular services that consume the backend with RxJS.', 'Servicios de Angular que consumen el backend con RxJS.'), L('Angular, RxJS')),
-      N('N3', L('Backend'), L('JavaScript'), L('CRUD operations and report generation.', 'Operaciones CRUD y generación de reportes.'), L('JavaScript')),
-      N('N4', L('API'), L('REST, documented', 'REST, documentada'), L('Documented REST endpoints, tested with Postman and Insomnia.', 'Endpoints REST documentados, probados con Postman e Insomnia.'), L('REST, Postman, Insomnia')),
-      N('N5', L('Version control', 'Control de versiones'), L('GitLab'), L('Branches and merge requests on GitLab.', 'Ramas y merge requests en GitLab.'), L('GitLab')),
+      N('N1', L('Interfaces', 'Interfaces'), L('HTML · CSS · Angular', 'HTML · CSS · Angular'), L('Responsive interfaces and Angular components.', 'Interfaces responsive y componentes en Angular.'), L('HTML, CSS, Angular', 'HTML, CSS, Angular')),
+      N('N2', L('Services', 'Servicios'), L('Angular + RxJS', 'Angular + RxJS'), L('Angular services that consume the backend with RxJS.', 'Servicios de Angular que consumen el backend con RxJS.'), L('Angular, RxJS', 'Angular, RxJS')),
+      N('N3', L('Backend', 'Backend'), L('JavaScript', 'JavaScript'), L('CRUD operations and report generation.', 'Operaciones CRUD y generación de reportes.'), L('JavaScript', 'JavaScript')),
+      N('N4', L('API', 'API'), L('REST, documented', 'REST, documentada'), L('Documented REST endpoints, tested with Postman and Insomnia.', 'Endpoints REST documentados, probados con Postman e Insomnia.'), L('REST, Postman, Insomnia', 'REST, Postman, Insomnia')),
+      N('N5', L('Version control', 'Control de versiones'), L('GitLab', 'GitLab'), L('Branches and merge requests on GitLab.', 'Ramas y merge requests en GitLab.'), L('GitLab', 'GitLab')),
     ] },
 };
 
+const EMAIL = 'donatonicolasosorio@gmail.com';
+const DIM = { 'assets/logo-narinohoy.webp': [1000, 1000], 'assets/logo-steady.webp': [705, 729], 'assets/logo-ecobike.webp': [1000, 1000], 'assets/logo-andino.webp': [720, 480], 'assets/logo-siesa.webp': [480, 480], 'assets/logo-cognitios-mark.webp': [480, 480],
+  'assets/logo-javeriana.webp': [453, 600], 'assets/logo-mariana.webp': [600, 600], 'assets/cert-github.webp': [520, 520], 'assets/cert-scrum.webp': [488, 520], 'assets/cert-csharp.webp': [650, 520], 'assets/cert-aws.webp': [520, 520] };
+const dim = src => { const d = DIM[src] || [1, 1]; return { lw: d[0], lh: d[1] }; };
+const urlLang = () => { try { const l = new URLSearchParams(window.location.search).get('lang'); return l === 'es' || l === 'en' ? l : null; } catch (e) { return null; } };
+const startLang = () => { const u = urlLang(); if (u) return u; try { const l = localStorage.getItem('da-lang'); if (l === 'es' || l === 'en') return l; } catch (e) {} return 'en'; };
+const isWide = () => window.innerWidth >= 900 && window.innerHeight >= 620;
+const inView = el => { if (!el) return false; const r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < window.innerHeight; };
+
 class Component extends DCLogic {
-  state = { seen: {}, seq: 0, scrolled: false, hidden: false, wide: true, dna: 0, tech: null, pipe: 0, flow: 0, lang: 'en', copied: false, arch: null, archNode: 0, archIn: false, mail: false, mailIn: false, mName: '', mSubj: '', mBody: '', mSent: false };
+  state = { seen: {}, seq: 0, scrolled: false, hidden: false, wide: isWide(), dna: 0, tech: null, pipe: 0, flow: 0, lang: startLang(), copied: null, arch: null, archNode: 0, archIn: false, mail: false, mailIn: false, mName: '', mSubj: '', mBody: '', mSent: false, mErr: false };
   mailRef = React.createRef();
   seqRef = React.createRef();
   closeRef = React.createRef();
+  emailRef = React.createRef();
 
   componentDidMount() {
     this.reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    try { const l = localStorage.getItem('da-lang'); if (l === 'es' || l === 'en') this.setState({ lang: l }); } catch (e) {}
+    this.noIO = typeof IntersectionObserver === 'undefined';
+    this.prev = { lang: this.state.lang, wide: this.state.wide };
+    this.syncLang(this.state.lang);
     this.lastY = window.scrollY;
     this.onScroll = () => { if (!this.raf) this.raf = requestAnimationFrame(() => { this.raf = null; this.tick(); }); };
-    this.onResize = () => { const wide = window.innerWidth >= 900 && window.innerHeight >= 620; if (wide !== this.state.wide) this.setState({ wide }); this.tick(); };
+    this.onResize = () => { const wide = isWide(); if (wide !== this.state.wide) this.setState({ wide }); this.tick(); };
     this.onKey = e => { if (e.key !== 'Escape') return; if (this.state.mail) this.closeMail(); else if (this.state.arch) this.closeArch(); };
     window.addEventListener('scroll', this.onScroll, { passive: true });
     window.addEventListener('resize', this.onResize);
     window.addEventListener('keydown', this.onKey);
-    this.onResize(); this.tick(); setTimeout(() => this.tick(), 300);
-    this.io = new IntersectionObserver(entries => {
-      const add = {};
-      entries.forEach(e => { if (e.isIntersecting) { add[e.target.dataset.reveal] = true; this.io.unobserve(e.target); } });
-      if (Object.keys(add).length) this.setState(s => ({ seen: { ...s.seen, ...add } }));
-    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-    this.observe();
-    this.mo = new MutationObserver(() => { this.observe(); });
-    this.mo.observe(document.body, { childList: true, subtree: true });
-    setTimeout(() => this.setState(s => ({ seen: { ...s.seen, heroA: true, heroB: true, heroC: true, heroImg: true } })), 60);
+    this.onResize(); this.tick(); this.tickT = setTimeout(() => this.tick(), 300);
+    if (this.noIO) {
+      this.forceUpdate();
+    } else {
+      this.io = new IntersectionObserver(entries => {
+        const add = {};
+        entries.forEach(e => { if (e.isIntersecting) { add[e.target.dataset.reveal] = true; this.io.unobserve(e.target); } });
+        if (Object.keys(add).length) this.setState(s => ({ seen: { ...s.seen, ...add } }));
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+      this.observe();
+      this.mo = new MutationObserver(() => { this.observe(); });
+      this.mo.observe(document.body, { childList: true, subtree: true });
+    }
+    this.heroT = setTimeout(() => this.setState(s => ({ seen: { ...s.seen, heroA: true, heroB: true, heroC: true, heroImg: true } })), 60);
     this.timer = setInterval(() => {
-      if (this.reduce) return;
-      this.setState(s => ({ pipe: s.seen.ai ? (s.pipe + 1) % 5 : 0, flow: s.arch ? (s.flow + 1) % 4 : 0 }));
+      if (this.reduce || document.hidden) return;
+      const s = this.state, patch = {};
+      if (s.arch) patch.flow = (s.flow + 1) % 4;
+      const ai = document.getElementById('ai-title');
+      if (s.seen.ai && ai && inView(ai.closest('section'))) patch.pipe = (s.pipe + 1) % 5;
+      if (Object.keys(patch).length) this.setState(patch);
     }, 1400);
+    if (window.location.hash.length > 1) {
+      this.hashT = setTimeout(() => {
+        let el = null;
+        try { el = document.getElementById(decodeURIComponent(window.location.hash.slice(1))); } catch (e) {}
+        if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' });
+      }, 400);
+    }
   }
-  componentDidUpdate(pp, ps) {
-    if (ps.lang !== this.state.lang) { document.documentElement.lang = this.state.lang; setTimeout(() => this.tick(), 50); }
-    if (!ps.wide && this.state.wide) setTimeout(() => this.tick(), 50);
+  componentDidUpdate() {
+    const { lang, wide } = this.state, p = this.prev || {};
+    this.prev = { lang, wide };
+    if (p.lang !== lang) { this.syncLang(lang); setTimeout(() => this.tick(), 50); }
+    if (!p.wide && wide) setTimeout(() => this.tick(), 50);
   }
   componentWillUnmount() {
     window.removeEventListener('scroll', this.onScroll); window.removeEventListener('resize', this.onResize); window.removeEventListener('keydown', this.onKey);
     this.io && this.io.disconnect(); this.mo && this.mo.disconnect(); clearInterval(this.timer);
+    [this.tickT, this.heroT, this.hashT, this.openT, this.closeT, this.ct, this.lockT].forEach(t => clearTimeout(t));
+    if (this.raf) cancelAnimationFrame(this.raf);
+    this.setInert(false); document.body.style.overflow = '';
+  }
+  syncLang(l) {
+    document.documentElement.lang = l;
+    document.title = TX.docTitle[l];
+    const d = document.querySelector('meta[name="description"]'); if (d) d.setAttribute('content', TX.docDesc[l]);
+  }
+  setInert(on) {
+    document.querySelectorAll('#dc-root header, #dc-root main, #dc-root footer, #dc-root [data-skip]').forEach(el => { if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); });
   }
   observe() { if (!this.io) return; document.querySelectorAll('[data-reveal]').forEach(el => { if (!el.__obs && !this.state.seen[el.dataset.reveal]) { el.__obs = 1; this.io.observe(el); } }); }
   tick() {
     const y = window.scrollY, dy = y - this.lastY; this.lastY = y;
     const scrolled = y > 40;
-    const hidden = y > 400 && dy > 4 ? true : dy < -4 ? false : this.state.hidden;
+    const hidden = y <= 400 ? false : dy > 4 ? true : dy < -4 ? false : this.state.hidden;
     const vh = window.innerHeight, clamp = v => Math.min(1, Math.max(0, v));
     const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     let seq = this.state.seq;
     const el = this.seqRef.current;
-    if (el) { const r = el.getBoundingClientRect(); seq = Math.min(4, Math.floor(clamp(-r.top / Math.max(1, r.height - vh)) * 5)); }
+    if (el && !this.reduce) { const r = el.getBoundingClientRect(); seq = Math.min(4, Math.floor(clamp(-r.top / Math.max(1, r.height - vh)) * 5)); }
     document.querySelectorAll('[data-scene]').forEach(s => {
       const r = s.getBoundingClientRect();
       if (r.bottom < -vh || r.top > vh * 2) return;
@@ -645,38 +721,61 @@ class Component extends DCLogic {
     });
     let dna = this.state.dna;
     const d = document.querySelector('[data-dna]');
-    if (d && !this.reduce && this.state.wide) { const r = d.getBoundingClientRect(); dna = Math.min(5, Math.floor(clamp(-r.top / Math.max(1, r.height - vh)) * 6)); }
-    if (scrolled !== this.state.scrolled || hidden !== this.state.hidden || seq !== this.state.seq || dna !== this.state.dna) this.setState({ scrolled, hidden, seq, dna });
+    const G = this.dnaCount || 6;
+    if (d && !this.reduce && this.state.wide) { const r = d.getBoundingClientRect(); dna = Math.min(G - 1, Math.floor(clamp(-r.top / Math.max(1, r.height - vh)) * G)); }
+    if (this.dnaLock != null) { if (dna === this.dnaLock) this.dnaLock = null; else dna = this.state.dna; }
+    if (scrolled !== this.state.scrolled || hidden !== this.state.hidden || seq !== this.state.seq || dna !== this.state.dna) this.setState(dna !== this.state.dna ? { scrolled, hidden, seq, dna, tech: null } : { scrolled, hidden, seq, dna });
   }
+  showNav = () => { if (this.state.hidden) this.setState({ hidden: false }); };
   goDna(i) {
     const d = document.querySelector('[data-dna]');
-    if (this.reduce || !this.state.wide || !d) { this.setState({ dna: i }); return; }
+    this.setState({ dna: i, tech: null });
+    if (this.reduce || !this.state.wide || !d) return;
+    this.dnaLock = i; clearTimeout(this.lockT); this.lockT = setTimeout(() => { this.dnaLock = null; this.tick(); }, 1500);
     const top = d.getBoundingClientRect().top + window.scrollY, span = d.offsetHeight - window.innerHeight;
-    window.scrollTo({ top: top + span * (i + 0.5) / 6, behavior: 'smooth' });
+    window.scrollTo({ top: top + span * (i + 0.5) / (this.dnaCount || 6), behavior: 'smooth' });
+  }
+  dnaKey = e => {
+    const n = this.dnaCount || 6, i = Number(String(e.currentTarget.id).split('-').pop());
+    const j = e.key === 'ArrowRight' ? (i + 1) % n : e.key === 'ArrowLeft' ? (i + n - 1) % n : e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : null;
+    if (j === null || isNaN(i)) return;
+    e.preventDefault();
+    this.goDna(j);
+    const t = document.getElementById('dna-tab-' + j);
+    if (t) t.focus({ preventScroll: true });
+  };
+  openDialog(patch, focus) {
+    clearTimeout(this.closeT); clearTimeout(this.openT);
+    this.lastFocus = document.activeElement;
+    this.setState(patch);
+    document.body.style.overflow = 'hidden';
+    this.setInert(true);
+    this.openT = setTimeout(focus, 30);
+  }
+  closeDialog(inKey, openPatch) {
+    clearTimeout(this.openT); clearTimeout(this.closeT);
+    this.setState({ [inKey]: false });
+    this.setInert(false);
+    this.closeT = setTimeout(() => { this.setState(openPatch); document.body.style.overflow = ''; this.lastFocus && this.lastFocus.focus && this.lastFocus.focus(); }, this.reduce ? 0 : 280);
   }
   openArch(id) {
-    this.lastFocus = document.activeElement;
-    this.setState({ arch: id, archNode: 0, archIn: false, flow: 0 });
-    document.body.style.overflow = 'hidden';
-    setTimeout(() => { this.setState({ archIn: true }); this.closeRef.current && this.closeRef.current.focus(); }, 30);
+    this.openDialog({ arch: id, archNode: 0, archIn: false, flow: 0 }, () => { this.setState({ archIn: true }); this.closeRef.current && this.closeRef.current.focus(); });
   }
-  closeArch = () => {
-    this.setState({ archIn: false });
-    setTimeout(() => { this.setState({ arch: null }); document.body.style.overflow = ''; this.lastFocus && this.lastFocus.focus && this.lastFocus.focus(); }, this.reduce ? 0 : 280);
-  };
-  copyEmail = () => {
-    const done = () => { this.setState({ copied: true }); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ copied: false }), 2000); };
-    try { navigator.clipboard.writeText('donatonicolasosorio@gmail.com').then(done, done); } catch (e) { done(); }
-  };
+  closeArch = () => { this.closeDialog('archIn', { arch: null }); };
   openMail = () => {
-    this.lastFocus = document.activeElement;
-    this.setState({ mail: true, mailIn: false, mSent: false });
-    document.body.style.overflow = 'hidden';
-    setTimeout(() => { this.setState({ mailIn: true }); this.mailRef.current && this.mailRef.current.focus(); }, 30);
+    this.openDialog({ mail: true, mailIn: false, mSent: false, mErr: false }, () => { this.setState({ mailIn: true }); this.mailRef.current && this.mailRef.current.focus(); });
   };
-  closeMail = () => {
-    this.setState({ mailIn: false });
-    setTimeout(() => { this.setState({ mail: false }); document.body.style.overflow = ''; this.lastFocus && this.lastFocus.focus && this.lastFocus.focus(); }, this.reduce ? 0 : 280);
+  closeMail = () => { this.closeDialog('mailIn', { mail: false }); };
+  scrimDown = e => { this.downOnScrim = e.target === e.currentTarget; };
+  scrimArch = e => { const hit = e.target === e.currentTarget && this.downOnScrim; this.downOnScrim = false; if (hit) this.closeArch(); };
+  scrimMail = e => { const hit = e.target === e.currentTarget && this.downOnScrim; this.downOnScrim = false; if (hit) this.closeMail(); };
+  copyEmail = () => {
+    const show = v => { this.setState({ copied: v }); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ copied: null }), v === 'ok' ? 2000 : 5000); };
+    const fail = () => {
+      show('fail');
+      try { const a = this.emailRef.current; if (a) { const r = document.createRange(); r.selectNodeContents(a); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); } } catch (e) {}
+    };
+    try { navigator.clipboard.writeText(EMAIL).then(() => show('ok'), fail); } catch (e) { fail(); }
   };
   mailParts() {
     const { mName, mSubj, mBody } = this.state, n = mName.trim();
@@ -684,11 +783,15 @@ class Component extends DCLogic {
   }
   sendMail = e => {
     e && e.preventDefault();
-    const m = this.mailParts(); if (!m.ok) return;
-    window.location.href = 'mailto:donatonicolasosorio@gmail.com?subject=' + encodeURIComponent(m.su) + '&body=' + encodeURIComponent(m.body);
-    this.setState({ mSent: true });
+    const m = this.mailParts(); if (!m.ok) { this.setState({ mErr: true, mSent: false }); return; }
+    window.location.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(m.su) + '&body=' + encodeURIComponent(m.body);
+    this.setState({ mSent: true, mErr: false });
   };
-  setLang(l) { this.setState({ lang: l }); try { localStorage.setItem('da-lang', l); } catch (e) {} }
+  setLang(l) {
+    this.setState({ lang: l });
+    try { localStorage.setItem('da-lang', l); } catch (e) {}
+    try { if (urlLang()) { const u = new URL(window.location.href); u.searchParams.set('lang', l); history.replaceState(history.state, '', u.toString()); } } catch (e) {}
+  }
   tiltMove = e => {
     if (this.reduce || !window.matchMedia('(hover: hover)').matches) return;
     const t = e.currentTarget, r = t.getBoundingClientRect();
@@ -702,7 +805,7 @@ class Component extends DCLogic {
     const { seen, lang } = this.state, rm = this.reduce, I = '#111111';
     const t = x => x == null ? '' : typeof x === 'string' ? x : x[lang];
     const tx = {}; Object.keys(TX).forEach(k => tx[k] = TX[k][lang]);
-    const on = k => rm || !!seen[k];
+    const on = k => rm || this.noIO || !!seen[k];
     const R = (k, d = 0, dist = 40) => ({ op: on(k) ? 1 : 0, tf: on(k) ? 'none' : 'translateY(' + dist + 'px)', dl: rm ? '0ms' : d + 'ms' });
     const rv = {};
     [['heroA', 0], ['heroB', 120], ['heroC', 280], ['phil', 0], ['philP', 0], ['workH', 0], ['ai', 0], ['contact', 0]].forEach(([k, d]) => rv[k] = R(k, d));
@@ -713,7 +816,8 @@ class Component extends DCLogic {
     const seqT = lang === 'en' ? ['I build software.', 'First, I define the problem.', 'Then I design the architecture.', 'Then I implement it.', 'Then I test and validate it.'] : ['Construyo software.', 'Primero, defino el problema.', 'Luego diseño la arquitectura.', 'Después lo implemento.', 'Y lo pruebo y valido.'];
     const seqL = lang === 'en' ? ['BUILD', 'DEFINE', 'DESIGN', 'IMPLEMENT', 'VALIDATE'] : ['CONSTRUIR', 'DEFINIR', 'DISEÑAR', 'IMPLEMENTAR', 'VALIDAR'];
     const cur = this.state.seq;
-    const seq = seqT.map((s, i) => ({ t: s, label: seqL[i], op: i === cur ? 1 : 0, tf: rm || i === cur ? 'none' : i < cur ? 'translateY(-60px) scale(0.97)' : 'translateY(60px) scale(0.97)', bar: i <= cur ? I : 'rgba(0,0,0,0.12)', barW: i === cur ? '48px' : '20px', lab: i === cur ? I : '#A1A1A6' }));
+    const seq = seqT.map((s, i) => { const a = rm || i === cur; return { t: s, label: seqL[i], op: a ? 1 : 0, tf: a ? 'none' : i < cur ? 'translateY(-60px) scale(0.97)' : 'translateY(60px) scale(0.97)', bar: rm || i <= cur ? I : 'rgba(0,0,0,0.12)', barW: !rm && i === cur ? '48px' : '20px', lab: a ? I : '#6E6E73' }; });
+    const seqS = rm ? { pos: 'relative', h: 'auto', pad: 'clamp(96px,12vw,160px) 24px', box: 'auto', gap: '24px', pPos: 'relative' } : { pos: 'sticky', h: '100vh', pad: '0 24px', box: 'clamp(220px,40vh,420px)', gap: '0px', pPos: 'absolute' };
     const W = lang === 'en'
       ? [['PRODUCT', 'Problem framing, users, requirements and acceptance criteria.'], ['ARCHITECTURE', 'System boundaries, data models, integrations and the trade-offs behind each one.'], ['ENGINEERING', 'Typed code, automated tests, version control and repeatable deployments.'], ['EXPERIENCE', 'Performance, accessibility and responsive interfaces that hold up on real devices.']]
       : [['PRODUCTO', 'Definición del problema, usuarios, requisitos y criterios de aceptación.'], ['ARQUITECTURA', 'Límites del sistema, modelos de datos, integraciones y los compromisos detrás de cada uno.'], ['INGENIERÍA', 'Código tipado, pruebas automatizadas, control de versiones y despliegues repetibles.'], ['EXPERIENCIA', 'Rendimiento, accesibilidad e interfaces responsive que funcionan en dispositivos reales.']];
@@ -731,61 +835,62 @@ class Component extends DCLogic {
     const meta = arr => arr.map(([k, v]) => ({ k: mk[k], v: t(v) }));
     const repo = t(L('Repository ↗', 'Repositorio ↗'));
     const P = {
-      nh: { n: '01', kind: L('NEWS PLATFORM', 'PLATAFORMA DE NOTICIAS'), name: 'NariñoHoy', logo: 'assets/logo-narinohoy.png', logoRadius: '0', blend: 'normal',
+      nh: { n: '01', kind: L('NEWS PLATFORM', 'PLATAFORMA DE NOTICIAS'), name: 'NariñoHoy', logo: 'assets/logo-narinohoy.webp', logoRadius: '0', blend: 'normal',
         summary: L("Custom WordPress CMS for a regional newsroom: role-based access for 13 editors, per-user audit trails, daily log backups, rollback and database-to-content integrity checks.", "CMS a medida sobre WordPress para un medio regional: acceso por roles para 13 editores, auditoría por usuario, backups diarios de registros, rollback y validación de integridad entre base de datos y contenido."),
         meta: meta([['client', L('NariñoHoy, digital news outlet', 'NariñoHoy, medio digital')], ['when', L('Jan – Apr 2026', 'Ene – Abr 2026')], ['role', L('Full Stack Developer · Freelance', 'Desarrollador Full Stack · Freelance')]]),
         stack: ['WordPress', 'PHP', 'JavaScript', 'CSS', 'Cloudflare'], ...ACC.live, actions: [btn(L('Visit nariñohoy.com ↗', 'Visitar nariñohoy.com ↗'), 'https://xn--nariohoy-g3a.com/', true)],
-        shot: 'assets/shot-narinohoy.png', shotW: 1895, shotH: 912, domain: 'nariñohoy.com' },
-      sg: { n: '02', kind: L('PRODUCT', 'PRODUCTO'), name: 'Steady Guardians', logo: 'assets/logo-steady.png', logoRadius: '0', blend: 'normal',
+        shot: 'assets/shot-narinohoy.webp', shotW: 1400, shotH: 670, domain: 'nariñohoy.com' },
+      sg: { n: '02', kind: L('PRODUCT', 'PRODUCTO'), name: 'Steady Guardians', logo: 'assets/logo-steady.webp', logoRadius: '0', blend: 'normal',
         summary: L("Certification registry for an assistance-dog trainer: public verification by ID, code, QR or barcode, and a private admin panel. Every read and write goes through the server; the database rejects direct access.", "Registro de certificaciones para una empresa de perros de asistencia: verificación pública por ID, código, QR o código de barras, y un panel administrativo privado. Toda lectura y escritura pasa por el servidor; la base de datos rechaza el acceso directo."),
-        meta: meta([['client', L('Steady Guardians, Colombia')], ['when', L('Aug – Oct 2025', 'Ago – Oct 2025')], ['role', L('Full Stack Developer · Freelance', 'Desarrollador Full Stack · Freelance')]]),
-        stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Row Level Security', 'Vercel', 'Cloudflare', 'Resend'], ...ACC.livePriv,
+        meta: meta([['client', L('Steady Guardians, Colombia', 'Steady Guardians, Colombia')], ['when', L('Aug – Oct 2025', 'Ago – Oct 2025')], ['role', L('Full Stack Developer · Freelance', 'Desarrollador Full Stack · Freelance')]]),
+        stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Row Level Security', 'Vercel', 'Cloudflare', 'Vitest', 'Playwright'], ...ACC.livePriv,
         actions: [btn(L('Visit site ↗', 'Visitar sitio ↗'), 'https://www.steadyguardians.com/', true)],
-        shot: 'assets/shot-steady.png', shotW: 1895, shotH: 912, domain: 'steadyguardians.com' },
-      eb: { n: '03', kind: L('THESIS WITH DISTINCTION', 'TESIS MERITORIA'), name: 'EcoBike', logo: 'assets/logo-ecobike.png', logoRadius: '0', blend: 'normal', logoH: '100%', speed: 150,
+        shot: 'assets/shot-steady.webp', shotW: 1400, shotH: 674, domain: 'steadyguardians.com' },
+      eb: { n: '03', kind: L('THESIS WITH DISTINCTION', 'TESIS MERITORIA'), name: 'EcoBike', logo: 'assets/logo-ecobike.webp', logoRadius: '0', blend: 'normal', logoH: '100%', speed: 150,
         summary: L("Cross-platform Expo / React Native app with a react-native-web build: GPS ride tracking, OSRM route planning, Firebase data and QR-code reward redemption.", "App multiplataforma en Expo / React Native con build web vía react-native-web: seguimiento GPS, rutas con OSRM, datos en Firebase y canje de recompensas por código QR."),
-        meta: meta([['client', L('Universidad Mariana')], ['when', L('2024')], ['role', L('Author', 'Autor')]]),
+        meta: meta([['client', L('Universidad Mariana', 'Universidad Mariana')], ['when', L('2024', '2024')], ['role', L('Author', 'Autor')]]),
         stack: ['Expo', 'React Native', 'react-native-web', 'Firebase', 'Leaflet', 'OSRM', 'Vercel'], ...ACC.soon,
         actions: [{ label: repo, href: 'https://github.com/DonatoNicolasAyalaOsorio73/EcoBike', bg: 'transparent', fg: I, border: 'rgba(0,0,0,0.16)' }] },
-      si: { n: '05', kind: L('TECHNICAL ASSESSMENT', 'PRUEBA TÉCNICA'), name: 'Siesa MES', logo: 'assets/logo-siesa.png', logoRadius: '22%', blend: 'normal', logoH: '86%', speed: 110,
+      si: { n: '05', kind: L('TECHNICAL ASSESSMENT', 'PRUEBA TÉCNICA'), name: 'Siesa MES', logo: 'assets/logo-siesa.webp', logoRadius: '22%', blend: 'normal', logoH: '86%', speed: 110,
         summary: L("Next.js 14 MES prototype with two-way integration between manufacturing and quality, Recharts dashboards and a Gemini-powered defect assistant with an offline fallback.", "Prototipo MES en Next.js 14 con integración bidireccional entre manufactura y calidad, dashboards con Recharts y un asistente de defectos con Gemini y respaldo offline."),
-        meta: meta([['client', L('Siesa')], ['role', L('Sole developer, built with Claude Code', 'Desarrollador único, con Claude Code')]]),
+        meta: meta([['client', L('Siesa', 'Siesa')], ['role', L('Sole developer, built with Claude Code', 'Desarrollador único, con Claude Code')]]),
         stack: ['Next.js 14', 'TypeScript', 'Tailwind CSS', 'Recharts', 'Gemini API', 'Vitest'], ...ACC.live,
         actions: [btn(L('Live demo ↗', 'Demo en vivo ↗'), 'https://siesa.vercel.app/', true), { label: repo, href: 'https://github.com/DonatoNicolasAyalaOsorio73/Siesa', bg: 'transparent', fg: I, border: 'rgba(0,0,0,0.16)' }] },
-      an: { n: '04', kind: L('INSTITUTIONAL', 'INSTITUCIONAL'), name: 'Centro de Estudios Andino', logo: 'assets/logo-andino.png', logoRadius: '0', blend: 'normal', logoH: '72%', speed: 80,
+      an: { n: '04', kind: L('INSTITUTIONAL', 'INSTITUCIONAL'), name: 'Centro de Estudios Andino', logo: 'assets/logo-andino.webp', logoRadius: '0', blend: 'normal', logoH: '72%', speed: 80,
         summary: L("An Angular institutional website (V01) that evolved into a TypeScript and Supabase student records CRM (V02), delivered with Scrum on Azure DevOps.", "Un sitio institucional en Angular (V01) que evolucionó a un CRM de registros estudiantiles en TypeScript y Supabase (V02), entregado con Scrum en Azure DevOps."),
         meta: meta([['when', L('Aug 2023 – Jul 2025', 'Ago 2023 – Jul 2025')], ['role', L('Junior Developer → Development Lead', 'Desarrollador Junior → Líder de desarrollo')]]),
         stack: ['Angular', 'TypeScript', 'Bootstrap', 'Supabase', 'Azure DevOps', 'Scrum'], ...ACC.priv, actions: [] },
-      cg: { n: '06', kind: L('INTERNSHIP', 'PRÁCTICA PROFESIONAL'), name: 'Cognitios', logo: 'assets/logo-cognitios-mark.png', logoRadius: '0', blend: 'multiply', logoH: '82%', speed: 60,
+      cg: { n: '06', kind: L('INTERNSHIP', 'PRÁCTICA PROFESIONAL'), name: 'Cognitios', logo: 'assets/logo-cognitios-mark.webp', logoRadius: '0', blend: 'multiply', logoH: '82%', speed: 60,
         summary: L("Responsive Angular interfaces, RxJS services, JavaScript CRUD and reporting, and documented REST endpoints tested with Postman and Insomnia.", "Interfaces responsive en Angular, servicios con RxJS, CRUD y reportes en JavaScript, y endpoints REST documentados y probados con Postman e Insomnia."),
         meta: meta([['when', L('Feb – May 2023', 'Feb – May 2023')], ['role', L('Full Stack Intern · Bogotá', 'Practicante Full Stack · Bogotá')]]),
         stack: ['Angular', 'RxJS', 'JavaScript', 'REST', 'GitLab'], ...ACC.intern, actions: [] },
     };
-    const base = id => { const p = P[id]; return { ...p, id, kind: t(p.kind), summary: t(p.summary), hasShot: !!p.shot, noShot: !p.shot, openArch: () => this.openArch(id) }; };
+    const base = id => { const p = P[id]; return { ...p, ...dim(p.logo), id, kind: t(p.kind), summary: t(p.summary), hasShot: !!p.shot, noShot: !p.shot, openArch: () => this.openArch(id) }; };
     const featured = ['nh', 'sg', 'eb'].map(id => { const k = 'f' + id, v = on(k); return { ...base(id), rk: k, op: v ? 1 : 0, logoTf: v ? 'none' : 'scale(0.7) rotate(-6deg)', shotTf: v ? 'none' : 'translateY(40px) scale(0.96)' }; });
     const others = ['an', 'si', 'cg'].map((id, i) => { const k = 'o' + id, v = on(k); return { ...base(id), rk: k, op: v ? 1 : 0, tf: v ? 'none' : 'translateY(48px)', dl: rm ? '0ms' : i * 110 + 'ms' }; });
 
     const groups = [
-      [L('Frontend.'), L('FRONTEND'), [['React', 'sg si eb', L('Component-based UIs', 'Interfaces por componentes')], ['Next.js', 'sg si', L('App Router, SSR and API routes', 'App Router, SSR y rutas API')], ['Angular', 'an cg', L('Institutional apps, RxJS services', 'Apps institucionales, servicios RxJS')], ['TypeScript', 'sg si an eb', L('Typed code across the stack', 'Código tipado en todo el stack')], ['React Native · Expo', 'eb', L('iOS, Android and web from one codebase', 'iOS, Android y web desde un solo código')], ['Tailwind CSS', 'sg si', L('Utility-first styling', 'Estilos utility-first')]]],
+      [L('Frontend.', 'Frontend.'), L('FRONTEND', 'FRONTEND'), [['React', 'sg si eb', L('Component-based UIs', 'Interfaces por componentes')], ['Next.js', 'sg si', L('App Router, SSR and API routes', 'App Router, SSR y rutas API')], ['Angular', 'an cg', L('Institutional apps, RxJS services', 'Apps institucionales, servicios RxJS')], ['TypeScript', 'sg si an eb', L('Typed code across the stack', 'Código tipado en todo el stack')], ['React Native · Expo', 'eb', L('iOS, Android and web from one codebase', 'iOS, Android y web desde un solo código')], ['Tailwind CSS', 'sg si', L('Utility-first styling', 'Estilos utility-first')]]],
       [L('Backend & data.', 'Backend y datos.'), L('DATA', 'DATOS'), [['Supabase', 'sg an', L('Postgres, Auth and APIs', 'Postgres, Auth y APIs')], ['PostgreSQL', 'sg an', L('Relational schemas, indexes, triggers', 'Esquemas relacionales, índices, triggers')], ['Firebase', 'eb', L('Auth, Firestore and Storage', 'Auth, Firestore y Storage')], ['WordPress · PHP', 'nh', L('Custom CMS development', 'Desarrollo de CMS a medida')], ['REST APIs', 'eb cg', L('Documented, tested endpoints', 'Endpoints documentados y probados')]]],
-      [L('Cloud & delivery.', 'Cloud y entrega.'), L('CLOUD'), [['Vercel', 'sg si eb', L('Hosting and serverless functions', 'Hosting y funciones serverless')], ['Cloudflare', 'nh sg', L('DNS, SSL and HSTS', 'DNS, SSL y HSTS')], ['GitHub', 'sg si an eb', L('Version control and code review', 'Control de versiones y revisión de código')], ['Azure DevOps', 'an eb', L('Boards, sprints and repos', 'Tableros, sprints y repositorios')], ['GitLab', 'cg', L('Merge requests', 'Merge requests')], ['Scrum', 'an eb', L('Sprint-based delivery', 'Entrega por sprints')]]],
-      [L('Testing & quality.', 'Pruebas y calidad.'), L('QUALITY', 'CALIDAD'), [['Vitest', 'sg si', L('Unit and integration tests', 'Pruebas unitarias y de integración')], ['React Testing Library', 'sg', L('Component tests', 'Pruebas de componentes')], ['Jasmine · Karma', 'an', L('Angular unit tests', 'Pruebas unitarias en Angular')], ['Smoke tests', 'nh', L('Post-deploy checks', 'Verificación post-despliegue')], ['Postman · Insomnia', 'cg', L('API testing', 'Pruebas de API')]]],
+      [L('Cloud & delivery.', 'Cloud y entrega.'), L('CLOUD', 'CLOUD'), [['Vercel', 'sg si eb', L('Hosting and serverless functions', 'Hosting y funciones serverless')], ['Cloudflare', 'nh sg', L('DNS, SSL and HSTS', 'DNS, SSL y HSTS')], ['GitHub', 'sg si an eb', L('Version control and code review', 'Control de versiones y revisión de código')], ['Azure DevOps', 'an eb', L('Boards, sprints and repos', 'Tableros, sprints y repositorios')], ['GitLab', 'cg', L('Merge requests', 'Merge requests')], ['Scrum', 'an eb', L('Sprint-based delivery', 'Entrega por sprints')]]],
+      [L('Testing & quality.', 'Pruebas y calidad.'), L('QUALITY', 'CALIDAD'), [['Vitest', 'sg si', L('Unit and integration tests', 'Pruebas unitarias y de integración')], ['React Testing Library', 'sg', L('Component tests', 'Pruebas de componentes')], ['Jasmine · Karma', 'an', L('Angular unit tests', 'Pruebas unitarias en Angular')], ['Playwright', 'sg', L('End-to-end QA in CI', 'QA end-to-end en CI')], ['Smoke tests', 'nh', L('Post-deploy checks', 'Verificación post-despliegue')], ['Postman · Insomnia', 'cg', L('API testing', 'Pruebas de API')]]],
       [L('Security & reliability.', 'Seguridad y confiabilidad.'), L('SECURITY', 'SEGURIDAD'), [['RBAC', 'nh eb', L('Role-based access control', 'Control de acceso por roles')], ['Row Level Security', 'sg', L('Database-level permissions', 'Permisos a nivel de base de datos')], ['Token verification', 'eb', L('Firebase Admin SDK on the server', 'Firebase Admin SDK en el servidor')], ['Audit logs', 'nh', L('Per-user forensic timeline', 'Cronología forense por usuario')], ['Backups · rollback', 'nh', L('Daily backups and recovery', 'Backups diarios y recuperación')]]],
-      [L('AI-assisted engineering.', 'Ingeniería con IA.'), L('AI', 'IA'), [['BMAD Method', 'nh', L('Phased, agent-driven delivery', 'Entrega por fases con agentes')], ['Claude · Claude Code', 'nh si', L('Analysis, docs and code generation', 'Análisis, documentación y código')], ['GitHub Copilot', 'nh', L('In-editor assistance', 'Asistencia en el editor')], ['Gemini API', 'si', L('In-product AI features', 'Funciones de IA en el producto')]]],
+      [L('AI-assisted engineering.', 'Ingeniería con IA.'), L('AI', 'IA'), [['BMAD Method', 'nh sg', L('Phased, agent-driven delivery', 'Entrega por fases con agentes')], ['Claude · Claude Code', 'nh si sg', L('Analysis, docs and code generation', 'Análisis, documentación y código')], ['GitHub Copilot', 'nh', L('In-editor assistance', 'Asistencia en el editor')], ['Gemini API', 'si', L('In-product AI features', 'Funciones de IA en el producto')]]],
     ];
     const short = { nh: 'NariñoHoy', sg: 'Steady Guardians', si: 'Siesa MES', an: 'C. E. Andino', eb: 'EcoBike', cg: 'Cognitios' };
     const dI = this.state.dna, hov = this.state.tech;
+    this.dnaCount = groups.length;
     const dnaGroups = groups.map(([title, sh, items], gi) => {
       const act = gi === dI;
-      return { title: t(title), short: t(sh), active: act, hidden: act ? 'false' : 'true', pe: act ? 'auto' : 'none', op: act ? 1 : 0,
-        tf: rm || act ? 'none' : gi < dI ? 'translateY(-40px)' : 'translateY(40px)', bar: gi <= dI ? I : 'rgba(0,0,0,0.12)', barW: act ? '48px' : '24px', lab: act ? I : '#A1A1A6', go: () => this.goDna(gi),
+      return { title: t(title), short: t(sh), active: act, hidden: act ? 'false' : 'true', pe: act ? 'auto' : 'none', op: act ? 1 : 0, tabId: 'dna-tab-' + gi, panelId: 'dna-panel-' + gi, tabIdx: act ? 0 : -1, panelIdx: act ? 0 : -1,
+        tf: rm || act ? 'none' : gi < dI ? 'translateY(-40px)' : 'translateY(40px)', bar: gi <= dI ? I : 'rgba(0,0,0,0.12)', barW: act ? '48px' : '24px', lab: act ? I : '#6E6E73', go: () => this.goDna(gi),
         items: items.map(([name, p, purpose], i) => ({ name, purpose: t(purpose), projects: p.split(' ').map(id => short[id]), color: hov && hov !== p ? '#C7C7CC' : I,
           line: act ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0)', op: act ? 1 : 0, tf: rm || act ? 'none' : 'translateY(28px)', dl: act && !rm ? (120 + i * 60) + 'ms' : '0ms',
           on: () => this.setState({ tech: p }), off: () => this.setState({ tech: null }) })) };
     });
     const activeSet = new Set((hov || groups[dI][2].map(x => x[1]).join(' ')).split(' '));
-    const dnaProjects = ['nh', 'sg', 'eb', 'si', 'an', 'cg'].map(id => { const lit = activeSet.has(id); return { name: short[id], logo: P[id].logo, radius: P[id].logoRadius, blend: P[id].blend,
-      filter: lit ? 'none' : 'grayscale(1)', op: lit ? 1 : 0.3, fg: lit ? I : '#A1A1A6', bg: lit ? '#F5F5F7' : 'transparent', tf: lit ? 'translateY(-4px)' : 'none' }; });
+    const dnaProjects = ['nh', 'sg', 'eb', 'si', 'an', 'cg'].map(id => { const lit = activeSet.has(id); return { name: short[id], logo: P[id].logo, ...dim(P[id].logo), radius: P[id].logoRadius, blend: P[id].blend,
+      filter: lit ? 'none' : 'grayscale(1)', op: lit ? 1 : 0.3, fg: lit ? I : '#6E6E73', bg: lit ? '#F5F5F7' : 'transparent', tf: lit ? 'translateY(-4px)' : 'none' }; });
 
     const B = [
       [L('Analysis', 'Análisis'), L('ANALYST AGENT', 'AGENTE ANALISTA'), L('Project brief: problem, users, constraints', 'Brief del proyecto: problema, usuarios, restricciones'), L('I validate the problem and the scope', 'Valido el problema y el alcance')],
@@ -807,26 +912,26 @@ class Component extends DCLogic {
       ['2026', L('Reliability and AI-assisted engineering', 'Confiabilidad e ingeniería con IA'), L('NariñoHoy: access control, audit trails, backups and rollback. BMAD with human review.', 'NariñoHoy: control de acceso, auditoría, backups y rollback. BMAD con revisión humana.')],
     ];
     const journey = J.map(([year, stage, note], i) => { const k = 'j' + i, v = on(k), E = 'none', ms = x => rm ? '0ms' : x + 'ms';
-      return { year, stage: t(stage), note: t(note), rk: k, op: v ? 1 : 0, yc: v ? I : '#A1A1A6', yTf: v ? E : 'translateX(-24px)',
+      return { year, stage: t(stage), note: t(note), rk: k, op: v ? 1 : 0, yc: v ? I : '#6E6E73', yTf: v ? E : 'translateX(-24px)',
         dotTf: v ? 'scale(1)' : 'scale(0)', ringTf: v ? 'scale(3.2)' : 'scale(0.6)', ringOp: v || rm ? 0 : 1, lineTf: v ? 'scaleY(1)' : 'scaleY(0)',
         tTf: v ? E : 'translateY(18px)', blur: v || rm ? 'blur(0px)' : 'blur(6px)', nTf: v ? E : 'translateY(14px)', d0: ms(0), d1: ms(140), d2: ms(300) }; });
     const card = (k, i) => { const v = on(k); return { rk: k, op: v ? 1 : 0, tf: v ? 'none' : 'translateY(80px) rotateX(20deg) scale(0.9)', dl: rm ? '0ms' : i * 120 + 'ms' }; };
     const education = [
-      { school: 'Pontificia Universidad Javeriana Cali', logo: 'assets/logo-javeriana.png', speed: 110, degrees: [{ t: t(L("Master's in Software Engineering", 'Magíster en Ingeniería de Software')), y: '2024 – 2026' }, { t: t(L('Graduate Specialization in Software Engineering', 'Especialista en Ingeniería de Software')), y: '2024 – 2025' }] },
-      { school: 'Universidad Mariana', logo: 'assets/logo-mariana.png', speed: 70, degrees: [{ t: t(L('Systems Engineering', 'Ingeniero de Sistemas')), y: '2019 – 2024' }, { t: t(L('Thesis with distinction · EcoBike', 'Tesis meritoria · EcoBike')), y: '2024' }] },
-    ].map((e, i) => ({ ...e, ...card('ed' + i, i) }));
+      { school: 'Pontificia Universidad Javeriana Cali', logo: 'assets/logo-javeriana.webp', speed: 110, degrees: [{ t: t(L("Master's in Software Engineering", 'Magíster en Ingeniería de Software')), y: '2024 – 2026' }, { t: t(L('Graduate Specialization in Software Engineering', 'Especialista en Ingeniería de Software')), y: '2024 – 2025' }] },
+      { school: 'Universidad Mariana', logo: 'assets/logo-mariana.webp', speed: 70, degrees: [{ t: t(L('Systems Engineering', 'Ingeniero de Sistemas')), y: '2019 – 2024' }, { t: t(L('Thesis with distinction · EcoBike', 'Tesis meritoria · EcoBike')), y: '2024' }] },
+    ].map((e, i) => ({ ...e, ...dim(e.logo), ...card('ed' + i, i) }));
     const CERT_LINKS = { github: 'https://www.credly.com/badges/1484f1f5-1898-425f-b255-fafd415a3296/linked_in_profile', scrum: 'https://c46e136a583f7e334124-ac22991740ab4ff17e21daf2ed577041.ssl.cf1.rackcdn.com/Certificate/ScrumFundamentalsCertified-DonatoNicolasAyalaOsorio-915172.pdf', csharp: 'https://www.freecodecamp.org/certification/fccd7b5b089-564d-4125-9a86-0cd7dd934744/foundational-c-sharp-with-microsoft', aws: 'https://drive.google.com/file/d/15zqTfZByKMFP5htVYTczhlA99fZGegHW/view' };
     const certs = [
-      { id: 'github', name: 'GitHub Foundations', issuer: 'GITHUB', year: '2025', logo: 'assets/cert-github.png', blend: 'normal', radius: '0', speed: 140 },
-      { id: 'scrum', name: 'Scrum Fundamentals Certified', issuer: 'SCRUMSTUDY', year: '2022', logo: 'assets/cert-scrum.png', blend: 'normal', radius: '0', speed: 100 },
-      { id: 'csharp', name: 'Foundational C# with Microsoft', issuer: 'FREECODECAMP · MICROSOFT', year: '2025', logo: 'assets/cert-csharp.png', blend: 'normal', radius: '20px', speed: 60 },
-      { id: 'aws', name: 'AWS Well-Architected Foundations', issuer: 'AWS', year: '2024', logo: 'assets/cert-aws.png', blend: 'multiply', radius: '0', speed: 120 },
+      { id: 'github', name: 'GitHub Foundations', issuer: 'GITHUB', year: '2025', logo: 'assets/cert-github.webp', blend: 'normal', radius: '0', speed: 140 },
+      { id: 'scrum', name: 'Scrum Fundamentals Certified', issuer: 'SCRUMSTUDY', year: '2022', logo: 'assets/cert-scrum.webp', blend: 'normal', radius: '0', speed: 100 },
+      { id: 'csharp', name: 'Foundational C# with Microsoft', issuer: 'FREECODECAMP · MICROSOFT', year: '2025', logo: 'assets/cert-csharp.webp', blend: 'normal', radius: '20px', speed: 60 },
+      { id: 'aws', name: 'AWS Well-Architected Foundations', issuer: 'AWS', year: '2024', logo: 'assets/cert-aws.webp', blend: 'multiply', radius: '0', speed: 120 },
     ].map((c, i) => { const href = CERT_LINKS[c.id], k = 'c' + i, v = on(k), d = rm ? 0 : i * 160;
       const GLOW = { github: 'rgba(130,80,223,0.30)', scrum: 'rgba(245,130,32,0.28)', csharp: 'rgba(81,43,212,0.28)', aws: 'rgba(255,153,0,0.32)' };
-      return { ...c, rk: k, op: v ? 1 : 0, tf: v ? 'none' : 'translateY(120px) rotateX(28deg) scale(0.85)', dl: d + 'ms', dl2: (rm ? 0 : d + 250) + 'ms', dl3: (rm ? 0 : d + 750) + 'ms',
+      return { ...c, ...dim(c.logo), rk: k, op: v ? 1 : 0, tf: v ? 'none' : 'translateY(120px) rotateX(28deg) scale(0.85)', dl: d + 'ms', dl2: (rm ? 0 : d + 250) + 'ms', dl3: (rm ? 0 : d + 750) + 'ms',
         logoTf: v ? 'none' : 'scale(0.55) rotate(-10deg)', haloOp: v ? 1 : 0, haloS: v ? 'scale(1)' : 'scale(0.3)', glow: GLOW[c.id], badgeOp: v ? 1 : 0, badgeTf: v ? 'none' : 'translateY(10px) scale(0.6)',
         href: href || undefined, hasHref: !!href, pe: href ? 'auto' : 'none', viewLabel: c.name + ' — ' + tx.viewCert }; });
-    const mp = this.mailParts(), mailIn = this.state.mailIn || rm;
+    const mp = this.mailParts(), mailIn = this.state.mailIn || rm, cp = this.state.copied;
 
     let arch = { op: 0, tf: 'translateY(60px)', scrim: 'rgba(0,0,0,0)', title: '', nodes: [], flow: [], sel: {} };
     if (this.state.arch) {
@@ -835,7 +940,7 @@ class Component extends DCLogic {
       const n = A.nodes[idx];
       const flow = (A.flow || []).map((f, i) => { const a = !rm && this.state.flow === i; return { n: '0' + (i + 1), t: t(f), bg: a ? '#FFFFFF' : 'rgba(255,255,255,0.06)', fg: a ? I : '#FFFFFF', tf: a ? 'translateY(-4px)' : 'none' }; });
       const inn = this.state.archIn || rm;
-      arch = { title: p.name + (lang === 'en' ? ': how it’s built.' : ': cómo está hecho.'), intro: t(A.intro), logo: p.logo, radius: p.logoRadius, nodes, flow, hasFlow: flow.length > 0,
+      arch = { title: p.name + (lang === 'en' ? ': how it’s built.' : ': cómo está hecho.'), intro: t(A.intro), logo: p.logo, ...dim(p.logo), radius: p.logoRadius, nodes, flow, hasFlow: flow.length > 0,
         sel: { code: n.code, label: t(n.label), role: t(n.role), tech: t(n.tech), why: t(n.why), tradeoff: t(n.tradeoff), hasWhy: !!n.why, hasTrade: !!n.tradeoff },
         op: inn ? 1 : 0, tf: inn ? 'none' : 'translateY(60px)', scrim: inn ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0)' };
     }
@@ -843,19 +948,21 @@ class Component extends DCLogic {
     return {
       tx, rv, nav, langs, wide: this.state.wide, narrow: !this.state.wide, seq, words, featured, others, dnaGroups, dnaProjects, bmad, journey, education, certs,
       navLinks: [{ label: t(L('Work', 'Trabajo')), href: '#work' }, { label: 'Stack', href: '#stack' }, { label: t(L('Journey', 'Trayectoria')), href: '#journey' }, { label: t(L('About', 'Sobre mí')), href: '#about' }],
-      seqRef: this.seqRef, closeRef: this.closeRef, seqHeight: rm ? '100vh' : '360vh', heroScale: on('heroImg') ? 1 : 1.08,
+      seqRef: this.seqRef, closeRef: this.closeRef, emailRef: this.emailRef, seqS, seqHeight: rm ? 'auto' : '360vh', heroScale: on('heroImg') ? 1 : 1.08,
       sceneH: rm ? '100vh' : '300vh', dnaH: this.state.wide && !rm ? '560vh' : 'auto', dnaPos: this.state.wide && !rm ? 'sticky' : 'relative',
-      mailHref: 'mailto:donatonicolasosorio@gmail.com?subject=' + encodeURIComponent(lang === 'en' ? 'Hello Donato' : 'Hola Donato'),
+      mailHref: 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(lang === 'en' ? 'Hello Donato' : 'Hola Donato'),
       waHref: 'https://wa.me/573188401253?text=' + encodeURIComponent(lang === 'en' ? 'Hi Donato, I saw your portfolio.' : 'Hola Donato, vi tu portafolio.'),
-      copyEmail: this.copyEmail, copyLabel: this.state.copied ? tx.copied : tx.copy, copyBg: this.state.copied ? '#111111' : 'transparent', copyFg: this.state.copied ? '#FFFFFF' : '#111111',
+      copyEmail: this.copyEmail, copyLabel: cp === 'ok' ? tx.copied : cp === 'fail' ? tx.copyFail : tx.copy, copyBg: cp === 'ok' ? '#111111' : 'transparent', copyFg: cp === 'ok' ? '#FFFFFF' : cp === 'fail' ? '#B42318' : '#111111',
+      copyBorder: cp === 'fail' ? '#B42318' : 'rgba(0,0,0,0.14)', copyMsg: cp === 'ok' ? tx.copiedMsg : cp === 'fail' ? tx.copyFailMsg : '',
       aiTools: ['BMAD Method', 'Claude', 'Claude Code', 'GitHub Copilot'],
       mailOpen: this.state.mail, mail: { op: mailIn ? 1 : 0, tf: mailIn ? 'none' : 'translateY(40px) scale(0.97)', scrim: mailIn ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0)' },
       openMail: this.openMail, closeMail: this.closeMail, sendMail: this.sendMail, mailRef: this.mailRef,
       mName: this.state.mName, mSubj: this.state.mSubj, mBody: this.state.mBody,
-      setName: e => this.setState({ mName: e.target.value, mSent: false }), setSubj: e => this.setState({ mSubj: e.target.value, mSent: false }), setBody: e => this.setState({ mBody: e.target.value, mSent: false }),
-      sendOp: mp.ok ? 1 : 0.4, gmailPe: mp.ok ? 'auto' : 'none', gmailDis: mp.ok ? 'false' : 'true', mailNote: this.state.mSent ? tx.mSent : tx.mNote,
-      gmailHref: 'https://mail.google.com/mail/?view=cm&fs=1&to=donatonicolasosorio@gmail.com&su=' + encodeURIComponent(mp.su) + '&body=' + encodeURIComponent(mp.body),
-      archOpen: !!this.state.arch, arch, closeArch: this.closeArch, stop: e => e.stopPropagation(),
+      setName: e => this.setState({ mName: e.target.value, mSent: false }), setSubj: e => this.setState({ mSubj: e.target.value, mSent: false, mErr: false }), setBody: e => this.setState({ mBody: e.target.value, mSent: false, mErr: false }),
+      sendOp: mp.ok ? 1 : 0.4, gmailPe: mp.ok ? 'auto' : 'none', gmailDis: mp.ok ? undefined : 'true', gmailRole: mp.ok ? undefined : 'link', mailNote: this.state.mErr ? tx.mMissing : this.state.mSent ? tx.mSent : tx.mNote,
+      gmailHref: mp.ok ? 'https://mail.google.com/mail/?view=cm&fs=1&to=' + EMAIL + '&su=' + encodeURIComponent(mp.su) + '&body=' + encodeURIComponent(mp.body) : undefined,
+      archOpen: !!this.state.arch, arch, closeArch: this.closeArch, stop: e => e.stopPropagation(), scrimDown: this.scrimDown, scrimArch: this.scrimArch, scrimMail: this.scrimMail,
+      showNav: this.showNav, dnaKey: this.dnaKey,
       tilt: this.tiltMove, untilt: this.tiltLeave,
     };
   }

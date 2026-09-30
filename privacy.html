@@ -1,16 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Donato Ayala</title>
+<meta name="description" content="Privacy policy for donacode.link, the portfolio of Donato Nicolás Ayala Osorio.">
+<link rel="canonical" href="https://donacode.link/privacy.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Donato Ayala">
+<meta property="og:title" content="Privacy Policy — Donato Ayala">
+<meta property="og:description" content="Privacy policy for donacode.link, the portfolio of Donato Nicolás Ayala Osorio.">
+<meta property="og:url" content="https://donacode.link/privacy.html">
+<meta property="og:image" content="https://donacode.link/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Donato Ayala, Software Engineer · Full Stack">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_CO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Privacy Policy — Donato Ayala">
+<meta name="twitter:description" content="Privacy policy for donacode.link, the portfolio of Donato Nicolás Ayala Osorio.">
+<meta name="twitter:image" content="https://donacode.link/assets/og-image.jpg">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <script src="./support.js"></script>
 </head>
 <body>
+<noscript>
+  <div style="max-width:720px;margin:0 auto;padding:64px 24px;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:#111111;line-height:1.6">
+    <h1 style="font-size:36px;line-height:1.1;margin:0">Privacy policy · Política de privacidad</h1>
+    <p style="font-size:17px;color:#3A3A3C;margin:16px 0 0">Donato Nicolás Ayala Osorio · Software Engineer / Ingeniero de Software.</p>
+    <p style="font-size:17px;margin:16px 0 0">This site needs JavaScript to show the full policy. For any privacy question, write to / Este sitio necesita JavaScript para mostrar la política completa. Para cualquier consulta de privacidad, escribe a: <a href="mailto:donatonicolasosorio@gmail.com" style="color:#111111">donatonicolasosorio@gmail.com</a></p>
+    <p style="font-size:17px;margin:16px 0 0"><a href="assets/cv-donato-ayala.pdf" style="color:#111111">Download CV / Descargar CV</a> · <a href="./" style="color:#111111">Home / Inicio</a></p>
+  </div>
+</noscript>
 <x-dc>
 <helmet>
-<link rel="canonical" href="https://donacode.link/privacy.html">
-<title>Privacy Policy — Donato Ayala</title>
-<meta name="description" content="Privacy policy for donacode.link, the portfolio of Donato Nicolás Ayala Osorio.">
 <style>
 html,body{margin:0;background:#FFFFFF;color:#111111;font-family:-apple-system,BlinkMacSystemFont,system-ui,ui-sans-serif,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
 *{box-sizing:border-box}
@@ -21,7 +48,7 @@ a:hover{color:#6E6E73}
 <header style="position:sticky;top:0;z-index:10;display:flex;justify-content:center;padding:14px 16px;background:rgba(255,255,255,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,0.06)">
   <div style="width:100%;max-width:820px;display:flex;justify-content:space-between;align-items:center;gap:12px">
     <a href="./" style="font-weight:700;font-size:16px;letter-spacing:-0.02em;text-decoration:none">← Donato Ayala</a>
-    <div role="group" aria-label="Language" style="display:flex;padding:3px;border-radius:999px;background:rgba(0,0,0,0.05)">
+    <div role="group" aria-label="{{ c.langLabel }}" style="display:flex;padding:3px;border-radius:999px;background:rgba(0,0,0,0.05)">
       <sc-for list="{{ langs }}" as="g" hint-placeholder-count="2">
         <button onClick="{{ g.set }}" aria-pressed="{{ g.active }}" style="font:inherit;font-size:13px;font-weight:600;cursor:pointer;border:0;border-radius:999px;padding:7px 12px;background:{{ g.bg }};color:{{ g.fg }};box-shadow:{{ g.shadow }}">{{ g.label }}</button>
       </sc-for>
@@ -64,17 +91,17 @@ a:hover{color:#6E6E73}
 <script type="text/x-dc" data-dc-script>
 const E = 'donatonicolasosorio@gmail.com';
 const C = {
-  en: { eyebrow: 'LEGAL', title: 'Privacy policy.', tocLabel: 'CONTENTS', updated: 'Effective date: September 29, 2026. Version 2.0. The English version prevails for readers outside Colombia; the Spanish version prevails for readers in Colombia.',
+  en: { eyebrow: 'LEGAL', title: 'Privacy policy.', tocLabel: 'CONTENTS', langLabel: 'Language', docTitle: 'Privacy Policy — Donato Ayala', updated: 'Effective date: September 30, 2026. Version 2.1. The English version prevails for readers outside Colombia; the Spanish version prevails for readers in Colombia.',
     lead: 'This policy explains how donacode.link, the personal portfolio of Donato Nicolás Ayala Osorio, handles personal data. It is written to comply with Colombian Law 1581 of 2012 and Decree 1377 of 2013 (incorporated into Decree 1074 of 2015), and with the EU General Data Protection Regulation (GDPR) where it applies.',
     facts: ['No analytics or ad trackers', 'No cookies', 'No accounts or server-side forms', 'Your data is never sold'],
     sections: [
       ['Data controller', [`The controller of any personal data processed through this site is Donato Nicolás Ayala Osorio, an individual based in Colombia ("I", "me"). Contact: ${E}.`, 'This is a personal, non-commercial portfolio. It does not sell products or services online.']],
       ['Scope', ['This policy covers the website at donacode.link and its subpages. It does not cover third-party sites linked from here, which are governed by their own policies.']],
-      ['Data I process', ['Technical data: when you load a page, the hosting provider automatically receives standard request data (IP address, user agent, requested URL, referrer, date and time). I do not use this data to identify you or build profiles.', 'Data you choose to send: if you contact me by email or WhatsApp, I receive what you include in the message, such as your name, email address or phone number, and the content of your message.', 'I do not intentionally collect sensitive data (as defined in Article 5 of Law 1581 and Article 9 of the GDPR). Please do not include it in your messages.']],
+      ['Data I process', ['Technical data: when you load a page, the hosting provider automatically receives standard request data (IP address, user agent, requested URL, referrer, date and time). The content delivery network that serves the page\'s JavaScript libraries receives similar data (see "Processors and international transfers"). I do not use this data to identify you or build profiles.', 'Data you choose to send: if you contact me by email or WhatsApp, I receive what you include in the message, such as your name, email address or phone number, and the content of your message.', 'I do not intentionally collect sensitive data (as defined in Article 5 of Law 1581 and Article 9 of the GDPR). Please do not include it in your messages.']],
       ['The contact form', ['The "Send an email" window runs entirely in your browser. When you press send, it opens your own email client or Gmail with the subject and message pre-filled. The text is not transmitted to, or stored on, any server operated by me. Nothing is sent until you confirm it in your email client.']],
       ['Cookies and local storage', ['This site sets no cookies. It stores one value in your browser\'s localStorage: your language preference (EN or ES). That value never leaves your device, is not used for tracking, and can be cleared at any time from your browser settings. Because it is strictly necessary to deliver a feature you requested, it does not require consent under the ePrivacy Directive.']],
       ['Purposes and legal bases', ['Serving and securing the site (technical data): legitimate interest in operating a secure, functioning website (GDPR Art. 6(1)(f)).', 'Replying to your message: your request and my legitimate interest in answering it, or steps taken at your request before entering into a contract (GDPR Art. 6(1)(b) and (f)). Under Colombian law, by contacting me you authorize processing for this purpose only (Law 1581, Art. 9).', 'I do not use your data for marketing, automated decision-making or profiling.']],
-      ['Processors and international transfers', ['The site is hosted on GitHub Pages (GitHub, Inc., United States). Email is handled through Google (Gmail) and messaging through WhatsApp (Meta Platforms). These providers may process data outside Colombia and the European Economic Area.', 'Where they do, transfers rely on the safeguards those providers offer, such as Standard Contractual Clauses or the EU-U.S. Data Privacy Framework, and on the international-transfer rules of Law 1581 (Art. 26).']],
+      ['Processors and international transfers', ['The site is hosted on GitHub Pages (GitHub, Inc., United States). Email is handled through Google (Gmail) and messaging through WhatsApp (Meta Platforms). These providers may process data outside Colombia and the European Economic Area.', 'Where they do, transfers rely on the safeguards those providers offer, such as Standard Contractual Clauses or the EU-U.S. Data Privacy Framework, and on the international-transfer rules of Law 1581 (Art. 26).', 'To display the pages, your browser downloads the JavaScript libraries React, ReactDOM and Babel from unpkg.com, a public content delivery network for open-source packages. When it does, unpkg.com and the infrastructure providers behind it receive your IP address, user agent, the requested file and the referring site, and process them under their own policies. No cookies are set and I receive nothing from these requests.']],
       ['Retention', ['Hosting logs are kept by the hosting provider according to its own retention policy. Correspondence is kept only as long as needed to handle your request or any follow-up (for example, a hiring process or a project), and is deleted on request unless I am legally required to keep it.']],
       ['Security', ['The site is served over HTTPS only. It has no database, no user accounts and no server-side code that stores personal data. Access to my email and messaging accounts is protected with strong authentication.']],
       ['Your rights', ['Under Colombian law you have the right to know, update and rectify your data; request proof of your authorization; be informed about how your data has been used; revoke your authorization or request deletion; access your data free of charge; and file a complaint with the Superintendencia de Industria y Comercio (SIC).', 'If the GDPR applies to you, you also have the right of access, rectification, erasure, restriction, data portability and objection, the right to withdraw consent at any time, and the right to lodge a complaint with your local data protection authority.']],
@@ -83,17 +110,17 @@ const C = {
       ['External links', ['Project demos, repositories, certificates and profiles open on third-party sites such as Vercel, GitHub, LinkedIn, Credly, freeCodeCamp and Google Drive. Their privacy practices are their own.']],
       ['Changes to this policy', ['If this policy changes materially, I will publish the new version on this page with a new effective date and version number.']],
     ] },
-  es: { eyebrow: 'LEGAL', title: 'Política de privacidad.', tocLabel: 'CONTENIDO', updated: 'Vigente desde el 29 de septiembre de 2026. Versión 2.0. Para lectores en Colombia prevalece la versión en español; fuera de Colombia, la versión en inglés.',
+  es: { eyebrow: 'LEGAL', title: 'Política de privacidad.', tocLabel: 'CONTENIDO', langLabel: 'Idioma', docTitle: 'Política de privacidad — Donato Ayala', updated: 'Vigente desde el 30 de septiembre de 2026. Versión 2.1. Para lectores en Colombia prevalece la versión en español; fuera de Colombia, la versión en inglés.',
     lead: 'Esta política explica cómo donacode.link, el portafolio personal de Donato Nicolás Ayala Osorio, trata los datos personales. Está redactada conforme a la Ley 1581 de 2012 y el Decreto 1377 de 2013 (compilado en el Decreto 1074 de 2015) y, cuando aplica, al Reglamento General de Protección de Datos de la Unión Europea (RGPD).',
     facts: ['Sin analítica ni rastreadores publicitarios', 'Sin cookies', 'Sin cuentas ni formularios en servidor', 'Tus datos nunca se venden'],
     sections: [
       ['Responsable del tratamiento', [`El responsable de los datos personales tratados a través de este sitio es Donato Nicolás Ayala Osorio, persona natural domiciliada en Colombia. Contacto: ${E}.`, 'Este es un portafolio personal sin fines comerciales. No vende productos ni servicios en línea.']],
       ['Alcance', ['Esta política aplica al sitio donacode.link y sus subpáginas. No cubre los sitios de terceros enlazados desde aquí, que se rigen por sus propias políticas.']],
-      ['Datos que trato', ['Datos técnicos: al cargar una página, el proveedor de hosting recibe automáticamente datos estándar de la solicitud (dirección IP, navegador, URL solicitada, referente, fecha y hora). No uso estos datos para identificarte ni crear perfiles.', 'Datos que decides enviar: si me contactas por correo o WhatsApp, recibo lo que incluyas en el mensaje, como tu nombre, correo o teléfono, y el contenido del mensaje.', 'No recopilo de forma intencional datos sensibles (según el artículo 5 de la Ley 1581 y el artículo 9 del RGPD). Por favor no los incluyas en tus mensajes.']],
+      ['Datos que trato', ['Datos técnicos: al cargar una página, el proveedor de hosting recibe automáticamente datos estándar de la solicitud (dirección IP, navegador, URL solicitada, referente, fecha y hora). La red de distribución de contenidos que sirve las librerías JavaScript de la página recibe datos similares (ver "Encargados y transferencias internacionales"). No uso estos datos para identificarte ni crear perfiles.', 'Datos que decides enviar: si me contactas por correo o WhatsApp, recibo lo que incluyas en el mensaje, como tu nombre, correo o teléfono, y el contenido del mensaje.', 'No recopilo de forma intencional datos sensibles (según el artículo 5 de la Ley 1581 y el artículo 9 del RGPD). Por favor no los incluyas en tus mensajes.']],
       ['El formulario de contacto', ['La ventana "Enviar correo" funciona por completo en tu navegador. Al enviar, abre tu propio cliente de correo o Gmail con el asunto y el mensaje ya escritos. El texto no se transmite ni se guarda en ningún servidor operado por mí. Nada se envía hasta que lo confirmes en tu cliente de correo.']],
       ['Cookies y almacenamiento local', ['Este sitio no instala cookies. Guarda un solo valor en el localStorage de tu navegador: tu preferencia de idioma (EN o ES). Ese valor nunca sale de tu dispositivo, no se usa para rastreo y puedes borrarlo en cualquier momento desde la configuración del navegador. Al ser estrictamente necesario para una función que solicitaste, no requiere consentimiento según la Directiva ePrivacy.']],
       ['Finalidades y bases legales', ['Prestar y proteger el sitio (datos técnicos): interés legítimo en operar un sitio seguro y funcional (art. 6.1.f RGPD).', 'Responder tu mensaje: tu solicitud y mi interés legítimo en contestarla, o medidas precontractuales a petición tuya (art. 6.1.b y 6.1.f RGPD). Conforme a la ley colombiana, al contactarme autorizas el tratamiento únicamente para esta finalidad (Ley 1581, art. 9).', 'No uso tus datos para marketing, decisiones automatizadas ni elaboración de perfiles.']],
-      ['Encargados y transferencias internacionales', ['El sitio está alojado en GitHub Pages (GitHub, Inc., Estados Unidos). El correo se gestiona con Google (Gmail) y la mensajería con WhatsApp (Meta Platforms). Estos proveedores pueden tratar datos fuera de Colombia y del Espacio Económico Europeo.', 'En ese caso, las transferencias se amparan en las garantías que ofrecen dichos proveedores, como Cláusulas Contractuales Tipo o el Marco de Privacidad de Datos UE-EE. UU., y en las reglas de transferencia internacional de la Ley 1581 (art. 26).']],
+      ['Encargados y transferencias internacionales', ['El sitio está alojado en GitHub Pages (GitHub, Inc., Estados Unidos). El correo se gestiona con Google (Gmail) y la mensajería con WhatsApp (Meta Platforms). Estos proveedores pueden tratar datos fuera de Colombia y del Espacio Económico Europeo.', 'En ese caso, las transferencias se amparan en las garantías que ofrecen dichos proveedores, como Cláusulas Contractuales Tipo o el Marco de Privacidad de Datos UE-EE. UU., y en las reglas de transferencia internacional de la Ley 1581 (art. 26).', 'Para mostrar las páginas, tu navegador descarga las librerías JavaScript React, ReactDOM y Babel desde unpkg.com, una red pública de distribución de contenidos para paquetes de código abierto. Al hacerlo, unpkg.com y los proveedores de infraestructura que la soportan reciben tu dirección IP, tu navegador, el archivo solicitado y el sitio de origen, y los tratan según sus propias políticas. No se instalan cookies y yo no recibo nada de estas solicitudes.']],
       ['Conservación', ['Los registros del hosting se conservan según la política de retención del proveedor. La correspondencia se conserva solo el tiempo necesario para atender tu solicitud o su seguimiento (por ejemplo, un proceso de selección o un proyecto) y se elimina cuando lo pidas, salvo obligación legal de conservarla.']],
       ['Seguridad', ['El sitio se sirve únicamente por HTTPS. No tiene base de datos, cuentas de usuario ni código en servidor que almacene datos personales. El acceso a mis cuentas de correo y mensajería está protegido con autenticación robusta.']],
       ['Tus derechos', ['Según la ley colombiana tienes derecho a conocer, actualizar y rectificar tus datos; solicitar prueba de la autorización; ser informado sobre el uso que se les ha dado; revocar la autorización o solicitar la supresión; acceder gratuitamente a tus datos; y presentar quejas ante la Superintendencia de Industria y Comercio (SIC).', 'Si te aplica el RGPD, también tienes derecho de acceso, rectificación, supresión, limitación, portabilidad y oposición, a retirar tu consentimiento en cualquier momento y a presentar una reclamación ante tu autoridad de protección de datos.']],
@@ -103,10 +130,23 @@ const C = {
       ['Cambios a esta política', ['Si esta política cambia de forma sustancial, publicaré la nueva versión en esta página con nueva fecha de vigencia y número de versión.']],
     ] },
 };
+const urlLang = () => { try { const l = new URLSearchParams(window.location.search).get('lang'); return l === 'es' || l === 'en' ? l : null; } catch (e) { return null; } };
+const startLang = () => { const u = urlLang(); if (u) return u; try { const l = localStorage.getItem('da-lang'); if (l === 'es' || l === 'en') return l; } catch (e) {} return 'en'; };
 class Component extends DCLogic {
-  state = { lang: 'en' };
-  componentDidMount() { try { const l = localStorage.getItem('da-lang'); if (l === 'es' || l === 'en') this.setState({ lang: l }); } catch (e) {} }
-  setLang(l) { this.setState({ lang: l }); try { localStorage.setItem('da-lang', l); } catch (e) {} document.documentElement.lang = l; }
+  state = { lang: startLang() };
+  componentDidMount() {
+    this.syncLang(this.state.lang);
+    if (window.location.hash.length > 1) {
+      this.hashT = setTimeout(() => { let el = null; try { el = document.getElementById(decodeURIComponent(window.location.hash.slice(1))); } catch (e) {} if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' }); }, 300);
+    }
+  }
+  componentWillUnmount() { clearTimeout(this.hashT); }
+  syncLang(l) { document.documentElement.lang = l; document.title = C[l].docTitle; }
+  setLang(l) {
+    this.setState({ lang: l }); this.syncLang(l);
+    try { localStorage.setItem('da-lang', l); } catch (e) {}
+    try { if (urlLang()) { const u = new URL(window.location.href); u.searchParams.set('lang', l); history.replaceState(history.state, '', u.toString()); } } catch (e) {}
+  }
   renderVals() {
     const lang = this.state.lang, d = C[lang];
     return {
