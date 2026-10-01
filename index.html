@@ -109,12 +109,12 @@ input,textarea{font-family:inherit}
 <section ref="{{ seqRef }}" data-print-seq="1" aria-label="{{ tx.seqLabel }}" style="height:{{ seqHeight }};position:relative">
   <div style="position:{{ seqS.pos }};top:0;height:{{ seqS.h }};display:flex;flex-direction:column;align-items:center;justify-content:center;padding:{{ seqS.pad }};overflow:hidden">
     <div style="position:relative;width:100%;max-width:1200px;height:{{ seqS.box }};display:flex;flex-direction:column;gap:{{ seqS.gap }}">
-      <sc-for list="{{ seq }}" as="s" hint-placeholder-count="5">
+      <sc-for list="{{ seq }}" as="s" hint-placeholder-count="4">
         <p style="position:{{ seqS.pPos }};inset:0;margin:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(2.6rem,7vw,7rem);line-height:0.98;letter-spacing:-0.05em;font-weight:800;text-wrap:balance;opacity:{{ s.op }};transform:{{ s.tf }};transition:opacity 700ms cubic-bezier(.22,1,.36,1),transform 900ms cubic-bezier(.22,1,.36,1)">{{ s.t }}</p>
       </sc-for>
     </div>
     <div style="display:flex;gap:10px;margin-top:48px" aria-hidden="true">
-      <sc-for list="{{ seq }}" as="s" hint-placeholder-count="5">
+      <sc-for list="{{ seq }}" as="s" hint-placeholder-count="4">
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <span style="height:3px;border-radius:2px;background:{{ s.bar }};width:{{ s.barW }};transition:width 500ms cubic-bezier(.22,1,.36,1),background 500ms"></span>
           <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:{{ s.lab }};transition:color 500ms">{{ s.label }}</span>
@@ -129,7 +129,7 @@ input,textarea{font-family:inherit}
     <h2 data-reveal="phil" style="font-size:clamp(2.8rem,6.5vw,6rem);line-height:0.98;letter-spacing:-0.05em;font-weight:800;margin:0;max-width:960px;text-wrap:balance;opacity:{{ rv.phil.op }};transform:{{ rv.phil.tf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1),transform 900ms cubic-bezier(.22,1,.36,1)">{{ tx.philH }}</h2>
     <p data-reveal="philP" style="font-size:clamp(19px,2vw,23px);line-height:1.55;color:#3A3A3C;max-width:680px;margin:32px 0 0;text-wrap:pretty;opacity:{{ rv.philP.op }};transform:{{ rv.philP.tf }};transition:opacity 900ms cubic-bezier(.22,1,.36,1) 120ms,transform 900ms cubic-bezier(.22,1,.36,1) 120ms">{{ tx.philP }}</p>
     <div style="margin-top:clamp(64px,9vw,120px);display:flex;flex-direction:column">
-      <sc-for list="{{ words }}" as="w" hint-placeholder-count="4">
+      <sc-for list="{{ words }}" as="w" hint-placeholder-count="5">
         <div data-scene="pass" data-reveal="{{ w.rk }}" style="display:grid;grid-template-columns:clamp(40px,6vw,72px) minmax(0,1fr);gap:clamp(16px,3vw,40px)">
           <div style="display:flex;flex-direction:column;align-items:center">
             <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;color:#6E6E73;margin-top:clamp(10px,2.4vw,30px)">{{ w.n }}</span>
@@ -139,6 +139,7 @@ input,textarea{font-family:inherit}
           <div style="padding-bottom:clamp(32px,5vw,64px)">
             <div style="font-size:clamp(2.4rem,8vw,7.5rem);line-height:1;letter-spacing:-0.05em;font-weight:800;overflow-wrap:anywhere;background:linear-gradient(90deg,#111111 0 50%,#D2D2D7 50% 100%);background-size:200% 100%;background-position:calc(100% - var(--b,0) * 100%) 0;-webkit-background-clip:text;background-clip:text;color:transparent;transform:translateX(calc((1 - var(--a,0)) * -60px));opacity:calc(0.3 + var(--a,0) * 0.7)">{{ w.word }}</div>
             <div style="font-size:clamp(16px,1.6vw,19px);line-height:1.55;color:#3A3A3C;margin-top:14px;max-width:600px;opacity:var(--c,0);transform:translateY(calc((1 - var(--c,0)) * 20px))">{{ w.note }}</div>
+            <div style="font-size:clamp(14px,1.3vw,16px);line-height:1.6;color:#6E6E73;margin-top:10px;max-width:640px;opacity:var(--c,0);transform:translateY(calc((1 - var(--c,0)) * 20px))"><span style="font-weight:600;color:#111111">{{ w.howL }}</span> {{ w.how }}</div>
           </div>
         </div>
       </sc-for>
@@ -515,17 +516,18 @@ input,textarea{font-family:inherit}
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 const L = (en, es) => ({ en, es: es ?? en });
+const SEQ_N = 4; // statements in the scroll sequence
 const TX = {
   contact: L('Contact', 'Contacto'), eyebrow: L("MASTER'S IN SOFTWARE ENGINEERING", 'MAGÍSTER EN INGENIERÍA DE SOFTWARE'),
-  h1a: L('From an idea', 'De una idea'), h1b: L('to a system.', 'a un sistema.'),
-  intro: L("I'm Donato Nicolás Ayala Osorio, a software engineer with a Master's in Software Engineering from Pontificia Universidad Javeriana Cali. I build full stack web and mobile systems: TypeScript, React, Next.js and Angular on the front end; Supabase, PostgreSQL and Firebase for data; serverless deployments on Vercel and Cloudflare. My work covers role-based access control, audit trails, backup and rollback strategies, automated testing with Vitest, and AI-assisted development with the BMAD method, with human review on every change.", 'Soy Donato Nicolás Ayala Osorio, ingeniero de software y Magíster en Ingeniería de Software de la Pontificia Universidad Javeriana Cali. Construyo sistemas web y móviles full stack: TypeScript, React, Next.js y Angular en el front end; Supabase, PostgreSQL y Firebase para datos; despliegues serverless en Vercel y Cloudflare. Mi trabajo incluye control de acceso por roles, trazabilidad y auditoría, estrategias de backup y rollback, pruebas automatizadas con Vitest y desarrollo asistido por IA con el método BMAD, con revisión humana en cada cambio.'),
+  h1a: L('From business problems', 'De problemas de negocio'), h1b: L('to engineered software.', 'a soluciones de software.'),
+  intro: L("I'm Donato Nicolás Ayala Osorio, a Systems Engineer with a Master's in Software Engineering from Pontificia Universidad Javeriana Cali. I enjoy turning ambiguous ideas and business needs into clear, practical software that delivers tangible value, combining an agile approach with strong software engineering practices focused on code quality, security, and maintainability. My experience spans full-stack web and mobile development, using technologies such as TypeScript, React, Next.js, Angular, Supabase, PostgreSQL, Firebase, Vercel, and Cloudflare. I incorporate AI-assisted development through harness engineering within a structured workflow, guided by clear guidelines and sound engineering practices.", 'Soy Donato Nicolás Ayala Osorio, Ingeniero de Sistemas con una Maestría en Ingeniería de Software de la Pontificia Universidad Javeriana Cali. Disfruto transformar ideas ambiguas y necesidades de negocio en soluciones de software claras y prácticas que generan valor tangible, combinando un enfoque ágil con buenas prácticas de ingeniería de software orientadas a la calidad del código, la seguridad y la mantenibilidad. Mi experiencia abarca el desarrollo full-stack de aplicaciones web y móviles, utilizando tecnologías como TypeScript, React, Next.js, Angular, Supabase, PostgreSQL, Firebase, Vercel y Cloudflare. Incorporo el desarrollo asistido por IA mediante harness engineering dentro de un flujo de trabajo estructurado, guiado por lineamientos claros y buenas prácticas de ingeniería.'),
   sub: L('Full Stack · Software Architecture · Web & Mobile', 'Full Stack · Arquitectura de software · Web y móvil'),
   cta1: L('View projects', 'Ver proyectos'), cta2: L('Get in touch', 'Contactar'),
   caption: L('Colombia · ES / EN (B2)', 'Colombia · ES / EN (B2)'), open: L('Open to work', 'Disponible'),
   seqLabel: L('How I work', 'Cómo trabajo'),
-  philH: L('Good software starts before the first commit.', 'El buen software empieza antes del primer commit.'),
+  philH: L('Great software starts before the first commit.', 'El gran software empieza antes del primer commit.'),
   philP: L('I treat product, architecture, engineering and experience as one system: a decision in one layer changes the others.', 'Trato producto, arquitectura, ingeniería y experiencia como un solo sistema: una decisión en una capa cambia las demás.'),
-  workH: L('Selected work.', 'Proyectos destacados.'), workP: L('Production systems, products and prototypes, each with its architecture documented.', 'Sistemas en producción, productos y prototipos, cada uno con su arquitectura documentada.'),
+  workH: L('Featured projects.', 'Proyectos destacados.'), workP: L('Production systems, products and prototypes, each with its architecture documented.', 'Sistemas en producción, productos y prototipos, cada uno con su arquitectura documentada.'),
   moreH: L('Other projects.', 'Otros proyectos.'), archBtn: L('View architecture', 'Ver arquitectura'),
   dnaEyebrow: L('TECH STACK', 'STACK TECNOLÓGICO'), dnaP: L('Organized by layer. Each technology shows what I used it for and in which projects.', 'Organizado por capa. Cada tecnología muestra para qué la usé y en qué proyectos.'),
   usedIn: L('PROJECTS IN THIS LAYER', 'PROYECTOS EN ESTA CAPA'),
@@ -701,7 +703,7 @@ class Component extends DCLogic {
     const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     let seq = this.state.seq;
     const el = this.seqRef.current;
-    if (el && !this.reduce) { const r = el.getBoundingClientRect(); seq = Math.min(4, Math.floor(clamp(-r.top / Math.max(1, r.height - vh)) * 5)); }
+    if (el && !this.reduce) { const r = el.getBoundingClientRect(); seq = Math.min(SEQ_N - 1, Math.floor(clamp(-r.top / Math.max(1, r.height - vh)) * SEQ_N)); }
     document.querySelectorAll('[data-scene]').forEach(s => {
       const r = s.getBoundingClientRect();
       if (r.bottom < -vh || r.top > vh * 2) return;
@@ -814,15 +816,15 @@ class Component extends DCLogic {
     const S = this.state.scrolled;
     const nav = { pad: S ? '12px 16px' : '0px', max: S ? '900px' : '100%', inner: S ? '8px 8px 8px 20px' : '14px max(24px, calc((100% - 1240px) / 2)) 14px max(24px, calc((100% - 1240px) / 2))', radius: S ? '999px' : '0px', fg: S ? '#111111' : '#FFFFFF', link: S ? '#3A3A3C' : 'rgba(255,255,255,0.78)', toggle: S ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.14)', ctaBg: S ? '#111111' : '#FFFFFF', ctaFg: S ? '#FFFFFF' : '#111111', bg: S ? 'rgba(255,255,255,0.72)' : '#000000', border: S ? 'rgba(0,0,0,0.08)' : 'rgba(0,0,0,0)', shadow: S ? '0 10px 30px rgba(0,0,0,0.08)' : 'none', tf: this.state.hidden && !this.state.arch && !this.state.mail ? 'translateY(-120%)' : 'none' };
     const langs = ['en', 'es'].map(l => ({ label: l.toUpperCase(), active: lang === l, bg: lang === l ? '#FFFFFF' : 'transparent', fg: lang === l ? I : S ? '#6E6E73' : 'rgba(255,255,255,0.7)', shadow: lang === l ? '0 1px 3px rgba(0,0,0,0.12)' : 'none', set: () => this.setLang(l) }));
-    const seqT = lang === 'en' ? ['I build software.', 'First, I define the problem.', 'Then I design the architecture.', 'Then I implement it.', 'Then I test and validate it.'] : ['Construyo software.', 'Primero, defino el problema.', 'Luego diseño la arquitectura.', 'Después lo implemento.', 'Y lo pruebo y valido.'];
-    const seqL = lang === 'en' ? ['BUILD', 'DEFINE', 'DESIGN', 'IMPLEMENT', 'VALIDATE'] : ['CONSTRUIR', 'DEFINIR', 'DISEÑAR', 'IMPLEMENTAR', 'VALIDAR'];
+    const seqT = lang === 'en' ? ['Reliable software, built to last.', 'Software that grows with your business.', 'Technology shaped around your goals.', 'Fast prototypes to validate your idea.'] : ['Software confiable, hecho para perdurar.', 'Software que crece junto con tu negocio.', 'Tecnología diseñada en torno a tus objetivos.', 'Prototipos rápidos para validar tu idea.'];
+    const seqL = lang === 'en' ? ['RELIABILITY', 'SCALABILITY', 'ALIGNMENT', 'SPEED'] : ['CONFIABILIDAD', 'ESCALABILIDAD', 'ALINEACIÓN', 'VELOCIDAD'];
     const cur = this.state.seq;
     const seq = seqT.map((s, i) => { const a = rm || i === cur; return { t: s, label: seqL[i], op: a ? 1 : 0, tf: a ? 'none' : i < cur ? 'translateY(-60px) scale(0.97)' : 'translateY(60px) scale(0.97)', bar: rm || i <= cur ? I : 'rgba(0,0,0,0.12)', barW: !rm && i === cur ? '48px' : '20px', lab: a ? I : '#6E6E73' }; });
     const seqS = rm ? { pos: 'relative', h: 'auto', pad: 'clamp(96px,12vw,160px) 24px', box: 'auto', gap: '24px', pPos: 'relative' } : { pos: 'sticky', h: '100vh', pad: '0 24px', box: 'clamp(220px,40vh,420px)', gap: '0px', pPos: 'absolute' };
     const W = lang === 'en'
-      ? [['PRODUCT', 'Problem framing, users, requirements and acceptance criteria.'], ['ARCHITECTURE', 'System boundaries, data models, integrations and the trade-offs behind each one.'], ['ENGINEERING', 'Typed code, automated tests, version control and repeatable deployments.'], ['EXPERIENCE', 'Performance, accessibility and responsive interfaces that hold up on real devices.']]
-      : [['PRODUCTO', 'Definición del problema, usuarios, requisitos y criterios de aceptación.'], ['ARQUITECTURA', 'Límites del sistema, modelos de datos, integraciones y los compromisos detrás de cada uno.'], ['INGENIERÍA', 'Código tipado, pruebas automatizadas, control de versiones y despliegues repetibles.'], ['EXPERIENCIA', 'Rendimiento, accesibilidad e interfaces responsive que funcionan en dispositivos reales.']];
-    const words = W.map(([word, note], i) => ({ word, note, rk: 'w' + i, n: '0' + (i + 1), lineOn: i === 3 ? 0 : 1 }));
+      ? [['Discovery', 'Understand the business context, the users, and the objective behind the initiative.', 'Stakeholder interviews · User research · Process mapping · Business analysis'], ['Requirements', 'Turn ambiguity into a scoped, prioritized, and verifiable definition of what to build.', 'Requirements elicitation · Root-cause analysis · User stories · Acceptance criteria · Non-functional requirements · Wireframing · Prototyping · User flows'], ['Architecture', 'Define the structure of the solution against scalability, security, and maintainability constraints.', 'System design · Architecture patterns · Data modeling · API design · Architecture decision records'], ['Delivery', 'Build in short iterations, with practices that keep the codebase reviewable, secure, and releasable.', 'Git · Code review · CI/CD · Automated testing · Authentication & authorization · Secure coding practices (OWASP) · AI-assisted development (BMAD) with human review'], ['Operation and evolution', 'Confirm the solution meets the need, keep it reliable in production, and improve it based on real usage.', 'Acceptance testing · User feedback · Performance analysis · Observability · Technical documentation · Knowledge transfer · Iterative improvement']]
+      : [['Descubrimiento', 'Comprender el contexto de negocio, los usuarios y el objetivo que motiva la iniciativa.', 'Entrevistas con stakeholders · Investigación de usuarios · Mapeo de procesos · Análisis de negocio'], ['Requerimientos', 'Convertir la ambigüedad en una definición acotada, priorizada y verificable de lo que se debe construir.', 'Levantamiento de requerimientos · Análisis de causa raíz · Historias de usuario · Criterios de aceptación · Requerimientos no funcionales · Wireframing · Prototipado · Flujos de usuario'], ['Arquitectura', 'Definir la estructura de la solución según las exigencias de escalabilidad, seguridad y mantenibilidad.', 'Diseño de sistemas · Patrones de arquitectura · Modelado de datos · Diseño de APIs · Registros de decisiones de arquitectura (ADR)'], ['Entrega', 'Construir en iteraciones cortas, con prácticas que mantienen el código revisable, seguro y listo para desplegar.', 'Git · Revisión de código · CI/CD · Pruebas automatizadas · Autenticación y autorización · Prácticas de codificación segura (OWASP) · Desarrollo asistido por IA (método BMAD) con revisión humana'], ['Operación y evolución', 'Confirmar que la solución atiende la necesidad, mantenerla confiable en producción y mejorarla a partir del uso real.', 'Pruebas de aceptación · Retroalimentación de usuarios · Análisis de rendimiento · Observabilidad · Documentación técnica · Transferencia de conocimiento · Mejora iterativa']];
+    const words = W.map(([word, note, how], i) => ({ word, note, how, howL: lang === 'en' ? 'How:' : 'Cómo:', rk: 'w' + i, n: '0' + (i + 1), lineOn: i === W.length - 1 ? 0 : 1 }));
 
     const btn = (label, href, primary) => ({ label: t(label), href, bg: primary ? I : 'transparent', fg: primary ? '#FFFFFF' : I, border: primary ? I : 'rgba(0,0,0,0.16)' });
     const ACC = {
@@ -949,7 +951,7 @@ class Component extends DCLogic {
     return {
       tx, rv, nav, langs, wide: this.state.wide, narrow: !this.state.wide, seq, words, featured, others, dnaGroups, dnaProjects, bmad, journey, education, certs,
       navLinks: [{ label: t(L('Work', 'Trabajo')), href: '#work' }, { label: 'Stack', href: '#stack' }, { label: t(L('Journey', 'Trayectoria')), href: '#journey' }, { label: t(L('About', 'Sobre mí')), href: '#about' }],
-      seqRef: this.seqRef, closeRef: this.closeRef, emailRef: this.emailRef, seqS, seqHeight: rm ? 'auto' : '360vh', heroScale: on('heroImg') ? 1 : 1.08,
+      seqRef: this.seqRef, closeRef: this.closeRef, emailRef: this.emailRef, seqS, seqHeight: rm ? 'auto' : '300vh', heroScale: on('heroImg') ? 1 : 1.08,
       sceneH: rm ? '100vh' : '300vh', dnaH: this.state.wide && !rm ? '560vh' : 'auto', dnaPos: this.state.wide && !rm ? 'sticky' : 'relative',
       email: EMAIL,
       mailHref: 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(lang === 'en' ? 'Hello Donato' : 'Hola Donato'),
