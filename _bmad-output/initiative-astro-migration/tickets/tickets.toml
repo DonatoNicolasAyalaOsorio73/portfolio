@@ -1,0 +1,16 @@
+# Epics of initiative-astro-migration. Table order is build order. `id` is permanent, never reused.
+
+[[epic]]
+id = 1
+slug = "epic-astro-site-parity"
+title = "The portfolio runs on Astro, in English and /es/, deployed by Actions"
+description = "donacode.link serves an Astro build of every page, at content parity in English and under /es/, with the current motion kept, old URLs resolving, no browser storage, and deploys from main through GitHub Actions."
+covers = ["R1", "R2", "R3", "R4", "R5", "R9", "R10", "R11"]
+
+[[epic]]
+id = 2
+slug = "epic-motion-layer"
+title = "Pages move with View Transitions and scroll-driven motion"
+description = "Page-to-page View Transitions and upgraded scroll-driven motion are live on donacode.link, frame-clean on a throttled mobile trace, fully off under reduced motion, and the performance budget still holds."
+covers = ["R6", "R7", "R8"]
+after = [{ epic = 1, needs = "the deployed Astro site: its shared layout, page components and /es/ routes" }]
