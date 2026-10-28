@@ -4,7 +4,8 @@ title: "The portfolio runs on Astro, in English and /es/, deployed by Actions"
 parent: initiative-astro-migration
 covers: [R1, R2, R3, R4, R5, R9, R10, R11]
 sources: []
-companions: []
+companions:
+  - _bmad-output/initiative-astro-migration/architecture-astro-migration/architecture-astro-migration.md
 after: []
 refined: false
 risk: medium
@@ -37,3 +38,4 @@ Every visitor gets the same portfolio as today, served as prebuilt HTML in their
 ## References
 
 - parent — `_bmad-output/initiative-astro-migration/initiative-astro-migration.md`, section Requirements
+- architecture — `_bmad-output/initiative-astro-migration/architecture-astro-migration/architecture-astro-migration.md`, AD-1 to AD-8, AD-11, AD-12, Conventions, repository settings

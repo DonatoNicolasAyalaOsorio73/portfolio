@@ -2,7 +2,8 @@
 type: initiative
 title: "Portfolio rebuilt on Astro: faster, bilingual URLs, modern motion"
 sources: []
-companions: []
+companions:
+  - _bmad-output/initiative-astro-migration/architecture-astro-migration/architecture-astro-migration.md
 after: []
 risk: medium
 ---
@@ -58,12 +59,13 @@ Visitors and recruiters get a portfolio that loads near-instantly on mobile, rea
 
 - current site — `index.html`, `ecobike.html`, `privacy.html`, `404.html`
 - project rules — `AGENTS.md`, sections Policy and Conventions that differ from defaults
+- architecture — `_bmad-output/initiative-astro-migration/architecture-astro-migration/architecture-astro-migration.md`, AD-1 to AD-12, Consistency Conventions, Stack
 
 ## Notes
 
-- Open question: Which animation library, if any, beyond native CSS and View Transitions (GSAP, Motion, none)? Waits: `bmad-architecture`, before epic 2.
 - Decision: 2026-10-28 — Parity first: the visual design stays and the motion layer upgrades it; a redesign is out of scope.
 - Decision: 2026-10-28 — Performance budget approved as written in R5.
 - Decision: 2026-10-28 — Drop `localStorage['da-lang']`; the URL alone sets the language, with no auto-redirect (R11).
 - Decision: 2026-10-28 — Sliced into 2 epics by the rule "one capability delivered and deployed together", not the 3 first proposed: `/es/` routing joins the migration epic, because Spanish must work at launch and a separate epic would need a throwaway `?lang=` mechanism on Astro.
 - Decision: 2026-10-28 — Epic 1 ports the current motion as it is (CSS), so production never loses it; epic 2 upgrades it.
+- Decision: 2026-10-28 — Animation: native CSS (scroll-driven, cross-document View Transitions) first, GSAP 3.15 only where CSS cannot reach, per architecture AD-9; Motion not used.
