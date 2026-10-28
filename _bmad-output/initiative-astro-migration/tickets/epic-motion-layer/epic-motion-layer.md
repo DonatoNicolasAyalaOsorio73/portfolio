@@ -4,8 +4,7 @@ title: "Pages move with View Transitions and scroll-driven motion"
 parent: initiative-astro-migration
 covers: [R6, R7, R8]
 sources: []
-companions:
-  - _bmad-output/initiative-astro-migration/architecture-astro-migration/architecture-astro-migration.md
+companions: [_bmad-output/initiative-astro-migration/architecture-astro-migration/architecture-astro-migration.md]
 after: []
 refined: false
 risk: medium

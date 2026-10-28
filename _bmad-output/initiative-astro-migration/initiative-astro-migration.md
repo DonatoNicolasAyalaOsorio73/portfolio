@@ -2,8 +2,7 @@
 type: initiative
 title: "Portfolio rebuilt on Astro: faster, bilingual URLs, modern motion"
 sources: []
-companions:
-  - _bmad-output/initiative-astro-migration/architecture-astro-migration/architecture-astro-migration.md
+companions: [_bmad-output/initiative-astro-migration/architecture-astro-migration/architecture-astro-migration.md]
 after: []
 risk: medium
 ---
