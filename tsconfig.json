@@ -1,0 +1,14 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "support.js",
+    "_bmad",
+    "_bmad-output",
+    ".claude",
+    ".agents",
+    ".impeccable"
+  ]
+}

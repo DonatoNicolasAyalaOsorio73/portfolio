@@ -1,0 +1,135 @@
+/*
+ * Design tokens: a closed vocabulary (AD-2).
+ *
+ * Add a token only as a row in this table, in the PR that first uses it. A value
+ * equal to an existing token reuses that token. Breakpoints are not tokens: write
+ * 640px, 960px or 1280px literally in `@media (min-width: ...)`.
+ *
+ * | Token                 | Value                                                                   | First used                      |
+ * | --------------------- | ----------------------------------------------------------------------- | ------------------------------- |
+ * | --color-white         | #ffffff                                                                 | global, BaseLayout, HeroSection |
+ * | --color-ink           | #111111                                                                 | global, BaseLayout, HeroSection |
+ * | --color-text          | #3a3a3c                                                                 | HeroSection                     |
+ * | --color-muted         | #6e6e73                                                                 | global, HeroSection             |
+ * | --color-surface       | #f5f5f7                                                                 | HeroSection                     |
+ * | --color-success       | #1f9d55                                                                 | HeroSection                     |
+ * | --color-line          | rgb(0 0 0 / 8%)                                                         | HeroSection                     |
+ * | --color-line-strong   | rgb(0 0 0 / 16%)                                                        | HeroSection                     |
+ * | --color-line-hover    | rgb(0 0 0 / 40%)                                                        | HeroSection                     |
+ * | --color-focus         | oklch(0.55 0.19 255)                                                    | global                          |
+ * | --space-6             | 6px                                                                     | HeroSection                     |
+ * | --space-8             | 8px                                                                     | HeroSection                     |
+ * | --space-12            | 12px                                                                    | BaseLayout, HeroSection         |
+ * | --space-16            | 16px                                                                    | HeroSection                     |
+ * | --space-18            | 18px                                                                    | BaseLayout                      |
+ * | --space-20            | 20px                                                                    | HeroSection                     |
+ * | --space-24            | 24px                                                                    | HeroSection                     |
+ * | --space-30            | 30px                                                                    | HeroSection                     |
+ * | --space-32            | 32px                                                                    | HeroSection                     |
+ * | --space-40            | 40px                                                                    | motion, HeroSection             |
+ * | --space-64            | 64px                                                                    | HeroSection                     |
+ * | --space-120           | 120px                                                                   | HeroSection                     |
+ * | --space-fluid-gap     | clamp(24px, 3vw, 48px)                                                  | HeroSection                     |
+ * | --space-fluid-overlap | clamp(16px, 2.4vw, 40px)                                                | HeroSection                     |
+ * | --space-fluid-section | clamp(56px, 6vw, 96px)                                                  | HeroSection                     |
+ * | --space-fluid-rule    | clamp(24px, 3vw, 36px)                                                  | HeroSection                     |
+ * | --radius-focus        | 8px                                                                     | global                          |
+ * | --radius-photo        | 32px                                                                    | HeroSection                     |
+ * | --radius-pill         | 999px                                                                   | BaseLayout, HeroSection         |
+ * | --radius-round        | 50%                                                                     | HeroSection                     |
+ * | --shadow-photo        | 0 30px 60px -20px rgb(0 0 0 / 20%), 0 0 0 1px rgb(0 0 0 / 4%)           | HeroSection                     |
+ * | --shadow-lift         | 0 12px 30px rgb(0 0 0 / 16%)                                            | HeroSection                     |
+ * | --font-sans           | -apple-system, BlinkMacSystemFont, system-ui, ui-sans-serif, sans-serif | global                          |
+ * | --font-size-14        | 14px                                                                    | HeroSection                     |
+ * | --font-size-15        | 15px                                                                    | BaseLayout, HeroSection         |
+ * | --font-size-17        | 17px                                                                    | HeroSection                     |
+ * | --font-size-lead      | clamp(18px, 1.55vw, 22px)                                               | HeroSection                     |
+ * | --font-size-display   | clamp(2.6rem, 6vw, 5rem)                                                | HeroSection                     |
+ * | --line-height-display | 0.92                                                                    | HeroSection                     |
+ * | --line-height-body    | 1.6                                                                     | HeroSection                     |
+ * | --layer-skip          | 200                                                                     | BaseLayout                      |
+ * | --size-content        | 1240px                                                                  | HeroSection                     |
+ * | --size-photo          | clamp(170px, 20vw, 280px)                                               | HeroSection                     |
+ * | --size-photo-column   | 200px                                                                   | HeroSection                     |
+ * | --size-dot            | 7px                                                                     | HeroSection                     |
+ * | --size-hairline       | 1px                                                                     | HeroSection                     |
+ * | --size-focus-ring     | 2px                                                                     | global                          |
+ * | --size-focus-offset   | 3px                                                                     | global                          |
+ * | --dur-step            | 120ms                                                                   | HeroSection                     |
+ * | --dur-fast            | 200ms                                                                   | BaseLayout, HeroSection         |
+ * | --dur-press           | 250ms                                                                   | HeroSection                     |
+ * | --dur-step-2          | 280ms                                                                   | HeroSection                     |
+ * | --dur-reveal          | 900ms                                                                   | HeroSection                     |
+ * | --dur-reveal-lg       | 1100ms                                                                  | HeroSection                     |
+ * | --dur-reveal-photo    | 1400ms                                                                  | HeroSection                     |
+ * | --dur-zoom            | 1800ms                                                                  | HeroSection                     |
+ * | --ease-out            | cubic-bezier(0.22, 1, 0.36, 1)                                          | HeroSection                     |
+ */
+
+:root {
+  --color-white: #ffffff;
+  --color-ink: #111111;
+  --color-text: #3a3a3c;
+  --color-muted: #6e6e73;
+  --color-surface: #f5f5f7;
+  --color-success: #1f9d55;
+  --color-line: rgb(0 0 0 / 8%);
+  --color-line-strong: rgb(0 0 0 / 16%);
+  --color-line-hover: rgb(0 0 0 / 40%);
+  --color-focus: oklch(0.55 0.19 255);
+
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-18: 18px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-30: 30px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-64: 64px;
+  --space-120: 120px;
+  --space-fluid-gap: clamp(24px, 3vw, 48px);
+  --space-fluid-overlap: clamp(16px, 2.4vw, 40px);
+  --space-fluid-section: clamp(56px, 6vw, 96px);
+  --space-fluid-rule: clamp(24px, 3vw, 36px);
+
+  --radius-focus: 8px;
+  --radius-photo: 32px;
+  --radius-pill: 999px;
+  --radius-round: 50%;
+
+  --shadow-photo: 0 30px 60px -20px rgb(0 0 0 / 20%), 0 0 0 1px rgb(0 0 0 / 4%);
+  --shadow-lift: 0 12px 30px rgb(0 0 0 / 16%);
+
+  --font-sans: -apple-system, BlinkMacSystemFont, system-ui, ui-sans-serif, sans-serif;
+  --font-size-14: 14px;
+  --font-size-15: 15px;
+  --font-size-17: 17px;
+  --font-size-lead: clamp(18px, 1.55vw, 22px);
+  --font-size-display: clamp(2.6rem, 6vw, 5rem);
+  --line-height-display: 0.92;
+  --line-height-body: 1.6;
+
+  --layer-skip: 200;
+
+  --size-content: 1240px;
+  --size-photo: clamp(170px, 20vw, 280px);
+  --size-photo-column: 200px;
+  --size-dot: 7px;
+  --size-hairline: 1px;
+  --size-focus-ring: 2px;
+  --size-focus-offset: 3px;
+
+  --dur-step: 120ms;
+  --dur-fast: 200ms;
+  --dur-press: 250ms;
+  --dur-step-2: 280ms;
+  --dur-reveal: 900ms;
+  --dur-reveal-lg: 1100ms;
+  --dur-reveal-photo: 1400ms;
+  --dur-zoom: 1800ms;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

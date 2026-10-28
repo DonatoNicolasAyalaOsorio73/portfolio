@@ -1,0 +1,24 @@
+dist/
+node_modules/
+.astro/
+package-lock.json
+
+# Legacy site, removed at the end of epic 1
+index.html
+ecobike.html
+privacy.html
+404.html
+support.js
+assets/
+sitemap.xml
+robots.txt
+CNAME
+
+# Planning and agent tooling
+_bmad/
+_bmad-output/
+.claude/
+.agents/
+.impeccable/
+skills-lock.json
+*.md

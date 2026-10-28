@@ -1,0 +1,303 @@
+---
+/**
+ * Home hero: eyebrow, two-line title, photo, intro and the two calls to action.
+ * The load reveal is CSS only; without motion preference it renders in its final state.
+ */
+import { Picture } from 'astro:assets';
+import portrait from '../assets/donato.webp';
+import { t, type Locale } from '../i18n';
+import { href } from '../i18n/routes';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale).hero;
+---
+
+<section class="hero" aria-label={copy.label}>
+  <div class="inner">
+    <div class="top">
+      <div class="heading">
+        <div class="eyebrow">{copy.eyebrow}</div>
+        <h1 class="title">
+          <span>{copy.titleLine1}</span>
+          <span>{copy.titleLine2}</span>
+        </h1>
+      </div>
+      <div class="aside">
+        <figure class="photo">
+          <div class="media">
+            <Picture
+              src={portrait}
+              formats={['avif', 'webp']}
+              widths={[280, 560]}
+              sizes="(min-width: 1400px) 280px, (min-width: 850px) 20vw, 170px"
+              width={560}
+              height={747}
+              alt={copy.photoAlt}
+              loading="eager"
+              fetchpriority="high"
+              fallbackFormat="webp"
+            />
+          </div>
+          <figcaption class="caption">
+            <span>{copy.caption}</span>
+            <span class="status">
+              <span class="dot"></span>
+              {copy.openToWork}
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="body">
+      <p class="intro">{copy.intro}</p>
+      <div class="actions">
+        <div class="ctas">
+          <a class="cta cta-primary" href={href('home', locale, 'work')}>
+            {copy.primaryCta}
+          </a>
+          <a class="cta cta-secondary" href={href('home', locale, 'contact')}>
+            {copy.secondaryCta}
+          </a>
+        </div>
+        <div class="subline">{copy.subline}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: var(--space-120) var(--space-24) var(--space-64);
+  }
+
+  .inner {
+    max-width: var(--size-content);
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-fluid-gap);
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+
+  .heading {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .eyebrow {
+    font-size: var(--font-size-15);
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    color: var(--color-muted);
+  }
+
+  .title {
+    font-size: var(--font-size-display);
+    line-height: var(--line-height-display);
+    letter-spacing: -0.055em;
+    font-weight: 800;
+    margin: var(--space-24) 0 0;
+  }
+
+  .title span {
+    display: block;
+  }
+
+  .aside {
+    flex: 1 1 var(--size-photo-column);
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .photo {
+    margin: 0 0 calc(-1 * var(--space-fluid-overlap));
+    flex: 0 0 auto;
+    width: var(--size-photo);
+  }
+
+  .media {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-photo);
+    overflow: hidden;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-photo);
+  }
+
+  .media :global(picture) {
+    display: block;
+    height: 100%;
+  }
+
+  .media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 28%;
+    display: block;
+  }
+
+  .caption {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-8);
+    margin-top: var(--space-12);
+    font-size: var(--font-size-14);
+    color: var(--color-muted);
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-6);
+    white-space: nowrap;
+  }
+
+  .dot {
+    width: var(--size-dot);
+    height: var(--size-dot);
+    border-radius: var(--radius-round);
+    background: var(--color-success);
+  }
+
+  .body {
+    margin-top: var(--space-fluid-section);
+    padding-top: var(--space-fluid-rule);
+    border-top: var(--size-hairline) solid var(--color-line);
+  }
+
+  .intro {
+    font-size: var(--font-size-lead);
+    line-height: var(--line-height-body);
+    color: var(--color-text);
+    margin: 0;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-20);
+    flex-wrap: wrap;
+    margin-top: var(--space-32);
+  }
+
+  .ctas {
+    display: flex;
+    gap: var(--space-12);
+    flex-wrap: wrap;
+  }
+
+  .cta {
+    white-space: nowrap;
+    font-size: var(--font-size-17);
+    font-weight: 500;
+    border-radius: var(--radius-pill);
+  }
+
+  .cta-primary {
+    background: var(--color-ink);
+    color: var(--color-white);
+    padding: var(--space-16) var(--space-30);
+  }
+
+  .cta-primary:hover {
+    transform: scale(1.03);
+    box-shadow: var(--shadow-lift);
+    color: var(--color-white);
+  }
+
+  .cta-secondary {
+    background: var(--color-white);
+    color: var(--color-ink);
+    padding: calc(var(--space-16) - var(--size-hairline)) var(--space-30);
+    border: var(--size-hairline) solid var(--color-line-strong);
+  }
+
+  .cta-secondary:hover {
+    transform: scale(1.03);
+    border-color: var(--color-line-hover);
+    color: var(--color-ink);
+  }
+
+  .cta-primary:active,
+  .cta-secondary:active {
+    transform: scale(0.98);
+  }
+
+  .subline {
+    font-size: var(--font-size-14);
+    color: var(--color-muted);
+  }
+
+  @keyframes local-photo-rise {
+    from {
+      opacity: 0;
+      transform: translateY(var(--space-40)) scale(0.96);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes local-photo-settle {
+    from {
+      transform: scale(1.08);
+    }
+
+    to {
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .eyebrow {
+      animation: mo-rise var(--dur-reveal) var(--ease-out) both;
+    }
+
+    .title {
+      animation: mo-rise var(--dur-reveal-lg) var(--ease-out) var(--dur-step) both;
+    }
+
+    .photo {
+      animation: local-photo-rise var(--dur-reveal-photo) var(--ease-out) var(--dur-fast) both;
+    }
+
+    .media :global(img) {
+      animation: local-photo-settle var(--dur-zoom) var(--ease-out) both;
+    }
+
+    .body {
+      animation: mo-rise var(--dur-reveal) var(--ease-out) var(--dur-step-2) both;
+    }
+
+    .cta-primary {
+      transition:
+        transform var(--dur-press) var(--ease-out),
+        box-shadow var(--dur-press);
+    }
+
+    .cta-secondary {
+      transition:
+        transform var(--dur-press) var(--ease-out),
+        border-color var(--dur-press);
+    }
+  }
+</style>

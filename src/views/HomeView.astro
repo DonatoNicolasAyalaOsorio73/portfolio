@@ -1,0 +1,16 @@
+---
+/** The home page composition, rendered by `src/pages/index.astro` (and `es/index.astro` later). */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../sections/HeroSection.astro';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<BaseLayout locale={locale} route="home">
+  <HeroSection locale={locale} />
+</BaseLayout>
