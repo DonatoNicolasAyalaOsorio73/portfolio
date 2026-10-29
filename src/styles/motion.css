@@ -29,6 +29,7 @@
  * without them. Three looks:
  * - `data-reveal` (no value): fades up 40px; `data-index="1"` delays it by one step.
  * - `data-reveal="far"`: fades up 48px, staggered 110ms per `data-index` (0–2).
+ * - `data-reveal="slow"`: fades up 40px over 1100ms.
  * - `data-reveal="parts"`: the element stays put; its `[data-reveal-part="pop"]` grows in from
  *   0.7 with a −6° turn, and its `[data-reveal-part="rise"]` rises 40px from 0.96 a step later.
  */
@@ -60,6 +61,17 @@
   html.js [data-reveal='far']:not([data-reveal-state='visible']) {
     opacity: 0;
     transform: translateY(var(--space-48));
+  }
+
+  html.js [data-reveal='slow'] {
+    transition:
+      opacity var(--dur-reveal-lg) var(--ease-out),
+      transform var(--dur-reveal-lg) var(--ease-out);
+  }
+
+  html.js [data-reveal='slow']:not([data-reveal-state='visible']) {
+    opacity: 0;
+    transform: translateY(var(--space-40));
   }
 
   html.js [data-reveal='parts'] [data-reveal-part] {

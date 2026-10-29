@@ -744,6 +744,40 @@ export const en = {
       { id: 'aws', logoAlt: 'AWS Well-Architected Foundations badge' },
     ],
   },
+  contact: {
+    heading: "Let's build something worth engineering.",
+    intro:
+      'Open to full-time roles and freelance projects. The fastest way to reach me is email or WhatsApp.',
+    email: 'Send an email',
+    whatsapp: 'WhatsApp',
+    cv: 'Download CV',
+    emailSubject: 'Hello Donato',
+    whatsappText: 'Hi Donato, I saw your portfolio.',
+    linkedin: 'LinkedIn ↗',
+    github: 'GitHub ↗',
+    copy: {
+      idle: 'Copy',
+      ok: 'Copied ✓',
+      fail: 'Copy failed',
+      okMessage: 'Email address copied.',
+      failMessage: "Couldn't copy. The address is selected so you can copy it manually.",
+    },
+  },
+  mail: {
+    title: 'Write to me.',
+    to: 'To:',
+    close: 'Close',
+    name: 'Your name (optional)',
+    subject: 'Subject',
+    subjectPlaceholder: 'e.g. Full-stack role at Acme',
+    message: 'Message',
+    messagePlaceholder: 'Tell me about the role, the project or the timeline.',
+    send: 'Open in email app',
+    gmail: 'Send with Gmail',
+    note: 'Your message is drafted here and handed off to your email client. This site does not store or send anything.',
+    missing: 'Add a subject and a message to continue.',
+    sent: 'Your email app should now be open with the message ready. If nothing happened, use Gmail or copy the address.',
+  },
 } as const;
 
 /** Turns the literal types of `en` into `string`, keeping the key structure. */

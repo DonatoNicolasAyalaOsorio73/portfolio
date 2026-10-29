@@ -1460,3 +1460,405 @@ for (const locale of LOCALES) {
     });
   });
 }
+
+const EMAIL = 'donatonicolasosorio@gmail.com';
+const ERROR = 'rgb(180, 35, 24)';
+
+/** The text a visitor sees in `locator`: labels hidden by the current state are left out. */
+function shown(locator: ReturnType<BrowserPage['locator']>) {
+  return locator.evaluate((el) => (el as HTMLElement).innerText.trim());
+}
+
+/**
+ * Records the `mailto:` navigations the page starts. The browser hands them to the system and
+ * never loads them, so they are read from the DevTools protocol before they leave the page.
+ */
+async function captureMailto(page: BrowserPage) {
+  const urls: string[] = [];
+  const session = await page.context().newCDPSession(page);
+  await session.send('Page.enable');
+  session.on('Page.frameRequestedNavigation', (event) => {
+    if (event.url.startsWith('mailto:')) urls.push(event.url);
+  });
+  return urls;
+}
+
+type CopyLog = { state: string; at: number }[];
+
+/**
+ * Starts recording, in the page, every `data-copy-state` change of `[data-copy]` with its time in
+ * ms since this call; call it right before the click so the windows are measured from the click.
+ */
+function recordCopyStates(box: ReturnType<BrowserPage['locator']>) {
+  return box.evaluate((el) => {
+    const log: CopyLog = [];
+    const start = performance.now();
+    new MutationObserver(() => {
+      log.push({ state: el.getAttribute('data-copy-state') ?? '', at: performance.now() - start });
+    }).observe(el, { attributes: true, attributeFilter: ['data-copy-state'] });
+    (window as unknown as { copyLog: CopyLog }).copyLog = log;
+  });
+}
+
+function copyLog(page: BrowserPage) {
+  return page.evaluate(() => (window as unknown as { copyLog: CopyLog }).copyLog);
+}
+
+/** How long each `state` window in the log lasted, from it being set to the next change. */
+function windows(log: CopyLog, state: string) {
+  const spans: { from: number; for: number }[] = [];
+  log.forEach((entry, index) => {
+    const next = log[index + 1];
+    if (entry.state === state && next) spans.push({ from: entry.at, for: next.at - entry.at });
+  });
+  return spans;
+}
+
+/** Replaces the Clipboard API with one that accepts or rejects, and records what it was given. */
+async function stubClipboard(page: BrowserPage, accept: boolean) {
+  await page.addInitScript((ok) => {
+    const record = window as unknown as { copied?: string };
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: {
+        writeText: (text: string) => {
+          record.copied = text;
+          return ok ? Promise.resolve() : Promise.reject(new Error('denied'));
+        },
+      },
+    });
+  }, accept);
+}
+
+/** Opens the "Write to me" dialog from "Send an email" and returns the link and the dialog. */
+async function openMail(page: BrowserPage) {
+  const opener = page.locator('#contact [data-mail-open]');
+  await opener.click();
+  const dialog = page.locator('dialog[data-mail-dialog]');
+  await expect(dialog).toBeVisible();
+  return { opener, dialog };
+}
+
+for (const locale of LOCALES) {
+  const path = href('home', locale);
+  const copy = t(locale).contact;
+  const mail = t(locale).mail;
+  const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent(copy.emailSubject)}`;
+  const waHref = `https://wa.me/573188401253?text=${encodeURIComponent(copy.whatsappText)}`;
+
+  test.describe(`contact (${locale})`, () => {
+    test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'no-preference' });
+
+    test('shows the heading, buttons and links with their targets', async ({ page }) => {
+      await load(page, path);
+      const section = page.locator('#contact');
+      const heading = section.locator('h2');
+      await expect(heading).toHaveText(copy.heading);
+      await expect(heading).toHaveCSS('transition-duration', '1.1s, 1.1s');
+      await heading.scrollIntoViewIfNeeded();
+      await expect(heading).toHaveAttribute('data-reveal-state', 'visible');
+      await expect(heading).toHaveCSS('opacity', '1');
+      await expect(section.locator('.intro')).toHaveText(copy.intro);
+
+      const email = section.locator('.button-email');
+      await expect(email).toHaveText(copy.email);
+      await expect(email).toHaveAttribute('href', mailHref);
+      await expect(email).toHaveCSS('background-color', INK);
+      const whatsapp = section.locator('.button-whatsapp');
+      await expect(whatsapp).toHaveText(copy.whatsapp);
+      await expect(whatsapp).toHaveAttribute('href', waHref);
+      await expect(whatsapp).toHaveCSS('background-color', 'rgb(37, 211, 102)');
+      const cv = section.locator('.button-cv');
+      await expect(cv).toHaveText(copy.cv);
+      await expect(cv).toHaveAttribute('href', '/assets/cv-donato-ayala.pdf');
+      await expect(cv).toHaveAttribute('download', '');
+      for (const button of [email, whatsapp, cv]) {
+        await expect(button.locator('svg')).toHaveCount(1);
+      }
+      await whatsapp.hover();
+      await expect(whatsapp).toHaveCSS('transform', 'matrix(1.04, 0, 0, 1.04, 0, 0)');
+
+      const links = section.locator('.links');
+      await expect(links.locator('[data-copy-address]')).toHaveText(EMAIL);
+      await expect(links.locator('[data-copy-address]')).toHaveAttribute('href', mailHref);
+      await expect(links.getByRole('link', { name: '+57 318 840 1253' })).toHaveAttribute(
+        'href',
+        waHref,
+      );
+      await expect(links.getByRole('link', { name: copy.linkedin })).toHaveAttribute(
+        'href',
+        'https://www.linkedin.com/in/donatonicolasayalaosorio',
+      );
+      await expect(links.getByRole('link', { name: copy.github })).toHaveAttribute(
+        'href',
+        'https://github.com/DonatoNicolasAyalaOsorio73',
+      );
+      for (const link of await section.locator('a[target="_blank"]').all()) {
+        await expect(link).toHaveAttribute('rel', 'noopener');
+      }
+    });
+
+    test('the nav Contact button and the hero "Get in touch" land on #contact', async ({
+      page,
+    }) => {
+      await load(page, path);
+      for (const name of [t(locale).chrome.contact, t(locale).hero.secondaryCta]) {
+        await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+        await page.getByRole('link', { name, exact: true }).first().click();
+        await expect(page).toHaveURL(/#contact$/);
+        await expect(page.locator('#contact h2')).toBeInViewport();
+      }
+    });
+
+    test('opens the dialog with focus in the name field and the page inert', async ({ page }) => {
+      await load(page, path);
+      const mailto = await captureMailto(page);
+      const { dialog } = await openMail(page);
+      expect(await dialog.evaluate((el) => el.matches(':modal'))).toBe(true);
+      await expect(dialog).toHaveAttribute('data-mail-dialog-state', 'in');
+      await expect(dialog.locator('h2')).toHaveText(mail.title);
+      await expect(dialog.locator('.to')).toHaveText(`${mail.to} ${EMAIL}`);
+      const name = dialog.locator('input[name="name"]');
+      await expect(name).toBeFocused();
+      await expect(name).toHaveAttribute('autocomplete', 'name');
+      await expect(dialog.locator('input[name="subject"]')).toHaveAttribute(
+        'placeholder',
+        mail.subjectPlaceholder,
+      );
+      await expect(dialog.locator('textarea')).toHaveAttribute(
+        'placeholder',
+        mail.messagePlaceholder,
+      );
+      await expect(dialog.getByRole('button', { name: mail.close })).toBeVisible();
+      await expect.poll(() => shown(dialog.locator('.note'))).toBe(mail.note);
+      await expect(dialog.locator('.panel')).toHaveCSS('opacity', '1');
+      await expect(dialog.locator('.panel')).toHaveCSS('transform', 'none');
+      await expect(page.locator('html')).toHaveCSS('overflow-y', 'hidden');
+      expect(mailto).toEqual([]);
+    });
+
+    test('an empty submit shows the missing-fields note and goes nowhere', async ({ page }) => {
+      await load(page, path);
+      const mailto = await captureMailto(page);
+      const { dialog } = await openMail(page);
+      await dialog.locator('input[name="subject"]').fill('   ');
+      await dialog.getByRole('button', { name: mail.send }).click();
+      await expect.poll(() => shown(dialog.locator('.note'))).toBe(mail.missing);
+      await page.waitForTimeout(300);
+      expect(mailto).toEqual([]);
+      await dialog.locator('input[name="subject"]').fill('Hi');
+      await expect.poll(() => shown(dialog.locator('.note'))).toBe(mail.note);
+    });
+
+    test('Gmail and the send button stay disabled until subject and message have text', async ({
+      page,
+    }) => {
+      await load(page, path);
+      const { dialog } = await openMail(page);
+      const gmail = dialog.locator('[data-mail-gmail]');
+      const send = dialog.getByRole('button', { name: mail.send });
+      await expect(gmail).toHaveText(mail.gmail);
+      await expect(gmail).toHaveAttribute('aria-disabled', 'true');
+      await expect(gmail).not.toHaveAttribute('href');
+      await expect(gmail).toHaveCSS('opacity', '0.4');
+      await expect(gmail).toHaveCSS('pointer-events', 'none');
+      await expect(send).toHaveCSS('opacity', '0.4');
+
+      await dialog.locator('input[name="subject"]').fill('Full-stack role');
+      await expect(gmail).toHaveAttribute('aria-disabled', 'true');
+      await dialog.locator('textarea').fill('Hello there');
+      await dialog.locator('input[name="name"]').fill('Ana');
+      await expect(gmail).not.toHaveAttribute('aria-disabled');
+      await expect(gmail).toHaveAttribute(
+        'href',
+        `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}&su=Full-stack%20role` +
+          `&body=${encodeURIComponent('Hello there\n\n— Ana')}`,
+      );
+      await expect(gmail).toHaveAttribute('target', '_blank');
+      await expect(gmail).toHaveCSS('opacity', '1');
+      await expect(send).toHaveCSS('opacity', '1');
+
+      await dialog.locator('textarea').fill('');
+      await expect(gmail).toHaveAttribute('aria-disabled', 'true');
+      await expect(gmail).not.toHaveAttribute('href');
+    });
+
+    test('a valid submit hands the draft to the email app and says so', async ({ page }) => {
+      await load(page, path);
+      const mailto = await captureMailto(page);
+      const { dialog } = await openMail(page);
+      await dialog.locator('input[name="name"]').fill('  Ana Pérez ');
+      await dialog.locator('input[name="subject"]').fill('Rol & proyecto');
+      await dialog.locator('textarea').fill('Hola,\nhablemos.');
+      await dialog.getByRole('button', { name: mail.send }).click();
+      await expect.poll(() => shown(dialog.locator('.note'))).toBe(mail.sent);
+      await expect
+        .poll(() => mailto)
+        .toEqual([
+          `mailto:${EMAIL}?subject=${encodeURIComponent('Rol & proyecto')}` +
+            `&body=${encodeURIComponent('Hola,\nhablemos.\n\n— Ana Pérez')}`,
+        ]);
+      await expect(dialog).toBeVisible();
+      // Typing a name clears the "sent" note.
+      await dialog.locator('input[name="name"]').fill('Ana');
+      await expect.poll(() => shown(dialog.locator('.note'))).toBe(mail.note);
+    });
+
+    test('Escape, Close and the scrim close it and return focus; a drag does not', async ({
+      page,
+    }) => {
+      await load(page, path);
+      let { opener, dialog } = await openMail(page);
+      await page.keyboard.press('Escape');
+      await expect(dialog).toHaveAttribute('data-mail-dialog-state', 'closed');
+      await expect(dialog).toBeHidden();
+      await expect(opener).toBeFocused();
+      await expect(page.locator('html')).not.toHaveCSS('overflow-y', 'hidden');
+
+      ({ opener, dialog } = await openMail(page));
+      const panel = dialog.locator('.panel');
+      await expect(panel).toHaveCSS('transform', 'none');
+      const box = (await panel.boundingBox())!;
+      const scrim = { x: box.x / 2, y: box.y + box.height / 2 };
+      expect(box.x).toBeGreaterThan(20);
+
+      // Pressed inside the panel, released on the scrim: stays open.
+      await page.mouse.move(box.x + 40, box.y + 40);
+      await page.mouse.down();
+      await page.mouse.move(scrim.x, scrim.y);
+      await page.mouse.up();
+      await page.waitForTimeout(400);
+      await expect(dialog).toBeVisible();
+      await expect(dialog).toHaveAttribute('data-mail-dialog-state', 'in');
+
+      await page.mouse.click(scrim.x, scrim.y);
+      await expect(dialog).toBeHidden();
+      await expect(opener).toBeFocused();
+
+      ({ opener, dialog } = await openMail(page));
+      await dialog.getByRole('button', { name: mail.close }).click();
+      await expect(dialog).toBeHidden();
+      await expect(opener).toBeFocused();
+    });
+
+    test('Copy copies the address and says "Copied" for 2 s', async ({ page }) => {
+      await stubClipboard(page, true);
+      await load(page, path);
+      const box = page.locator('[data-copy]');
+      const button = box.locator('[data-copy-button]');
+      await expect.poll(() => shown(button)).toBe(copy.copy.idle);
+      await recordCopyStates(box);
+      await button.click();
+      await expect(box).toHaveAttribute('data-copy-state', 'ok');
+      await expect.poll(() => shown(button)).toBe(copy.copy.ok);
+      await expect(button).toHaveCSS('background-color', INK);
+      await expect(button).toHaveCSS('color', WHITE);
+      const status = box.getByRole('status');
+      await expect.poll(() => shown(status)).toBe(copy.copy.okMessage);
+      await expect(status).toHaveAttribute('aria-live', 'polite');
+      const copied = await page.evaluate(() => (window as unknown as { copied?: string }).copied);
+      expect(copied).toBe(EMAIL);
+      await expect
+        .poll(async () => windows(await copyLog(page), 'ok'), { timeout: 4000 })
+        .toHaveLength(1);
+      const [ok] = windows(await copyLog(page), 'ok');
+      expect(ok!.from).toBeLessThan(300);
+      expect(ok!.for).toBeGreaterThan(1950);
+      expect(ok!.for).toBeLessThan(2300);
+      expect(await shown(button)).toBe(copy.copy.idle);
+      await expect.poll(() => shown(status)).toBe('');
+    });
+
+    test('a second copy within 2 s announces again and restarts the 2 s', async ({ page }) => {
+      await stubClipboard(page, true);
+      await load(page, path);
+      const box = page.locator('[data-copy]');
+      const button = box.locator('[data-copy-button]');
+      const status = box.getByRole('status');
+      await recordCopyStates(box);
+      await button.click();
+      await expect(box).toHaveAttribute('data-copy-state', 'ok');
+      await page.waitForTimeout(1000);
+      await button.click();
+      await expect
+        .poll(async () => windows(await copyLog(page), 'ok'), { timeout: 5000 })
+        .toHaveLength(2);
+      const log = await copyLog(page);
+      const [first, second] = windows(log, 'ok');
+      // The message left the live region for a rendered frame, then came back.
+      const gap = windows(log, 'idle').find((span) => span.from > first!.from);
+      expect(gap!.for).toBeGreaterThan(0);
+      expect(first!.for).toBeLessThan(1900);
+      expect(second!.for).toBeGreaterThan(1950);
+      expect(second!.for).toBeLessThan(2300);
+      await expect.poll(() => shown(status)).toBe('');
+    });
+
+    test('a failed copy says so for 5 s and selects the address', async ({ page }) => {
+      await stubClipboard(page, false);
+      await load(page, path);
+      const box = page.locator('[data-copy]');
+      const button = box.locator('[data-copy-button]');
+      await recordCopyStates(box);
+      await button.click();
+      await expect(box).toHaveAttribute('data-copy-state', 'fail');
+      await expect.poll(() => shown(button)).toBe(copy.copy.fail);
+      await expect(button).toHaveCSS('color', ERROR);
+      await expect(button).toHaveCSS('border-color', ERROR);
+      await expect.poll(() => shown(box.getByRole('status'))).toBe(copy.copy.failMessage);
+      expect(await page.evaluate(() => window.getSelection()?.toString())).toBe(EMAIL);
+      await expect
+        .poll(async () => windows(await copyLog(page), 'fail'), { timeout: 7000 })
+        .toHaveLength(1);
+      const [fail] = windows(await copyLog(page), 'fail');
+      expect(fail!.from).toBeLessThan(300);
+      expect(fail!.for).toBeGreaterThan(4950);
+      expect(fail!.for).toBeLessThan(5300);
+      expect(await shown(button)).toBe(copy.copy.idle);
+    });
+  });
+
+  test.describe(`contact (${locale}) with reduced motion`, () => {
+    test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+
+    test('the dialog opens and closes without animation', async ({ page }) => {
+      await load(page, path);
+      const { opener, dialog } = await openMail(page);
+      const look = await dialog.locator('.panel').evaluate((el) => {
+        const style = getComputedStyle(el);
+        return {
+          opacity: style.opacity,
+          transform: style.transform,
+          duration: style.transitionDuration,
+        };
+      });
+      expect(look).toEqual({ opacity: '1', transform: 'none', duration: '0s' });
+      await expect(dialog.locator('input[name="name"]')).toBeFocused();
+      // Closing is immediate: the dialog is closed right after the click.
+      const stillOpen = await dialog.evaluate((el) => {
+        el.querySelector<HTMLElement>('[data-mail-close]')!.click();
+        return (el as HTMLDialogElement).open;
+      });
+      expect(stillOpen).toBe(false);
+      await expect(opener).toBeFocused();
+      await expect(page.locator('#contact h2')).toHaveCSS('opacity', '1');
+    });
+  });
+
+  test.describe(`contact (${locale}) without JavaScript`, () => {
+    test.use({ javaScriptEnabled: false });
+
+    test('"Send an email" is a plain mailto: link and Copy is hidden', async ({ page }) => {
+      await load(page, path);
+      const email = page.locator('#contact .button-email');
+      await expect(email).toHaveAttribute('href', mailHref);
+      await expect(page.locator('[data-copy-button]')).toBeHidden();
+      await expect(page.locator('dialog[data-mail-dialog]')).toBeHidden();
+      await expect(page.locator('#contact h2')).toHaveCSS('opacity', '1');
+      // A click follows the link: the browser starts a mailto: navigation.
+      const mailto = await captureMailto(page);
+      await email.click();
+      await expect.poll(() => mailto).toEqual([mailHref]);
+    });
+  });
+}

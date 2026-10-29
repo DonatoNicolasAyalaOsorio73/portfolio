@@ -1,0 +1,343 @@
+---
+/**
+ * The "Write to me" dialog: a native modal `<dialog>` opened by the contact section's "Send an
+ * email" link (`[data-mail-open]`). It drafts a message and hands it to the visitor's email app
+ * (`mailto:`) or Gmail; the site stores and sends nothing.
+ *
+ * `src/scripts/contact.ts` drives it only through state attributes, and every look is CSS on them:
+ * - `data-mail-dialog-state` (`closed` / `in`) on the dialog: the scrim darkens and the panel
+ *   fades in, rising 40px from 0.97.
+ * - `data-mail-state` (`note` / `missing` / `sent`) on the form: which note shows under the buttons.
+ * - `aria-disabled` on the Gmail link: both buttons look disabled until subject and message
+ *   have text, and the link has no `href` then.
+ * With reduced motion nothing animates and the dialog shows and closes at once.
+ */
+import { contact } from '../data/contact';
+import { t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale).mail;
+---
+
+<dialog
+  class="dialog"
+  data-mail-dialog
+  data-mail-dialog-state="closed"
+  aria-labelledby="mail-title"
+>
+  <form class="panel" data-mail data-mail-state="note" data-address={contact.email} novalidate>
+    <div class="head">
+      <div class="names">
+        <h2 class="title" id="mail-title">
+          {copy.title}
+        </h2>
+        <div class="to">
+          {copy.to} {contact.email}
+        </div>
+      </div>
+      <button type="button" class="close" data-mail-close aria-label={copy.close}>
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <path d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
+    <label class="field">
+      {copy.name}
+      <input class="input" name="name" autocomplete="name" />
+    </label>
+    <label class="field">
+      {copy.subject}
+      <input class="input" name="subject" required placeholder={copy.subjectPlaceholder} />
+    </label>
+    <label class="field">
+      {copy.message}
+      <textarea
+        class="input textarea"
+        name="message"
+        required
+        rows="6"
+        placeholder={copy.messagePlaceholder}
+      ></textarea>
+    </label>
+    <div class="actions">
+      <button type="submit" class="action send">
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M21 3L10 14"></path>
+          <path d="M21 3l-7 18-4-7-7-4 18-7z"></path>
+        </svg>
+        {copy.send}
+      </button>
+      <a
+        class="action gmail"
+        data-mail-gmail
+        role="link"
+        aria-disabled="true"
+        target="_blank"
+        rel="noopener"
+      >
+        {copy.gmail}
+      </a>
+    </div>
+    <p class="note" aria-live="polite">
+      <span data-note="note">{copy.note}</span>
+      <span data-note="missing">{copy.missing}</span>
+      <span data-note="sent">{copy.sent}</span>
+    </p>
+  </form>
+</dialog>
+
+<style>
+  /* The dialog element is the full-screen scrim; the panel sits in its centre. */
+  .dialog {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border: 0;
+    padding: var(--space-16);
+    color: var(--color-ink);
+    background: var(--color-line-hover);
+    -webkit-backdrop-filter: blur(var(--size-journey-dot));
+    backdrop-filter: blur(var(--size-journey-dot));
+    overflow: hidden;
+  }
+
+  .dialog[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dialog::backdrop {
+    background: var(--color-transparent);
+  }
+
+  /* The page behind does not scroll while the dialog is open. */
+  :global(html:has(dialog[data-mail-dialog][open])) {
+    overflow: hidden;
+  }
+
+  .panel {
+    background: var(--color-white);
+    color: var(--color-ink);
+    width: 100%;
+    max-width: var(--size-narrow);
+    max-height: var(--size-mail-height);
+    overflow: auto;
+    border-radius: var(--radius-mail);
+    padding: var(--space-fluid-mail);
+    box-shadow: var(--shadow-mail);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-18);
+    text-align: left;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-16);
+  }
+
+  .names {
+    min-width: 0;
+  }
+
+  .title {
+    font-size: var(--font-size-mail-title);
+    line-height: var(--line-height-tight);
+    letter-spacing: -0.045em;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .to {
+    font-size: var(--font-size-15);
+    color: var(--color-muted);
+    margin-top: var(--space-10);
+    overflow-wrap: anywhere;
+  }
+
+  .close {
+    font: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+    width: var(--size-close);
+    height: var(--size-close);
+    border-radius: var(--radius-round);
+    border: 0;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .close:hover {
+    background: var(--color-surface-hover);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    font-size: var(--font-size-14);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .input {
+    font-size: var(--font-size-17);
+    font-weight: 400;
+    color: var(--color-ink);
+    padding: var(--space-14) var(--space-16);
+    border-radius: var(--radius-card);
+    border: var(--size-hairline) solid var(--color-track);
+    background: var(--color-surface);
+  }
+
+  .input:focus {
+    border-color: var(--color-ink);
+    background: var(--color-white);
+  }
+
+  .textarea {
+    line-height: var(--line-height-normal);
+    resize: vertical;
+    min-height: var(--size-bmad-travel);
+  }
+
+  .actions {
+    display: flex;
+    gap: var(--space-10);
+    flex-wrap: wrap;
+  }
+
+  .action {
+    flex: 1 1 var(--size-photo-column);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-17);
+    font-weight: 500;
+    border-radius: var(--radius-pill);
+  }
+
+  .send {
+    font-family: inherit;
+    line-height: inherit;
+    cursor: pointer;
+    border: 0;
+    gap: var(--space-10);
+    background: var(--color-ink);
+    color: var(--color-white);
+    padding: var(--space-16) var(--space-24);
+  }
+
+  .gmail {
+    cursor: pointer;
+    padding: var(--space-15) var(--space-24);
+    border: var(--size-hairline) solid var(--color-line-strong);
+  }
+
+  .gmail:hover {
+    background: var(--color-surface);
+  }
+
+  /* Until subject and message have text both buttons look disabled; the link has no href. */
+  .gmail[aria-disabled='true'],
+  .panel:has(.gmail[aria-disabled='true']) .send {
+    opacity: 0.4;
+  }
+
+  .gmail[aria-disabled='true'] {
+    pointer-events: none;
+  }
+
+  .note {
+    font-size: var(--font-size-14);
+    line-height: var(--line-height-normal);
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  [data-note] {
+    display: none;
+  }
+
+  .panel[data-mail-state='note'] [data-note='note'],
+  .panel[data-mail-state='missing'] [data-note='missing'],
+  .panel[data-mail-state='sent'] [data-note='sent'] {
+    display: inline;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .dialog {
+      transition: background var(--dur-scrim);
+    }
+
+    .panel {
+      transition:
+        opacity var(--dur-tile) var(--ease-out),
+        transform var(--dur-panel) var(--ease-out);
+    }
+
+    .dialog:not([data-mail-dialog-state='in']) {
+      background: var(--color-transparent);
+    }
+
+    .dialog:not([data-mail-dialog-state='in']) .panel {
+      opacity: 0;
+      transform: translateY(var(--space-40)) scale(0.97);
+    }
+
+    .input {
+      transition:
+        border-color var(--dur-fast),
+        background var(--dur-fast);
+    }
+
+    .action {
+      transition:
+        opacity var(--dur-press),
+        transform var(--dur-press) var(--ease-out);
+    }
+
+    .gmail {
+      transition:
+        opacity var(--dur-press),
+        background var(--dur-press);
+    }
+
+    .send:hover {
+      transform: scale(1.02);
+    }
+  }
+</style>
