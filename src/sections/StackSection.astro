@@ -1,0 +1,676 @@
+---
+/**
+ * Tech stack: six capability groups, one shown at a time, with tabs, the active group's items
+ * and the "Projects in this layer" tiles lit for that group. `src/scripts/stack.ts` sets the
+ * active group in `data-stack-state` (from the scroll position on wide screens, where the section
+ * is a pinned 560vh track, and from the tabs everywhere) and the hovered item's projects in
+ * `data-stack-hover`; every look below hangs off those two attributes. Without JavaScript, and
+ * in print, every group is listed with its title and items, and every tile is lit.
+ */
+import { Picture } from 'astro:assets';
+import ProjectVars from '../components/ProjectVars.astro';
+import { featured, others } from '../data/projects';
+import { stackGroups, stackProjects } from '../data/stack';
+import { t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale).stack;
+
+const shortNames = new Map(stackProjects.map((project) => [project.id, project.name]));
+
+/** Joins each group and item to its dictionary entry; a missing one is a build error. */
+const groups = stackGroups.map((group, index) => {
+  const text = copy.groups.find((entry) => entry.id === group.id);
+  if (!text) throw new Error(`No ${locale} copy for stack group "${group.id}"`);
+  const items = group.items.map((item) => {
+    const itemText = text.items.find((entry) => entry.id === item.id);
+    if (!itemText) throw new Error(`No ${locale} copy for stack item "${item.id}"`);
+    return {
+      ...item,
+      purpose: itemText.purpose,
+      chips: item.projects.map((id) => shortNames.get(id) ?? id),
+    };
+  });
+  return { id: group.id, index, title: text.title, short: text.short, items };
+});
+
+const allProjects = [...featured, ...others];
+
+/** Each tile with its logo and the indexes of the groups it is lit for. */
+const tiles = stackProjects.map(({ id, name }) => {
+  const project = allProjects.find((entry) => entry.id === id);
+  if (!project) throw new Error(`No project data for stack tile "${id}"`);
+  const inGroups = stackGroups.flatMap((group, index) =>
+    group.items.some((item) => item.projects.includes(id)) ? [index] : [],
+  );
+  return { id, name, project, groups: inGroups.join(' ') };
+});
+---
+
+<section
+  id="stack"
+  class="stack"
+  aria-labelledby="stack-title"
+  data-stack
+  data-stack-state="0"
+  data-stack-hover=""
+>
+  <div class="stage">
+    <div class="inner">
+      <div class="top">
+        <div class="lead">
+          <h2 id="stack-title" class="eyebrow">
+            {copy.eyebrow}
+          </h2>
+          <div class="titles">
+            {groups.map((group) => (
+              <p class="title">{group.title}</p>
+            ))}
+          </div>
+          <p class="intro">{copy.intro}</p>
+          <div class="tabs" role="tablist" aria-label={copy.eyebrow}>
+            {groups.map((group) => (
+              <button
+                type="button"
+                role="tab"
+                class="tab"
+                id={`stack-tab-${group.index}`}
+                aria-selected={group.index === 0 ? 'true' : 'false'}
+                aria-controls={`stack-panel-${group.index}`}
+                tabindex={group.index === 0 ? 0 : -1}
+                data-stack-tab={group.index}
+              >
+                <span class="bar" />
+                <span class="label">{group.short}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div class="panels">
+          {groups.map((group) => (
+            <div class="panel" id={`stack-panel-${group.index}`} data-stack-panel={group.index}>
+              <h3 class="panel-title">{group.title}</h3>
+              <ul class="items">
+                {group.items.map((item, index) => (
+                  <li
+                    class="item"
+                    data-stack-item
+                    data-projects={item.projects.join(' ')}
+                    data-index={index}
+                  >
+                    <span class="what">
+                      <span class="name">{item.name}</span>
+                      <span class="purpose">{item.purpose}</span>
+                    </span>
+                    <span class="chips">
+                      {item.chips.map((chip) => (
+                        <span class="chip">{chip}</span>
+                      ))}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="used">
+        <div class="used-label">{copy.usedIn}</div>
+        <div class="tiles">
+          {tiles.map((tile) => (
+            <ProjectVars
+              vars={{ 'logo-radius': tile.project.logoRadius, 'logo-blend': tile.project.blend }}
+            >
+              <div class="tile" data-id={tile.id} data-groups={tile.groups}>
+                <Picture
+                  src={tile.project.logo}
+                  formats={['avif', 'webp']}
+                  widths={[
+                    Math.round(tile.project.logo.width / 4),
+                    Math.round(tile.project.logo.width / 2),
+                  ]}
+                  sizes={`${Math.round((72 * tile.project.logo.width) / tile.project.logo.height)}px`}
+                  width={tile.project.logo.width}
+                  height={tile.project.logo.height}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  fallbackFormat="webp"
+                />
+                <span class="tile-name">{tile.name}</span>
+              </div>
+            </ProjectVars>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/stack';
+</script>
+
+<style>
+  /* Base: no JavaScript and print. Every group is listed with its title and items; every tile
+     is lit. */
+  .stack {
+    position: relative;
+  }
+
+  .stage {
+    position: relative;
+    top: 0;
+    min-height: var(--size-screen);
+    display: flex;
+    align-items: center;
+    padding: var(--space-88) var(--space-24) var(--space-40);
+    overflow: hidden;
+  }
+
+  .inner {
+    max-width: var(--size-content);
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-fluid-stack-gap);
+  }
+
+  .top {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--size-stack-column)), 1fr));
+    gap: var(--space-fluid-stack-cols);
+    align-items: center;
+  }
+
+  .eyebrow {
+    font-size: var(--font-size-15);
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  /* The big group titles: one at a time, so only with JavaScript (each panel has its own
+     title without it). */
+  .titles {
+    display: none;
+    position: relative;
+    height: var(--size-stack-titles);
+    margin-top: var(--space-16);
+  }
+
+  .title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: 0;
+    font-size: var(--font-size-heading);
+    line-height: var(--line-height-work-heading);
+    letter-spacing: -0.055em;
+    font-weight: 800;
+  }
+
+  .intro {
+    font-size: var(--font-size-17);
+    line-height: var(--line-height-normal);
+    color: var(--color-muted);
+    max-width: var(--size-stack-intro);
+    margin: var(--space-16) 0 0;
+  }
+
+  /* Tabs switch groups, so they show only with JavaScript. */
+  .tabs {
+    display: none;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    margin-top: var(--space-28);
+  }
+
+  .tab {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    border: 0;
+    background: var(--color-transparent);
+    padding: var(--space-8) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    align-items: flex-start;
+  }
+
+  .bar {
+    height: var(--space-3);
+    width: var(--space-24);
+    border-radius: var(--radius-bar);
+    background: var(--color-track);
+  }
+
+  .label {
+    font-size: var(--font-size-14);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  .panels {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .panel-title {
+    font-size: var(--font-size-21);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--space-8);
+  }
+
+  .items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+    padding: var(--space-8) 0;
+    cursor: default;
+    border-bottom: var(--size-hairline) solid var(--color-line-item);
+  }
+
+  .what {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .name {
+    font-size: var(--font-size-stack-item);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: var(--line-height-snug);
+    white-space: nowrap;
+    color: var(--color-ink);
+  }
+
+  .purpose {
+    font-size: var(--font-size-15);
+    color: var(--color-muted);
+    margin-top: var(--space-2);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    justify-content: flex-end;
+    max-width: 52%;
+  }
+
+  .chip {
+    font-size: var(--font-size-13);
+    font-weight: 600;
+    padding: var(--space-4) var(--space-9);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+
+  .used-label {
+    font-size: var(--font-size-14);
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    color: var(--color-muted);
+  }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--space-120)), 1fr));
+    gap: var(--space-12);
+    margin-top: var(--space-14);
+  }
+
+  /* A lit tile: full colour, lifted on a light background. */
+  .tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-10);
+    padding: var(--space-14) var(--space-8);
+    border-radius: var(--radius-tile);
+    background: var(--color-surface);
+    transform: translateY(calc(-1 * var(--space-4)));
+  }
+
+  .tile :global(picture) {
+    display: contents;
+  }
+
+  /* Out of the flex flow, so the tile's gap does not count them. */
+  .tile :global(source) {
+    display: none;
+  }
+
+  .tile :global(img) {
+    height: var(--size-tile-logo);
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: var(--logo-radius);
+    mix-blend-mode: var(--logo-blend);
+    filter: var(--tile-filter, none);
+    opacity: var(--tile-opacity, 1);
+  }
+
+  .tile-name {
+    font-size: var(--font-size-15);
+    font-weight: 600;
+    text-align: center;
+    color: var(--tile-name, var(--color-ink));
+  }
+
+  /* Hovering an item greys the names of the items whose project set differs from it: some
+     project is in one set and not the other. */
+  .stack[data-stack-hover~='narinohoy'] .item:not([data-projects~='narinohoy']) .name,
+  .stack[data-stack-hover~='steady'] .item:not([data-projects~='steady']) .name,
+  .stack[data-stack-hover~='ecobike'] .item:not([data-projects~='ecobike']) .name,
+  .stack[data-stack-hover~='siesa'] .item:not([data-projects~='siesa']) .name,
+  .stack[data-stack-hover~='andino'] .item:not([data-projects~='andino']) .name,
+  .stack[data-stack-hover~='cognitios'] .item:not([data-projects~='cognitios']) .name,
+  .stack:not([data-stack-hover=''], [data-stack-hover~='narinohoy'])
+    .item[data-projects~='narinohoy']
+    .name,
+  .stack:not([data-stack-hover=''], [data-stack-hover~='steady'])
+    .item[data-projects~='steady']
+    .name,
+  .stack:not([data-stack-hover=''], [data-stack-hover~='ecobike'])
+    .item[data-projects~='ecobike']
+    .name,
+  .stack:not([data-stack-hover=''], [data-stack-hover~='siesa'])
+    .item[data-projects~='siesa']
+    .name,
+  .stack:not([data-stack-hover=''], [data-stack-hover~='andino'])
+    .item[data-projects~='andino']
+    .name,
+  .stack:not([data-stack-hover=''], [data-stack-hover~='cognitios'])
+    .item[data-projects~='cognitios']
+    .name {
+    color: var(--color-faded);
+  }
+
+  /* With JavaScript, on screen: one group at a time, chosen by `data-stack-state`. */
+  @media screen {
+    :global(html.js) .titles {
+      display: block;
+    }
+
+    :global(html.js) .intro {
+      margin-top: 0;
+    }
+
+    :global(html.js) .tabs {
+      display: flex;
+    }
+
+    :global(html.js) .panels {
+      display: grid;
+      gap: 0;
+    }
+
+    /* Only the active panel takes the pointer, so a fading one never lights the tiles. */
+    :global(html.js) .panel {
+      grid-area: 1 / 1;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    :global(html.js) .panel-title {
+      display: none;
+    }
+
+    :global(html.js) .title {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    :global(html.js) .item {
+      opacity: 0;
+      border-bottom-color: var(--color-transparent);
+    }
+
+    /* The active group's title, panel and items. */
+    :global(html.js) .stack[data-stack-state='0'] .title:nth-child(1),
+    :global(html.js) .stack[data-stack-state='1'] .title:nth-child(2),
+    :global(html.js) .stack[data-stack-state='2'] .title:nth-child(3),
+    :global(html.js) .stack[data-stack-state='3'] .title:nth-child(4),
+    :global(html.js) .stack[data-stack-state='4'] .title:nth-child(5),
+    :global(html.js) .stack[data-stack-state='5'] .title:nth-child(6),
+    :global(html.js) .stack[data-stack-state='0'] .panel:nth-child(1),
+    :global(html.js) .stack[data-stack-state='1'] .panel:nth-child(2),
+    :global(html.js) .stack[data-stack-state='2'] .panel:nth-child(3),
+    :global(html.js) .stack[data-stack-state='3'] .panel:nth-child(4),
+    :global(html.js) .stack[data-stack-state='4'] .panel:nth-child(5),
+    :global(html.js) .stack[data-stack-state='5'] .panel:nth-child(6) {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    :global(html.js) .stack[data-stack-state='0'] .panel:nth-child(1) .item,
+    :global(html.js) .stack[data-stack-state='1'] .panel:nth-child(2) .item,
+    :global(html.js) .stack[data-stack-state='2'] .panel:nth-child(3) .item,
+    :global(html.js) .stack[data-stack-state='3'] .panel:nth-child(4) .item,
+    :global(html.js) .stack[data-stack-state='4'] .panel:nth-child(5) .item,
+    :global(html.js) .stack[data-stack-state='5'] .panel:nth-child(6) .item {
+      opacity: 1;
+      border-bottom-color: var(--color-line-item);
+    }
+
+    /* Passed and active bars are ink; the active one is wide with an ink label. */
+    :global(html.js) .stack[data-stack-state='0'] .tab:nth-child(-n + 1) .bar,
+    :global(html.js) .stack[data-stack-state='1'] .tab:nth-child(-n + 2) .bar,
+    :global(html.js) .stack[data-stack-state='2'] .tab:nth-child(-n + 3) .bar,
+    :global(html.js) .stack[data-stack-state='3'] .tab:nth-child(-n + 4) .bar,
+    :global(html.js) .stack[data-stack-state='4'] .tab:nth-child(-n + 5) .bar,
+    :global(html.js) .stack[data-stack-state='5'] .tab:nth-child(-n + 6) .bar {
+      background: var(--color-ink);
+    }
+
+    :global(html.js) .stack[data-stack-state='0'] .tab:nth-child(1) .bar,
+    :global(html.js) .stack[data-stack-state='1'] .tab:nth-child(2) .bar,
+    :global(html.js) .stack[data-stack-state='2'] .tab:nth-child(3) .bar,
+    :global(html.js) .stack[data-stack-state='3'] .tab:nth-child(4) .bar,
+    :global(html.js) .stack[data-stack-state='4'] .tab:nth-child(5) .bar,
+    :global(html.js) .stack[data-stack-state='5'] .tab:nth-child(6) .bar {
+      width: var(--space-48);
+    }
+
+    :global(html.js) .stack[data-stack-state='0'] .tab:nth-child(1) .label,
+    :global(html.js) .stack[data-stack-state='1'] .tab:nth-child(2) .label,
+    :global(html.js) .stack[data-stack-state='2'] .tab:nth-child(3) .label,
+    :global(html.js) .stack[data-stack-state='3'] .tab:nth-child(4) .label,
+    :global(html.js) .stack[data-stack-state='4'] .tab:nth-child(5) .label,
+    :global(html.js) .stack[data-stack-state='5'] .tab:nth-child(6) .label {
+      color: var(--color-ink);
+    }
+
+    /* Tiles are unlit (greyscale, faded) unless used by the active group, or, while an item is
+       hovered, by that item. */
+    :global(html.js) .tile {
+      --tile-filter: grayscale(1);
+      --tile-opacity: 0.3;
+      --tile-name: var(--color-muted);
+
+      background: var(--color-transparent);
+      transform: none;
+    }
+
+    :global(html.js) .stack[data-stack-state='0'][data-stack-hover=''] .tile[data-groups~='0'],
+    :global(html.js) .stack[data-stack-state='1'][data-stack-hover=''] .tile[data-groups~='1'],
+    :global(html.js) .stack[data-stack-state='2'][data-stack-hover=''] .tile[data-groups~='2'],
+    :global(html.js) .stack[data-stack-state='3'][data-stack-hover=''] .tile[data-groups~='3'],
+    :global(html.js) .stack[data-stack-state='4'][data-stack-hover=''] .tile[data-groups~='4'],
+    :global(html.js) .stack[data-stack-state='5'][data-stack-hover=''] .tile[data-groups~='5'],
+    :global(html.js) .stack[data-stack-hover~='narinohoy'] .tile[data-id='narinohoy'],
+    :global(html.js) .stack[data-stack-hover~='steady'] .tile[data-id='steady'],
+    :global(html.js) .stack[data-stack-hover~='ecobike'] .tile[data-id='ecobike'],
+    :global(html.js) .stack[data-stack-hover~='siesa'] .tile[data-id='siesa'],
+    :global(html.js) .stack[data-stack-hover~='andino'] .tile[data-id='andino'],
+    :global(html.js) .stack[data-stack-hover~='cognitios'] .tile[data-id='cognitios'] {
+      --tile-filter: none;
+      --tile-opacity: 1;
+      --tile-name: var(--color-ink);
+
+      background: var(--color-surface);
+      transform: translateY(calc(-1 * var(--space-4)));
+    }
+  }
+
+  /* Motion: titles slide ±40px and fade, items fade up 28px with a stagger, bars and tiles ease
+     between states. Only with JavaScript, on screen, without a reduced-motion preference. */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    :global(html.js) .title {
+      transform: translateY(var(--space-40));
+      transition:
+        opacity var(--dur-panel) var(--ease-out),
+        transform var(--dur-slide) var(--ease-out),
+        visibility var(--dur-slide);
+    }
+
+    /* Earlier groups' titles have moved up and out. */
+    :global(html.js) .stack[data-stack-state='1'] .title:nth-child(-n + 1),
+    :global(html.js) .stack[data-stack-state='2'] .title:nth-child(-n + 2),
+    :global(html.js) .stack[data-stack-state='3'] .title:nth-child(-n + 3),
+    :global(html.js) .stack[data-stack-state='4'] .title:nth-child(-n + 4),
+    :global(html.js) .stack[data-stack-state='5'] .title:nth-child(-n + 5) {
+      transform: translateY(calc(-1 * var(--space-40)));
+    }
+
+    :global(html.js) .stack[data-stack-state='0'] .title:nth-child(1),
+    :global(html.js) .stack[data-stack-state='1'] .title:nth-child(2),
+    :global(html.js) .stack[data-stack-state='2'] .title:nth-child(3),
+    :global(html.js) .stack[data-stack-state='3'] .title:nth-child(4),
+    :global(html.js) .stack[data-stack-state='4'] .title:nth-child(5),
+    :global(html.js) .stack[data-stack-state='5'] .title:nth-child(6) {
+      transform: none;
+    }
+
+    /* A panel stays visible while its items fade out. */
+    :global(html.js) .panel {
+      transition: visibility var(--dur-slide);
+    }
+
+    :global(html.js) .item {
+      --stagger: 0;
+
+      transform: translateY(var(--space-28));
+      transition:
+        opacity var(--dur-panel) var(--ease-out),
+        transform var(--dur-slide) var(--ease-out),
+        border-color var(--dur-panel);
+    }
+
+    :global(html.js) .item[data-index='1'] {
+      --stagger: 1;
+    }
+
+    :global(html.js) .item[data-index='2'] {
+      --stagger: 2;
+    }
+
+    :global(html.js) .item[data-index='3'] {
+      --stagger: 3;
+    }
+
+    :global(html.js) .item[data-index='4'] {
+      --stagger: 4;
+    }
+
+    :global(html.js) .item[data-index='5'] {
+      --stagger: 5;
+    }
+
+    /* The active group's items rise in 120ms + 60ms × index after the switch. */
+    :global(html.js) .stack[data-stack-state='0'] .panel:nth-child(1) .item,
+    :global(html.js) .stack[data-stack-state='1'] .panel:nth-child(2) .item,
+    :global(html.js) .stack[data-stack-state='2'] .panel:nth-child(3) .item,
+    :global(html.js) .stack[data-stack-state='3'] .panel:nth-child(4) .item,
+    :global(html.js) .stack[data-stack-state='4'] .panel:nth-child(5) .item,
+    :global(html.js) .stack[data-stack-state='5'] .panel:nth-child(6) .item {
+      transform: none;
+      transition-delay:
+        calc(var(--dur-step) + var(--stagger) * var(--dur-stagger-item)),
+        calc(var(--dur-step) + var(--stagger) * var(--dur-stagger-item)), 0s;
+    }
+
+    .name {
+      transition: color var(--dur-hover);
+    }
+
+    :global(html.js) .bar {
+      transition:
+        width var(--dur-nav) var(--ease-out),
+        background var(--dur-nav);
+    }
+
+    :global(html.js) .label {
+      transition: color var(--dur-scrim);
+    }
+
+    :global(html.js) .tile {
+      transition:
+        background var(--dur-tile) var(--ease-out),
+        transform var(--dur-tile) var(--ease-out);
+    }
+
+    :global(html.js) .tile :global(img) {
+      transition:
+        filter var(--dur-tile),
+        opacity var(--dur-tile);
+    }
+
+    :global(html.js) .tile-name {
+      transition: color var(--dur-tile);
+    }
+  }
+
+  /* Print: the stage flows with the page instead of filling and centring in a screen. */
+  @media print {
+    .stage {
+      position: static;
+      min-height: 0;
+    }
+  }
+
+  /* Pinned on wide screens at least 620px tall: a 560vh track with a sticky full-height stage;
+     the scroll position picks the group. */
+  @media screen and (min-width: 960px) and (min-height: 620px) and (prefers-reduced-motion: no-preference) {
+    :global(html.js) .stack {
+      height: var(--size-stack-track);
+    }
+
+    :global(html.js) .stage {
+      position: sticky;
+    }
+  }
+</style>
