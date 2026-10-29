@@ -537,6 +537,133 @@ export const en = {
       ],
     },
   },
+  stack: {
+    eyebrow: 'TECH STACK',
+    intro: 'Organized by layer. Each technology shows what I used it for and in which projects.',
+    usedIn: 'PROJECTS IN THIS LAYER',
+    groups: [
+      {
+        id: 'frontend',
+        title: 'Frontend.',
+        short: 'FRONTEND',
+        items: [
+          { id: 'react', purpose: 'Component-based UIs' },
+          { id: 'nextjs', purpose: 'App Router, SSR and API routes' },
+          { id: 'angular', purpose: 'Institutional apps, RxJS services' },
+          { id: 'typescript', purpose: 'Typed code across the stack' },
+          { id: 'react-native-expo', purpose: 'iOS, Android and web from one codebase' },
+          { id: 'tailwind-css', purpose: 'Utility-first styling' },
+        ],
+      },
+      {
+        id: 'data',
+        title: 'Backend & data.',
+        short: 'DATA',
+        items: [
+          { id: 'supabase', purpose: 'Postgres, Auth and APIs' },
+          { id: 'postgresql', purpose: 'Relational schemas, indexes, triggers' },
+          { id: 'firebase', purpose: 'Auth, Firestore and security rules' },
+          { id: 'wordpress-php', purpose: 'Custom CMS development' },
+          { id: 'rest-apis', purpose: 'Documented, tested endpoints' },
+        ],
+      },
+      {
+        id: 'cloud',
+        title: 'Cloud & delivery.',
+        short: 'CLOUD',
+        items: [
+          { id: 'vercel', purpose: 'Hosting and serverless functions' },
+          { id: 'cloudflare', purpose: 'DNS, SSL and HSTS' },
+          { id: 'github', purpose: 'Version control and code review' },
+          { id: 'azure-devops', purpose: 'Boards, sprints and repos' },
+          { id: 'gitlab', purpose: 'Merge requests' },
+          { id: 'scrum', purpose: 'Sprint-based delivery' },
+        ],
+      },
+      {
+        id: 'quality',
+        title: 'Testing & quality.',
+        short: 'QUALITY',
+        items: [
+          { id: 'vitest', purpose: 'Unit and integration tests' },
+          { id: 'react-testing-library', purpose: 'Component tests' },
+          { id: 'jasmine-karma', purpose: 'Angular unit tests' },
+          { id: 'playwright', purpose: 'End-to-end QA in CI' },
+          { id: 'smoke-tests', purpose: 'Post-deploy checks' },
+          { id: 'postman-insomnia', purpose: 'API testing' },
+        ],
+      },
+      {
+        id: 'security',
+        title: 'Security & reliability.',
+        short: 'SECURITY',
+        items: [
+          { id: 'rbac', purpose: 'Role-based access control' },
+          { id: 'row-level-security', purpose: 'Database-level permissions' },
+          { id: 'token-verification', purpose: 'Firebase Admin SDK on the server' },
+          { id: 'audit-logs', purpose: 'Per-user forensic timeline' },
+          { id: 'backups-rollback', purpose: 'Daily backups and recovery' },
+        ],
+      },
+      {
+        id: 'ai',
+        title: 'AI-assisted engineering.',
+        short: 'AI',
+        items: [
+          { id: 'bmad-method', purpose: 'Phased, agent-driven delivery' },
+          { id: 'claude-code', purpose: 'Analysis, docs and code generation' },
+          { id: 'github-copilot', purpose: 'In-editor assistance' },
+          { id: 'gemini-api', purpose: 'In-product AI features' },
+        ],
+      },
+    ],
+  },
+  ai: {
+    eyebrow: 'AI-ASSISTED ENGINEERING',
+    headingLine1: 'AI speeds up delivery.',
+    headingLine2: 'Engineering still owns the decisions.',
+    intro:
+      'I use the BMAD Method to structure AI-assisted development into phases with explicit artifacts. Agents draft briefs, PRDs, architecture documents, stories and code; I validate scope, make the architectural calls, review every change and run the tests before anything ships.',
+    imageAlt: 'BMAD Method',
+    caption: 'BMAD Method: agent-driven phases from analysis to QA. Applied on NariñoHoy.',
+    phases: [
+      {
+        id: 'analysis',
+        phase: 'Analysis',
+        agent: 'ANALYST AGENT',
+        artifact: 'Project brief: problem, users, constraints',
+        me: 'I validate the problem and the scope',
+      },
+      {
+        id: 'planning',
+        phase: 'Planning',
+        agent: 'PM AGENT',
+        artifact: 'PRD with functional and non-functional requirements',
+        me: 'I approve requirements and priorities',
+      },
+      {
+        id: 'solutioning',
+        phase: 'Solutioning',
+        agent: 'ARCHITECT AGENT',
+        artifact: 'Architecture document: stack, boundaries, data model',
+        me: 'I make the architectural decisions',
+      },
+      {
+        id: 'implementation',
+        phase: 'Implementation',
+        agent: 'SM + DEV AGENTS',
+        artifact: 'User stories and working code',
+        me: 'I review every change before it merges',
+      },
+      {
+        id: 'quality-assurance',
+        phase: 'Quality assurance',
+        agent: 'QA AGENT',
+        artifact: 'Test results and review notes',
+        me: 'I run the tests and sign off',
+      },
+    ],
+  },
 } as const;
 
 /** Turns the literal types of `en` into `string`, keeping the key structure. */

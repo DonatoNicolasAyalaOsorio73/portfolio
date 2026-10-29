@@ -1,0 +1,298 @@
+---
+/**
+ * AI-assisted engineering: the heading (revealed once in view), the BMAD image floating with the
+ * section's scroll progress `--p` (written by `scenes.ts`) and tilting toward the pointer
+ * (`tilt.ts`), its caption and tool chips, and the five-phase pipeline. `src/scripts/pipeline.ts`
+ * cycles the active phase in `data-pipe-state`; the highlight is CSS on it. Without JavaScript or
+ * with reduced motion every phase shows in its final, unhighlighted state.
+ */
+import { Picture } from 'astro:assets';
+import { ai } from '../data/stack';
+import { t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale).ai;
+
+/** Joins each phase id to its dictionary entry; a missing one is a build error. */
+const phases = ai.phases.map((id, index) => {
+  const text = copy.phases.find((entry) => entry.id === id);
+  if (!text) throw new Error(`No ${locale} copy for AI phase "${id}"`);
+  return { ...text, number: String(index + 1).padStart(2, '0') };
+});
+---
+
+<section class="ai" aria-labelledby="ai-title" data-scene="pass">
+  <div class="inner">
+    <div class="eyebrow">{copy.eyebrow}</div>
+    <h2 id="ai-title" class="heading" data-reveal>
+      <span class="line">{copy.headingLine1}</span>
+      <span class="line muted">{copy.headingLine2}</span>
+    </h2>
+    <p class="intro">{copy.intro}</p>
+    <div class="grid">
+      <div class="side">
+        <div class="float">
+          <Picture
+            src={ai.image}
+            formats={['avif', 'webp']}
+            widths={[290, ai.image.width]}
+            sizes="290px"
+            width={ai.image.width}
+            height={ai.image.height}
+            alt={copy.imageAlt}
+            loading="lazy"
+            decoding="async"
+            fallbackFormat="webp"
+            data-tilt
+          />
+        </div>
+        <p class="caption">{copy.caption}</p>
+        <ul class="tools">
+          {ai.tools.map((tool) => (
+            <li>{tool}</li>
+          ))}
+        </ul>
+      </div>
+      <ol class="phases" data-pipe data-pipe-state="0">
+        {phases.map((phase) => (
+          <li class="phase">
+            <span class="number">{phase.number}</span>
+            <div class="body">
+              <div class="head">
+                <span class="name">{phase.phase}</span>
+                <span class="agent">{phase.agent}</span>
+              </div>
+              <div class="artifact">{phase.artifact}</div>
+              <div class="me">{phase.me}</div>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/reveal';
+  import '../scripts/scenes';
+  import '../scripts/tilt';
+  import '../scripts/pipeline';
+</script>
+
+<style>
+  .ai {
+    padding: var(--space-fluid-work) var(--space-24);
+    background: var(--color-surface);
+  }
+
+  .inner {
+    max-width: var(--size-content);
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    font-size: var(--font-size-15);
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    color: var(--color-muted);
+  }
+
+  .heading {
+    font-size: var(--font-size-section-heading);
+    line-height: var(--line-height-heading);
+    letter-spacing: -0.05em;
+    font-weight: 800;
+    margin: var(--space-20) 0 0;
+  }
+
+  .line {
+    display: block;
+  }
+
+  .muted {
+    color: var(--color-muted);
+  }
+
+  .intro {
+    font-size: var(--font-size-ai-intro);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text);
+    max-width: var(--size-ai-intro);
+    margin: var(--space-32) 0 0;
+    text-wrap: pretty;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--size-ai-column)), 1fr));
+    gap: var(--space-fluid-ai-gap);
+    align-items: center;
+    margin-top: var(--space-fluid-ai-top);
+  }
+
+  .side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-28);
+  }
+
+  .float {
+    width: var(--size-bmad);
+    aspect-ratio: 1;
+  }
+
+  .float :global(picture) {
+    display: contents;
+  }
+
+  .float :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: var(--radius-bmad);
+    filter: drop-shadow(var(--shadow-bmad));
+  }
+
+  .caption {
+    font-size: var(--font-size-15);
+    line-height: var(--line-height-normal);
+    color: var(--color-muted);
+    text-align: center;
+    max-width: var(--size-bmad-caption);
+    margin: 0;
+  }
+
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tools li {
+    white-space: nowrap;
+    font-size: var(--font-size-15);
+    font-weight: 600;
+    padding: var(--space-7) var(--space-13);
+    border-radius: var(--radius-pill);
+    background: var(--color-white);
+    border: var(--size-hairline) solid var(--color-line);
+  }
+
+  .phases {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+
+  /* An unhighlighted phase: the final state without JavaScript or with reduced motion. */
+  .phase {
+    display: grid;
+    grid-template-columns: var(--space-40) minmax(0, 1fr);
+    gap: var(--space-16);
+    border-radius: var(--radius-tile);
+    padding: var(--space-20) var(--space-22);
+    background: var(--color-white);
+    color: var(--color-ink);
+    box-shadow: var(--shadow-phase);
+  }
+
+  .number {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-14);
+    opacity: 0.6;
+    padding-top: var(--space-5);
+  }
+
+  .body {
+    min-width: 0;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-12);
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+
+  .name {
+    font-size: var(--font-size-21);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .agent {
+    font-size: var(--font-size-14);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    opacity: 0.65;
+  }
+
+  .artifact {
+    font-size: var(--font-size-14);
+    line-height: var(--line-height-normal);
+    margin-top: var(--space-6);
+    opacity: 0.8;
+  }
+
+  .me {
+    font-size: var(--font-size-14);
+    line-height: var(--line-height-normal);
+    margin-top: var(--space-10);
+    font-weight: 600;
+  }
+
+  .me::before {
+    content: '✓ ';
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Floats from +70px to −70px and turns from −5° to 5° as the section passes by. */
+    .float {
+      transform: translateY(calc((0.5 - var(--p, 0.5)) * var(--size-bmad-travel)))
+        rotate(calc((0.5 - var(--p, 0.5)) * -10deg));
+    }
+
+    /* The cycling pipeline: the active phase is ink, lifted and shifted right. */
+    :global(html.js) .phase {
+      transition:
+        background var(--dur-phase) var(--ease-out),
+        color var(--dur-phase) var(--ease-out),
+        box-shadow var(--dur-phase) var(--ease-out),
+        transform var(--dur-phase) var(--ease-out);
+    }
+
+    :global(html.js) .phases[data-pipe-state='0'] .phase:nth-child(1),
+    :global(html.js) .phases[data-pipe-state='1'] .phase:nth-child(2),
+    :global(html.js) .phases[data-pipe-state='2'] .phase:nth-child(3),
+    :global(html.js) .phases[data-pipe-state='3'] .phase:nth-child(4),
+    :global(html.js) .phases[data-pipe-state='4'] .phase:nth-child(5) {
+      background: var(--color-ink);
+      color: var(--color-white);
+      box-shadow: var(--shadow-phase-active);
+      transform: translateX(var(--space-8));
+    }
+  }
+
+  @media print {
+    .phase {
+      background: var(--color-white) !important;
+      color: var(--color-ink) !important;
+      box-shadow: var(--shadow-phase) !important;
+      transform: none !important;
+    }
+  }
+</style>

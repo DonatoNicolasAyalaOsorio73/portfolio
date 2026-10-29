@@ -80,13 +80,35 @@ risk = "medium"
 [[entry]]
 id = 6
 type = "story"
-title = "Home stack, AI, journey, about and contact match"
-description = "Ports the remaining home sections: stack, the AI-assisted development section, journey, education, certificates, the CV download, the contact links and the contact mail dialog, completing the home page in both languages."
-verify = "The full-page parity captures of / and /es/ match the legacy home at both widths."
+title = "Home stack and AI sections match"
+description = "Ports the stack section (pinned capability groups with tabs and per-project highlighting) and the AI-assisted engineering section with its cycling pipeline, keeping today's motion."
+verify = "The parity captures of both sections match the legacy home in EN and ES at both widths, and the tabs and highlighting work by mouse and keyboard."
 covers = ["R2"]
 after = [14]
 hitl = false
+risk = "medium"
+
+[[entry]]
+id = 15
+type = "story"
+title = "Home journey, education and certificates match"
+description = "Ports the journey timeline, the education section and the certificates grid, with their logos, links and tilt."
+verify = "The parity captures of the three sections match the legacy home in EN and ES at both widths."
+covers = ["R2"]
+after = [6]
+hitl = false
 risk = "low"
+
+[[entry]]
+id = 16
+type = "story"
+title = "Home contact section and mail dialog match"
+description = "Ports the contact section (email with copy, CV download, links) and the contact mail dialog, completing the home page in both languages."
+verify = "The full-page parity captures of / and /es/ match the legacy home at both widths, and the mail dialog behaves as on the legacy site."
+covers = ["R2"]
+after = [15]
+hitl = false
+risk = "medium"
 
 [[entry]]
 id = 7
@@ -95,7 +117,7 @@ title = "EcoBike page matches in both languages"
 description = "Ports ecobike.html as EcobikeView with its gallery, demo video and poster from public/assets, its own Open Graph image, and its /es/ twin."
 verify = "The parity captures of /ecobike.html and /es/ecobike.html match the legacy page at both widths, and the smoke tests cover both URLs."
 covers = ["R2", "R4"]
-after = [6]
+after = [16]
 hitl = false
 risk = "low"
 
@@ -128,7 +150,7 @@ title = "Parity sign-off, budget run and cutover to Actions"
 description = "Dona reviews every parity capture and the Lighthouse mobile runs; the deploy job is switched on, Dona sets the Pages source to GitHub Actions with the custom domain, the main ruleset and auto-delete head branches, and the Astro site goes live."
 verify = "donacode.link serves the Astro build deployed by Actions, Lighthouse mobile on home and EcoBike EN and ES meets the budget, and the smoke tests pass against production."
 covers = ["R2", "R5", "R6"]
-after = [3, 6, 7, 8]
+after = [3, 16, 7, 8]
 hitl = true
 risk = "high"
 
@@ -150,6 +172,6 @@ title = "Refactor sweep"
 description = "Cleans up what the epic's plans and reviews deferred, without new scope."
 verify = "CI is green and the deferred items listed at its start are closed or moved to new stories."
 covers = []
-after = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14]
+after = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16]
 hitl = false
 risk = "low"

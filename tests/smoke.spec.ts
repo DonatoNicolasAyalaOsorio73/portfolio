@@ -818,3 +818,335 @@ for (const locale of LOCALES) {
     });
   });
 }
+
+/**
+ * Scrolls so at least `progress` of the stack's pinned distance (height − viewport) has passed:
+ * rounded up, so a progress on a group boundary lands in the later group.
+ */
+async function scrollStack(page: BrowserPage, progress: number) {
+  await page.evaluate(async (fraction) => {
+    const section = document.querySelector<HTMLElement>('[data-stack]')!;
+    const top = section.getBoundingClientRect().top + window.scrollY;
+    const distance = section.offsetHeight - window.innerHeight;
+    window.scrollTo({ top: Math.ceil(top + fraction * distance), behavior: 'instant' });
+    await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+  }, progress);
+}
+
+/** Waits until the page has stopped scrolling (the same scrollY over 300ms). */
+async function waitForScrollEnd(page: BrowserPage) {
+  await page.evaluate(async () => {
+    let last = -1;
+    while (window.scrollY !== last) {
+      last = window.scrollY;
+      await new Promise((done) => setTimeout(done, 300));
+    }
+  });
+}
+
+/** The stack's tabs say `index` is selected, with the roving tabindex on it. */
+async function expectSelectedTab(page: BrowserPage, index: number) {
+  const tabs = page.locator('#stack [role="tab"]');
+  await expect(tabs).toHaveCount(6);
+  for (const [i, tab] of (await tabs.all()).entries()) {
+    await expect(tab).toHaveAttribute('aria-selected', String(i === index));
+    await expect(tab).toHaveAttribute('tabindex', i === index ? '0' : '-1');
+  }
+}
+
+const INK = 'rgb(17, 17, 17)';
+const WHITE = 'rgb(255, 255, 255)';
+const FADED = 'rgb(199, 199, 204)';
+
+for (const locale of LOCALES) {
+  const path = href('home', locale);
+  const stackCopy = t(locale).stack;
+
+  test.describe(`tech stack (${locale}), wide`, () => {
+    test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'no-preference' });
+
+    test('pins the section and shows group 3 at progress 0.5', async ({ page }) => {
+      await load(page, path);
+      const section = page.locator('[data-stack]');
+      expect(await section.evaluate((el) => (el as HTMLElement).offsetHeight)).toBe(800 * 5.6);
+      await expect(section.locator('.stage')).toHaveCSS('position', 'sticky');
+      await scrollStack(page, 0.5);
+      await expect(section).toHaveAttribute('data-stack-state', '3');
+      await expectSelectedTab(page, 3);
+      const title = section.locator('.title').nth(3);
+      await expect(title).toHaveText(stackCopy.groups[3]!.title);
+      await expect(title).toHaveCSS('opacity', '1');
+      await expect(section.locator('.title').nth(0)).toHaveCSS('opacity', '0');
+      await expect(section.locator('#stack-panel-3')).toBeVisible();
+      await expect(section.locator('#stack-panel-0')).toBeHidden();
+    });
+
+    test('a tab click scrolls to its band and holds that group while scrolling', async ({
+      page,
+    }) => {
+      await load(page, path);
+      await scrollStack(page, 0);
+      const section = page.locator('[data-stack]');
+      await expect(section).toHaveAttribute('data-stack-state', '0');
+      const startY = await page.evaluate(() => window.scrollY);
+      await page.getByRole('tab', { name: stackCopy.groups[4]!.short, exact: true }).click();
+      // Sampled through the smooth scroll: never a group passed on the way.
+      const states = await page.evaluate(async () => {
+        const el = document.querySelector<HTMLElement>('[data-stack]')!;
+        const seen: string[] = [];
+        for (let i = 0; i < 20; i++) {
+          seen.push(el.dataset.stackState!);
+          await new Promise((done) => setTimeout(done, 50));
+        }
+        return seen;
+      });
+      expect(new Set(states)).toEqual(new Set(['4']));
+      await waitForScrollEnd(page);
+      const expected = await section.evaluate((el) => {
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        const span = (el as HTMLElement).offsetHeight - window.innerHeight;
+        return top + (span * 4.5) / 6;
+      });
+      const endY = await page.evaluate(() => window.scrollY);
+      expect(endY).toBeGreaterThan(startY);
+      expect(Math.abs(endY - expected)).toBeLessThan(2);
+      await expect(section).toHaveAttribute('data-stack-state', '4');
+      await expectSelectedTab(page, 4);
+    });
+
+    test('hovering Firebase lights only EcoBike and greys the other names', async ({ page }) => {
+      await load(page, path);
+      await scrollStack(page, 0);
+      const section = page.locator('[data-stack]');
+      await page.getByRole('tab', { name: stackCopy.groups[1]!.short, exact: true }).click();
+      await waitForScrollEnd(page);
+      await expect(section).toHaveAttribute('data-stack-state', '1');
+
+      const tile = (id: string) => section.locator(`.tile[data-id="${id}"] img`);
+      const groupTiles = ['narinohoy', 'steady', 'ecobike', 'andino', 'cognitios'];
+      for (const id of groupTiles) await expect(tile(id)).toHaveCSS('opacity', '1');
+      await expect(tile('siesa')).toHaveCSS('opacity', '0.3');
+
+      const panel = section.locator('#stack-panel-1');
+      const firebase = panel.locator('[data-stack-item]', { hasText: 'Firebase' });
+      await firebase.hover();
+      await expect(section).toHaveAttribute('data-stack-hover', 'ecobike');
+      await expect(tile('ecobike')).toHaveCSS('opacity', '1');
+      await expect(tile('ecobike')).toHaveCSS('filter', 'none');
+      for (const id of ['narinohoy', 'steady', 'siesa', 'andino', 'cognitios']) {
+        await expect(tile(id)).toHaveCSS('opacity', '0.3');
+        await expect(tile(id)).toHaveCSS('filter', 'grayscale(1)');
+      }
+      await expect(firebase.locator('.name')).toHaveCSS('color', INK);
+      for (const name of ['Supabase', 'PostgreSQL', 'WordPress · PHP', 'REST APIs']) {
+        const item = panel.locator('[data-stack-item]', { hasText: name });
+        await expect(item.locator('.name')).toHaveCSS('color', FADED);
+      }
+
+      await page.mouse.move(640, 5);
+      await expect(section).toHaveAttribute('data-stack-hover', '');
+      for (const id of groupTiles) await expect(tile(id)).toHaveCSS('opacity', '1');
+      await expect(tile('siesa')).toHaveCSS('opacity', '0.3');
+      await expect(panel.locator('.name').first()).toHaveCSS('color', INK);
+    });
+  });
+
+  test.describe(`tech stack (${locale}), narrow`, () => {
+    test.use({ viewport: { width: 375, height: 800 }, reducedMotion: 'no-preference' });
+
+    test('is not pinned and a tab switches groups without scrolling', async ({ page }) => {
+      await load(page, path);
+      const section = page.locator('[data-stack]');
+      await expect(section.locator('.stage')).not.toHaveCSS('position', 'sticky');
+      expect(await section.evaluate((el) => (el as HTMLElement).offsetHeight)).toBeLessThan(
+        800 * 5.6,
+      );
+      const tab = page.getByRole('tab', { name: stackCopy.groups[2]!.short, exact: true });
+      await tab.scrollIntoViewIfNeeded();
+      const before = await page.evaluate(() => window.scrollY);
+      await tab.click();
+      await expect(section).toHaveAttribute('data-stack-state', '2');
+      await expectSelectedTab(page, 2);
+      await expect(section.locator('#stack-panel-2')).toBeVisible();
+      await page.waitForTimeout(300);
+      expect(await page.evaluate(() => window.scrollY)).toBe(before);
+    });
+
+    test('arrow keys, Home and End move between tabs and wrap', async ({ page }) => {
+      await load(page, path);
+      const section = page.locator('[data-stack]');
+      const tabs = section.locator('[role="tab"]');
+      await tabs.first().focus();
+      for (const [key, index] of [
+        ['ArrowRight', 1],
+        ['End', 5],
+        ['ArrowRight', 0],
+        ['ArrowLeft', 5],
+        ['Home', 0],
+        ['ArrowLeft', 5],
+        ['ArrowLeft', 4],
+      ] as const) {
+        await page.keyboard.press(key);
+        await expect(section, key).toHaveAttribute('data-stack-state', String(index));
+        await expect(tabs.nth(index), key).toBeFocused();
+        await expectSelectedTab(page, index);
+      }
+      await expect(section.locator('#stack-panel-4')).toHaveAttribute(
+        'aria-labelledby',
+        'stack-tab-4',
+      );
+      await expect(tabs.nth(4)).toHaveAttribute('aria-controls', 'stack-panel-4');
+    });
+  });
+
+  test.describe(`AI pipeline (${locale})`, () => {
+    test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'no-preference' });
+
+    test.beforeEach(async ({ page }) => {
+      // Lets a test hide the tab: `document.hidden` follows `window.__hidden`.
+      await page.addInitScript(() => {
+        Object.defineProperty(Document.prototype, 'hidden', {
+          configurable: true,
+          get: () => (window as unknown as { __hidden?: boolean }).__hidden === true,
+        });
+      });
+    });
+
+    test('advances from phase 1 to phase 2 only once in view', async ({ page }) => {
+      await load(page, path);
+      // No transitions, so each phase's colours are final the moment the state changes.
+      await page.addStyleTag({
+        content: '*, *::before, *::after { transition: none !important; }',
+      });
+      const list = page.locator('[data-pipe]');
+      await expect(list.locator('li')).toHaveCount(5);
+      await page.waitForTimeout(1500);
+      await expect(list, 'out of view, it waits').toHaveAttribute('data-pipe-state', '0');
+      await expect(list.locator('li').first()).toHaveCSS('background-color', INK);
+      await expect(list.locator('li').first()).toHaveCSS('color', WHITE);
+
+      await page.locator('#ai-title').scrollIntoViewIfNeeded();
+      await expect(page.locator('#ai-title')).toHaveAttribute('data-reveal-state', 'visible');
+      await expect(list).toHaveAttribute('data-pipe-state', '1', { timeout: 1600 });
+      await expect(list.locator('li').nth(1)).toHaveCSS('background-color', INK);
+      await expect(list.locator('li').first()).toHaveCSS('background-color', WHITE);
+    });
+
+    test('pauses while the tab is hidden', async ({ page }) => {
+      await load(page, path);
+      const list = page.locator('[data-pipe]');
+      await page.locator('#ai-title').scrollIntoViewIfNeeded();
+      await expect(page.locator('#ai-title')).toHaveAttribute('data-reveal-state', 'visible');
+      await page.evaluate(() => ((window as unknown as { __hidden: boolean }).__hidden = true));
+      const state = await list.getAttribute('data-pipe-state');
+      await page.waitForTimeout(1600);
+      await expect(list).toHaveAttribute('data-pipe-state', state!);
+      await page.evaluate(() => ((window as unknown as { __hidden: boolean }).__hidden = false));
+      await expect(list).not.toHaveAttribute('data-pipe-state', state!, { timeout: 1600 });
+    });
+
+    test('the BMAD image floats with the scroll and tilts on hover', async ({ page }) => {
+      await load(page, path);
+      const image = page.locator('.ai [data-tilt]');
+      await expect(image).toHaveAttribute('alt', t(locale).ai.imageAlt);
+      await image.scrollIntoViewIfNeeded();
+      await expect(page.locator('.ai .float')).not.toHaveCSS('transform', 'none');
+      const box = (await image.boundingBox())!;
+      await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.1);
+      await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.15);
+      await expect(image).toHaveAttribute('data-tilt-state', 'active');
+      await page.mouse.move(0, 0);
+      await expect(image).toHaveAttribute('data-tilt-state', 'idle');
+    });
+  });
+
+  test.describe(`tech stack and AI (${locale}) with reduced motion`, () => {
+    test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+
+    test('nothing pins, animates or cycles, and tabs still switch groups', async ({ page }) => {
+      await load(page, path);
+      const section = page.locator('[data-stack]');
+      await expect(section.locator('.stage')).not.toHaveCSS('position', 'sticky');
+      expect(await section.evaluate((el) => (el as HTMLElement).offsetHeight)).toBeLessThan(
+        800 * 5.6,
+      );
+      const tab = page.getByRole('tab', { name: stackCopy.groups[4]!.short, exact: true });
+      await tab.scrollIntoViewIfNeeded();
+      const before = await page.evaluate(() => window.scrollY);
+      await tab.click();
+      await expect(section).toHaveAttribute('data-stack-state', '4');
+      for (const el of [
+        section.locator('.title').nth(4),
+        section.locator('#stack-panel-4 [data-stack-item]').first(),
+      ]) {
+        const look = await el.evaluate((node) => {
+          const style = getComputedStyle(node);
+          return { opacity: style.opacity, transform: style.transform };
+        });
+        expect(look).toEqual({ opacity: '1', transform: 'none' });
+        await expect(el).toHaveCSS('transition-duration', '0s');
+      }
+      await page.waitForTimeout(300);
+      expect(await page.evaluate(() => window.scrollY)).toBe(before);
+
+      const list = page.locator('[data-pipe]');
+      await page.locator('#ai-title').scrollIntoViewIfNeeded();
+      await expect(page.locator('.ai .float')).toHaveCSS('transform', 'none');
+      await page.waitForTimeout(1600);
+      await expect(list).toHaveAttribute('data-pipe-state', '0');
+      for (const phase of await list.locator('li').all()) {
+        await expect(phase).toHaveCSS('background-color', WHITE);
+        await expect(phase).toHaveCSS('transform', 'none');
+      }
+    });
+  });
+
+  /** Every group, item and phase is listed and in its final, unhighlighted state. */
+  async function expectStackAndAiListed(page: BrowserPage) {
+    const panels = page.locator('#stack [data-stack-panel]');
+    await expect(panels).toHaveCount(6);
+    for (const [index, panel] of (await panels.all()).entries()) {
+      await expect(panel).toBeVisible();
+      await expect(panel.locator('h3')).toHaveText(stackCopy.groups[index]!.title);
+    }
+    const items = page.locator('#stack [data-stack-item]');
+    await expect(items).toHaveCount(32);
+    for (const item of await items.all()) {
+      await expect(item).toBeVisible();
+      await expect(item).toHaveCSS('opacity', '1');
+    }
+    for (const tile of await page.locator('#stack .tile img').all()) {
+      await expect(tile).toHaveCSS('opacity', '1');
+    }
+    const phases = page.locator('[data-pipe] li');
+    await expect(phases).toHaveCount(5);
+    for (const phase of await phases.all()) {
+      await expect(phase).toBeVisible();
+      await expect(phase).toHaveCSS('background-color', WHITE);
+    }
+  }
+
+  test.describe(`tech stack and AI (${locale}) without JavaScript`, () => {
+    test.use({ javaScriptEnabled: false });
+
+    test('lists all six groups and five phases', async ({ page }) => {
+      await load(page, path);
+      for (const width of [1280, 375]) {
+        await page.setViewportSize({ width, height: 800 });
+        await expect(page.locator('#stack [role="tablist"]')).toBeHidden();
+        await expectStackAndAiListed(page);
+      }
+    });
+  });
+
+  test.describe(`tech stack and AI (${locale}) in print`, () => {
+    test.use({ viewport: { width: 1280, height: 800 } });
+
+    test('prints all six groups and five phases', async ({ page }) => {
+      await load(page, path);
+      await page.emulateMedia({ media: 'print' });
+      await expect(page.locator('#stack [role="tablist"]')).toBeHidden();
+      await expectStackAndAiListed(page);
+    });
+  });
+}
