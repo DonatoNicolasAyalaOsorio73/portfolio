@@ -27,6 +27,16 @@ export interface ProjectAction {
   primary: boolean;
 }
 
+/**
+ * The "Under the hood" dialog of a project: the ids of its build-flow steps (none, or four) and
+ * of its architecture nodes with their display codes. The dictionaries hold the text of each, in
+ * the same order and joined by `id` (`work.architecture.projects`).
+ */
+export interface Architecture {
+  flow: readonly string[];
+  nodes: readonly { id: string; code: string }[];
+}
+
 interface ProjectBase {
   id: string;
   /** Display number, kept from the legacy site (the others are not in sequence). */
@@ -40,6 +50,8 @@ interface ProjectBase {
   when?: { en: string; es: string };
   stack: readonly string[];
   access: Access;
+  /** Ids and codes of the "Under the hood" dialog; its copy is in `work.architecture`. */
+  architecture: Architecture;
   /** External links only; every one opens in a new tab. */
   actions: readonly ProjectAction[];
 }
@@ -68,6 +80,17 @@ export const featured: readonly FeaturedProject[] = [
     when: { en: 'Jan – Apr 2026', es: 'Ene – Abr 2026' },
     stack: ['WordPress', 'PHP', 'JavaScript', 'CSS', 'Cloudflare'],
     access: 'live',
+    architecture: {
+      flow: ['editor', 'role-check', 'action', 'audit-log'],
+      nodes: [
+        { id: 'editorial-team', code: 'N1' },
+        { id: 'custom-cms', code: 'N2' },
+        { id: 'traceability', code: 'N3' },
+        { id: 'recovery', code: 'N4' },
+        { id: 'delivery-and-health', code: 'N5' },
+        { id: 'how-it-was-built', code: 'N6' },
+      ],
+    },
     actions: [{ label: 'visitNarinohoy', href: 'https://xn--nariohoy-g3a.com/', primary: true }],
     shot: shotNarinohoy,
     domain: 'nariñohoy.com',
@@ -92,6 +115,18 @@ export const featured: readonly FeaturedProject[] = [
       'Playwright',
     ],
     access: 'livePriv',
+    architecture: {
+      flow: ['admin-login', 'new-certificate', 'id-qr-generated', 'public-lookup'],
+      nodes: [
+        { id: 'public-site', code: 'N1' },
+        { id: 'certificate-lookup', code: 'N2' },
+        { id: 'admin-panel', code: 'N3' },
+        { id: 'data-and-files', code: 'N4' },
+        { id: 'delivery', code: 'N5' },
+        { id: 'quality-and-ci', code: 'N6' },
+        { id: 'how-it-was-built', code: 'N7' },
+      ],
+    },
     actions: [{ label: 'visitSite', href: 'https://www.steadyguardians.com/', primary: true }],
     shot: shotSteady,
     domain: 'steadyguardians.com',
@@ -118,6 +153,19 @@ export const featured: readonly FeaturedProject[] = [
       'GitHub Actions',
     ],
     access: 'live',
+    architecture: {
+      flow: ['ride-on-device', 'server-scores-it', 'points-balance', 'qr-redemption'],
+      nodes: [
+        { id: 'clients', code: 'N1' },
+        { id: 'layers-and-platform-pairs', code: 'N2' },
+        { id: 'maps-and-eco-ruta', code: 'N3' },
+        { id: 'local-first-storage', code: 'N4' },
+        { id: 'serverless-api', code: 'N5' },
+        { id: 'firebase', code: 'N6' },
+        { id: 'quality-and-ci', code: 'N7' },
+        { id: 'how-it-was-built', code: 'N8' },
+      ],
+    },
     actions: [
       { label: 'demo', href: 'https://ecobike-demo.vercel.app/', primary: true },
       {
@@ -145,6 +193,16 @@ export const others: readonly OtherProject[] = [
     when: { en: 'Aug 2023 – Jul 2025', es: 'Ago 2023 – Jul 2025' },
     stack: ['Angular', 'TypeScript', 'Bootstrap', 'Supabase', 'Azure DevOps', 'Scrum'],
     access: 'priv',
+    architecture: {
+      flow: ['v01-website', 'tests-and-docs', 'v02-crm', 'team-of-4'],
+      nodes: [
+        { id: 'institutional-website', code: 'V01' },
+        { id: 'testing', code: 'V01' },
+        { id: 'automation-and-support', code: 'V01' },
+        { id: 'student-records-crm', code: 'V02' },
+        { id: 'team-and-process', code: 'V02' },
+      ],
+    },
     actions: [],
   },
   {
@@ -158,6 +216,17 @@ export const others: readonly OtherProject[] = [
     speed: 110,
     stack: ['Next.js 14', 'TypeScript', 'Tailwind CSS', 'Recharts', 'Gemini API', 'Vitest'],
     access: 'live',
+    architecture: {
+      flow: ['operation-done', 'inspection', 'batch-rejected', 'order-halted'],
+      nodes: [
+        { id: 'manufacturing', code: 'N1' },
+        { id: 'quality', code: 'N2' },
+        { id: 'two-way-integration', code: 'N3' },
+        { id: 'ai-assistant', code: 'N4' },
+        { id: 'data-and-dashboard', code: 'N5' },
+        { id: 'how-it-was-built', code: 'N6' },
+      ],
+    },
     actions: [
       { label: 'demo', href: 'https://siesa.vercel.app/', primary: true },
       {
@@ -179,6 +248,16 @@ export const others: readonly OtherProject[] = [
     when: { en: 'Feb – May 2023', es: 'Feb – May 2023' },
     stack: ['Angular', 'RxJS', 'JavaScript', 'REST', 'GitLab'],
     access: 'intern',
+    architecture: {
+      flow: [],
+      nodes: [
+        { id: 'interfaces', code: 'N1' },
+        { id: 'services', code: 'N2' },
+        { id: 'backend', code: 'N3' },
+        { id: 'api', code: 'N4' },
+        { id: 'version-control', code: 'N5' },
+      ],
+    },
     actions: [],
   },
 ];

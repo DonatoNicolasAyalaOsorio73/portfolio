@@ -1,5 +1,6 @@
 import { expect, test, type Page as BrowserPage } from '@playwright/test';
 import { LOCALES, PAGES, SITE } from '../scripts/pages.mjs';
+import { t } from '../src/i18n';
 import { href, routes, type RouteKey } from '../src/i18n/routes';
 
 test('the page list matches the routes module', () => {
@@ -554,6 +555,266 @@ for (const locale of LOCALES) {
     test('shows every project in place, unpinned and untilted', async ({ page }) => {
       await load(page, path);
       await expectWorkShown(page);
+    });
+  });
+}
+
+/** Scrolls the featured scene holding `id`'s button to its settled end, where it is in place. */
+async function settleScene(page: BrowserPage, id: string) {
+  await page.evaluate(async (projectId) => {
+    const button = document.querySelector(`[data-scene="sticky"] [data-arch-open="${projectId}"]`);
+    const scene = button?.closest<HTMLElement>('[data-scene="sticky"]');
+    if (!scene) return;
+    const top = scene.getBoundingClientRect().top + window.scrollY;
+    const distance = scene.offsetHeight - window.innerHeight;
+    window.scrollTo({ top: Math.round(top + 0.9 * distance), behavior: 'instant' });
+    await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+  }, id);
+}
+
+/** Opens `id`'s dialog from its visible "View architecture" button and returns both. */
+async function openArch(page: BrowserPage, id: string) {
+  await settleScene(page, id);
+  const button = page.locator(`#work [data-arch-open="${id}"]:visible`);
+  await expect(button).toHaveCount(1);
+  await button.click();
+  const dialog = page.locator(`dialog[data-arch="${id}"]`);
+  await expect(dialog).toBeVisible();
+  return { button, dialog };
+}
+
+/**
+ * Where keyboard focus is relative to `id`'s dialog: on its last control, elsewhere inside it,
+ * on `body` (focus has left the page for the browser chrome), or on a page element outside it.
+ */
+function focusPlace(page: BrowserPage, id: string) {
+  return page.evaluate((projectId) => {
+    const dialog = document.querySelector(`dialog[data-arch="${projectId}"]`)!;
+    const active = document.activeElement;
+    if (!active || active === document.body) return 'body';
+    if (!dialog.contains(active)) return 'outside';
+    const controls = dialog.querySelectorAll('button');
+    return active === controls[controls.length - 1] ? 'last' : 'inside';
+  }, id);
+}
+
+for (const locale of LOCALES) {
+  const path = href('home', locale);
+  const arch = t(locale).work.architecture;
+  const ecobike = arch.projects.find((entry) => entry.id === 'ecobike')!;
+
+  test.describe(`architecture dialog (${locale})`, () => {
+    test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'no-preference' });
+
+    test('opens EcoBike with the first node selected, Close focused, the page inert', async ({
+      page,
+    }) => {
+      await load(page, path);
+      const { dialog } = await openArch(page, 'ecobike');
+      expect(await dialog.evaluate((el) => el.matches(':modal'))).toBe(true);
+      await expect(dialog).toHaveAttribute('data-arch-state', 'in');
+      await expect(dialog).toHaveAttribute('data-arch-node', '0');
+      await expect(dialog.locator('.eyebrow')).toHaveText(arch.eyebrow);
+      await expect(dialog.locator('h2')).toHaveText(`EcoBike${arch.titleSuffix}`);
+      await expect(dialog.locator('[data-arch-close]')).toBeFocused();
+      const nodes = dialog.locator('[data-arch-select]');
+      await expect(nodes).toHaveCount(ecobike.nodes.length);
+      await expect(nodes.first()).toHaveAttribute('aria-pressed', 'true');
+      await expect(dialog.locator('.pane:visible')).toHaveCount(1);
+      await expect(dialog.locator('.pane:visible')).toContainText(ecobike.nodes[0]!.label);
+      await expect(dialog.locator('.panel')).toHaveCSS('opacity', '1');
+      await expect(page.locator('html')).toHaveCSS('overflow-y', 'hidden');
+
+      // The page behind does not scroll.
+      const scrollY = await page.evaluate(() => window.scrollY);
+      await page.mouse.move(640, 5);
+      await page.mouse.wheel(0, 600);
+      await page.waitForTimeout(200);
+      expect(await page.evaluate(() => window.scrollY)).toBe(scrollY);
+    });
+
+    test('selects node 3 and shows its detail', async ({ page }) => {
+      await load(page, path);
+      const { dialog } = await openArch(page, 'ecobike');
+      const nodes = dialog.locator('[data-arch-select]');
+      await nodes.nth(2).click();
+      await expect(dialog).toHaveAttribute('data-arch-node', '2');
+      for (const [index, node] of (await nodes.all()).entries()) {
+        await expect(node).toHaveAttribute('aria-pressed', String(index === 2));
+      }
+      await expect(nodes.nth(2)).toHaveCSS('border-color', 'rgb(111, 168, 255)');
+      const pane = dialog.locator('.pane:visible');
+      await expect(pane).toHaveCount(1);
+      const third = ecobike.nodes[2]!;
+      await expect(pane).toContainText(third.label);
+      await expect(pane).toContainText(third.role);
+      await expect(pane).toContainText(third.tech);
+      await expect(dialog.locator('[aria-live="polite"]')).toHaveCount(1);
+    });
+
+    test('advances the flow from step 1 to step 2', async ({ page }) => {
+      await load(page, path);
+      const { dialog } = await openArch(page, 'ecobike');
+      const flow = dialog.locator('[data-flow]');
+      const white = 'rgb(255, 255, 255)';
+      await expect(flow).toHaveAttribute('data-flow-state', '0');
+      await expect(flow.locator('.step').first()).toHaveCSS('background-color', white);
+      await page.waitForTimeout(1500);
+      await expect(flow).toHaveAttribute('data-flow-state', '1');
+      await expect(flow.locator('.step').nth(1)).toHaveCSS('background-color', white);
+    });
+
+    test('Escape closes and returns focus to the opening button', async ({ page }) => {
+      await load(page, path);
+      const { button, dialog } = await openArch(page, 'ecobike');
+      await page.keyboard.press('Escape');
+      await expect(dialog).toHaveAttribute('data-arch-state', 'closed');
+      await expect(dialog).toBeHidden();
+      await expect(button).toBeFocused();
+      await expect(page.locator('html')).not.toHaveCSS('overflow-y', 'hidden');
+    });
+
+    test('closes on a press and release on the scrim, not on a drag across its edge', async ({
+      page,
+    }) => {
+      await load(page, path);
+      const { button, dialog } = await openArch(page, 'ecobike');
+      // Once risen, the 94vh panel leaves the scrim's top 24px padding free.
+      await expect(dialog.locator('.panel')).toHaveCSS('transform', 'none');
+      const panel = (await dialog.locator('.panel').boundingBox())!;
+      const scrim = { x: 640, y: panel.y / 2 };
+      expect(panel.y).toBeGreaterThan(10);
+
+      await page.mouse.move(panel.x + panel.width / 2, panel.y + 40);
+      await page.mouse.down();
+      await page.mouse.move(scrim.x, scrim.y);
+      await page.mouse.up();
+      await page.waitForTimeout(400);
+      await expect(dialog).toBeVisible();
+      await expect(dialog).toHaveAttribute('data-arch-state', 'in');
+
+      // Pressed on the scrim, released inside the panel: stays open too.
+      await page.mouse.move(scrim.x, scrim.y);
+      await page.mouse.down();
+      await page.mouse.move(panel.x + panel.width / 2, panel.y + 40);
+      await page.mouse.up();
+      await page.waitForTimeout(400);
+      await expect(dialog).toBeVisible();
+      await expect(dialog).toHaveAttribute('data-arch-state', 'in');
+
+      await page.mouse.click(scrim.x, scrim.y);
+      await expect(dialog).toBeHidden();
+      await expect(button).toBeFocused();
+    });
+
+    test('keeps keyboard focus inside while open and returns it after', async ({ page }) => {
+      await load(page, path);
+      await settleScene(page, 'ecobike');
+      const button = page.locator('#work [data-arch-open="ecobike"]:visible');
+      // Reach the button with Tab from the top of the page.
+      let reached = false;
+      for (let step = 0; step < 200 && !reached; step++) {
+        await page.keyboard.press('Tab');
+        reached = await button.evaluate((el) => el === document.activeElement);
+      }
+      expect(reached, 'Tab reaches "View architecture"').toBe(true);
+      await page.keyboard.press('Enter');
+      const dialog = page.locator('dialog[data-arch="ecobike"]');
+      await expect(dialog).toBeVisible();
+      await expect(dialog.locator('[data-arch-close]')).toBeFocused();
+
+      // Forward and back past both ends: focus is in the dialog, or on body (browser chrome)
+      // only right after the last (or first) dialog control; never on the page behind.
+      for (const key of ['Tab', 'Shift+Tab']) {
+        let previous = await focusPlace(page, 'ecobike');
+        const presses = ecobike.nodes.length + 4;
+        for (let step = 0; step < presses; step++) {
+          await page.keyboard.press(key);
+          const place = await focusPlace(page, 'ecobike');
+          const label = `${key} ${step + 1}: ${previous} → ${place}`;
+          expect(place, label).not.toBe('outside');
+          if (place === 'body') {
+            const edge = key === 'Tab' ? previous === 'last' : previous !== 'last';
+            expect(edge || previous === 'body', label).toBe(true);
+          }
+          previous = place;
+        }
+        await dialog.locator('[data-arch-close]').focus();
+      }
+
+      await dialog.locator('[data-arch-select]').nth(1).focus();
+      await page.keyboard.press('Enter');
+      await expect(dialog).toHaveAttribute('data-arch-node', '1');
+      await page.keyboard.press('Escape');
+      await expect(dialog).toBeHidden();
+      await expect(button).toBeFocused();
+    });
+
+    test('Cognitios has no flow row', async ({ page }) => {
+      await load(page, path);
+      const { dialog } = await openArch(page, 'cognitios');
+      await expect(dialog.locator('h2')).toHaveText(`Cognitios${arch.titleSuffix}`);
+      await expect(dialog.locator('[data-flow]')).toHaveCount(0);
+      await expect(dialog.locator('[data-arch-select]')).toHaveCount(5);
+    });
+
+    test('every project opens its own dialog', async ({ page }) => {
+      await load(page, path);
+      for (const project of arch.projects) {
+        const { button, dialog } = await openArch(page, project.id);
+        await expect(dialog.locator('.intro')).toHaveText(project.intro);
+        await dialog.locator('[data-arch-close]').click();
+        await expect(dialog).toBeHidden();
+        await expect(button).toBeFocused();
+      }
+    });
+  });
+
+  test.describe(`architecture dialog (${locale}) with reduced motion`, () => {
+    test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
+
+    test('opens and closes without animation or flow cycling', async ({ page }) => {
+      await load(page, path);
+      const { button, dialog } = await openArch(page, 'ecobike');
+      const look = await dialog.locator('.panel').evaluate((el) => {
+        const style = getComputedStyle(el);
+        return {
+          opacity: style.opacity,
+          transform: style.transform,
+          duration: style.transitionDuration,
+        };
+      });
+      expect(look).toEqual({ opacity: '1', transform: 'none', duration: '0s' });
+      const flow = dialog.locator('[data-flow]');
+      const first = flow.locator('.step').first();
+      await expect(first).not.toHaveCSS('background-color', 'rgb(255, 255, 255)');
+      await page.waitForTimeout(1600);
+      await expect(flow).toHaveAttribute('data-flow-state', '0');
+
+      // Closing is immediate: the dialog is closed right after the click.
+      const stillOpen = await dialog.evaluate((el) => {
+        el.querySelector<HTMLElement>('[data-arch-close]')!.click();
+        return (el as HTMLDialogElement).open;
+      });
+      expect(stillOpen).toBe(false);
+      await expect(button).toBeFocused();
+    });
+  });
+
+  test.describe(`architecture dialog (${locale}) without JavaScript`, () => {
+    test.use({ javaScriptEnabled: false });
+
+    test('shows no architecture buttons', async ({ page }) => {
+      await load(page, path);
+      for (const width of [1280, 375]) {
+        await page.setViewportSize({ width, height: 800 });
+        const buttons = page.locator('[data-arch-open]');
+        await expect(buttons).toHaveCount(9);
+        for (const button of await buttons.all()) await expect(button).toBeHidden();
+      }
+      const dialogs = page.locator('dialog[data-arch]');
+      await expect(dialogs).toHaveCount(6);
+      for (const dialog of await dialogs.all()) await expect(dialog).toBeHidden();
     });
   });
 }

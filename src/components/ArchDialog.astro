@@ -1,0 +1,499 @@
+---
+/**
+ * A project's "Under the hood" dialog: a native modal `<dialog>` opened by the project's
+ * "View architecture" buttons (`[data-arch-open]`). It holds the intro, the build flow (when the
+ * project has one), the architecture nodes and one detail pane per node, all prerendered.
+ *
+ * `src/scripts/arch.ts` drives it only through state attributes, and every look is CSS on them:
+ * - `data-arch-state` (`closed` / `in`): the scrim darkens and the panel fades in and rises 60px.
+ * - `data-arch-node` (index): the detail pane shown; the node buttons carry the matching
+ *   `aria-pressed`, which highlights the selected one.
+ * - `data-flow-state` (index) on the flow row: the active step turns white and lifts 4px.
+ * With reduced motion nothing animates, no flow step is active and the dialog shows at once.
+ */
+import { Picture } from 'astro:assets';
+import type { FeaturedProject, OtherProject } from '../data/projects';
+import { t, type Locale } from '../i18n';
+import ProjectVars from './ProjectVars.astro';
+
+interface Props {
+  locale: Locale;
+  project: FeaturedProject | OtherProject;
+}
+
+const { locale, project } = Astro.props;
+const arch = t(locale).work.architecture;
+const text = arch.projects.find((entry) => entry.id === project.id);
+if (!text) throw new Error(`No ${locale} architecture copy for project "${project.id}"`);
+
+/** Joins the data ids to their copy by `id`; a missing or extra entry is a build error. */
+function join<D extends { id: string }, C extends { id: string }>(
+  what: string,
+  items: readonly D[],
+  texts: readonly C[],
+) {
+  if (items.length !== texts.length) {
+    throw new Error(`"${project.id}" has ${items.length} ${what} but ${texts.length} in ${locale}`);
+  }
+  return items.map((item) => {
+    const copy = texts.find((entry) => entry.id === item.id);
+    if (!copy) throw new Error(`No ${locale} copy for ${what} "${item.id}" of "${project.id}"`);
+    return { item, copy };
+  });
+}
+
+const flow = join(
+  'flow steps',
+  project.architecture.flow.map((id) => ({ id })),
+  text.flow,
+);
+const nodes = join('nodes', project.architecture.nodes, text.nodes).map(({ item, copy }) => ({
+  id: item.id,
+  code: item.code,
+  label: copy.label,
+  sub: copy.sub,
+  fields: [
+    { label: arch.fields.role, value: copy.role, muted: false },
+    { label: arch.fields.tech, value: copy.tech, muted: false },
+    ...('why' in copy ? [{ label: arch.fields.why, value: copy.why, muted: false }] : []),
+    ...('tradeoff' in copy
+      ? [{ label: arch.fields.tradeoff, value: copy.tradeoff, muted: true }]
+      : []),
+  ],
+}));
+
+const dialogId = `arch-${project.id}`;
+const titleId = `${dialogId}-title`;
+---
+
+<ProjectVars vars={{ 'logo-radius': project.logoRadius }}>
+  <dialog
+    class="dialog"
+    id={dialogId}
+    data-arch={project.id}
+    data-arch-state="closed"
+    data-arch-node="0"
+    aria-labelledby={titleId}
+  >
+    <div class="panel">
+      <div class="head">
+        <div class="brand">
+          <div class="tile">
+            <Picture
+              src={project.logo}
+              formats={['avif', 'webp']}
+              widths={[56, 112]}
+              sizes="56px"
+              width={112}
+              height={Math.round((112 * project.logo.height) / project.logo.width)}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              fallbackFormat="webp"
+            />
+          </div>
+          <div class="names">
+            <div class="eyebrow">{arch.eyebrow}</div>
+            <h2 class="title" id={titleId}>
+              {project.name}
+              {arch.titleSuffix}
+            </h2>
+          </div>
+        </div>
+        <button type="button" class="close" data-arch-close>
+          {arch.close}
+        </button>
+      </div>
+      <p class="intro">{text.intro}</p>
+      {flow.length > 0 && (
+        <ol class="flow" data-flow data-flow-state="0">
+          {flow.map(({ copy }, index) => (
+            <li class="step" data-index={index}>
+              <span class="step-number">{String(index + 1).padStart(2, '0')}</span>
+              <span class="step-label">{copy.label}</span>
+            </li>
+          ))}
+        </ol>
+      )}
+      <div class="body">
+        <ul class="nodes">
+          {nodes.map((node, index) => (
+            <li class="node-row">
+              <button
+                type="button"
+                class="node"
+                data-arch-select={index}
+                aria-pressed={index === 0 ? 'true' : 'false'}
+              >
+                <span>
+                  <span class="node-label">{node.label}</span>
+                  <span class="node-sub">{node.sub}</span>
+                </span>
+                <span class="node-code">{node.code}</span>
+              </button>
+              {index < nodes.length - 1 && <span class="line" aria-hidden="true" />}
+            </li>
+          ))}
+        </ul>
+        <div class="detail" aria-live="polite">
+          {nodes.map((node, index) => (
+            <div class="pane" data-index={index}>
+              <div class="pane-code">{node.code}</div>
+              <div class="pane-label">{node.label}</div>
+              <dl class="fields">
+                {node.fields.map((field) => (
+                  <div>
+                    <dt>{field.label}</dt>
+                    <dd class:list={{ muted: field.muted }}>{field.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </dialog>
+</ProjectVars>
+
+<script>
+  import '../scripts/arch';
+</script>
+
+<style>
+  /* The dialog element is the full-screen scrim; the panel sits at its bottom. */
+  .dialog {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border: 0;
+    padding: var(--space-fluid-scrim);
+    color: var(--color-white);
+    background: var(--color-scrim);
+    -webkit-backdrop-filter: blur(var(--size-blur-scrim));
+    backdrop-filter: blur(var(--size-blur-scrim));
+    overflow: hidden;
+  }
+
+  .dialog[open] {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .dialog::backdrop {
+    background: var(--color-transparent);
+  }
+
+  /* The page behind does not scroll while a dialog is open. */
+  :global(html:has(dialog[data-arch][open])) {
+    overflow: hidden;
+  }
+
+  .panel {
+    background: var(--color-black);
+    color: var(--color-white);
+    width: 100%;
+    max-width: var(--size-content);
+    max-height: var(--size-panel-height);
+    overflow: auto;
+    border-radius: var(--radius-panel);
+    padding: var(--space-fluid-panel);
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-16);
+  }
+
+  .brand {
+    display: flex;
+    gap: var(--space-20);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .tile {
+    width: var(--size-arch-logo);
+    height: var(--size-arch-logo);
+    flex-shrink: 0;
+    border-radius: var(--radius-frame);
+    background: var(--color-white);
+    padding: var(--space-8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .tile :global(picture) {
+    display: contents;
+  }
+
+  .tile :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: var(--logo-radius);
+  }
+
+  .names {
+    min-width: 0;
+  }
+
+  .eyebrow {
+    font-size: var(--font-size-14);
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    color: var(--color-on-dark-label);
+  }
+
+  .title {
+    font-size: var(--font-size-arch-title);
+    line-height: var(--line-height-tight);
+    letter-spacing: -0.045em;
+    font-weight: 800;
+    margin: var(--space-8) 0 0;
+  }
+
+  .close {
+    font: inherit;
+    font-size: var(--font-size-14);
+    font-weight: 500;
+    cursor: pointer;
+    flex-shrink: 0;
+    border-radius: var(--radius-pill);
+    padding: var(--space-10) var(--space-18);
+    background: var(--color-on-dark-soft);
+    color: var(--color-white);
+    border: var(--size-hairline) solid var(--color-on-dark-border);
+  }
+
+  .close:hover {
+    background: var(--color-on-dark-hover);
+  }
+
+  .intro {
+    font-size: var(--font-size-step-note);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-on-dark-text);
+    max-width: var(--size-arch-intro);
+    margin: var(--space-24) 0 0;
+  }
+
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--size-flow-min)), 1fr));
+    gap: var(--space-10);
+    margin: var(--space-32) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .step {
+    border-radius: var(--radius-step);
+    padding: var(--space-18) var(--space-20);
+    background: var(--color-on-dark-step);
+    color: var(--color-white);
+  }
+
+  .step-number {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-13);
+    opacity: 0.6;
+  }
+
+  .step-label {
+    display: block;
+    font-size: var(--font-size-16);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-top: var(--space-6);
+  }
+
+  .body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--size-arch-column)), 1fr));
+    gap: var(--space-24);
+    margin-top: var(--space-32);
+    align-items: start;
+  }
+
+  .nodes {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .node-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .node {
+    font: inherit;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    border-radius: var(--radius-frame);
+    padding: var(--space-16) var(--space-20);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-12);
+    color: var(--color-white);
+    background: var(--color-on-dark-faint);
+    border: var(--size-hairline) solid var(--color-on-dark-line);
+  }
+
+  .node[aria-pressed='true'] {
+    background: var(--color-arch-selected);
+    border-color: var(--color-arch-accent);
+  }
+
+  .node-label {
+    display: block;
+    font-size: var(--font-size-17);
+    font-weight: 600;
+  }
+
+  .node-sub {
+    display: block;
+    font-size: var(--font-size-15);
+    color: var(--color-on-dark-text);
+    margin-top: var(--space-3);
+  }
+
+  .node-code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-14);
+    color: var(--color-on-dark-label);
+  }
+
+  .line {
+    width: var(--space-2);
+    height: var(--space-12);
+    background: var(--color-on-dark-hover);
+  }
+
+  .detail {
+    background: var(--color-arch-card);
+    border: var(--size-hairline) solid var(--color-on-dark-soft);
+    border-radius: var(--radius-detail);
+    padding: var(--space-fluid-detail);
+    position: sticky;
+    top: 0;
+  }
+
+  /* One pane per node; `data-arch-node` on the dialog picks the one shown (up to 8 nodes). */
+  .pane {
+    display: none;
+  }
+
+  .dialog[data-arch-node='0'] .pane[data-index='0'],
+  .dialog[data-arch-node='1'] .pane[data-index='1'],
+  .dialog[data-arch-node='2'] .pane[data-index='2'],
+  .dialog[data-arch-node='3'] .pane[data-index='3'],
+  .dialog[data-arch-node='4'] .pane[data-index='4'],
+  .dialog[data-arch-node='5'] .pane[data-index='5'],
+  .dialog[data-arch-node='6'] .pane[data-index='6'],
+  .dialog[data-arch-node='7'] .pane[data-index='7'] {
+    display: block;
+  }
+
+  .pane-code {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-14);
+    color: var(--color-arch-accent);
+  }
+
+  .pane-label {
+    font-size: var(--font-size-arch-detail);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-top: var(--space-6);
+  }
+
+  .fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-20);
+    margin: var(--space-24) 0 0;
+  }
+
+  .fields dt {
+    font-size: var(--font-size-14);
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    color: var(--color-on-dark-label);
+  }
+
+  .fields dd {
+    font-size: var(--font-size-16);
+    line-height: var(--line-height-relaxed);
+    margin: var(--space-6) 0 0;
+  }
+
+  .fields dd.muted {
+    color: var(--color-on-dark-text);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .dialog {
+      transition: background var(--dur-scrim);
+    }
+
+    .panel {
+      transition:
+        opacity var(--dur-nav) var(--ease-out),
+        transform var(--dur-panel) var(--ease-out);
+    }
+
+    .dialog:not([data-arch-state='in']) {
+      background: var(--color-transparent);
+    }
+
+    .dialog:not([data-arch-state='in']) .panel {
+      opacity: 0;
+      transform: translateY(var(--space-60));
+    }
+
+    .step {
+      transition:
+        background var(--dur-nav) var(--ease-out),
+        color var(--dur-nav) var(--ease-out),
+        transform var(--dur-nav) var(--ease-out);
+    }
+
+    /* The active flow step; the flow does not cycle under reduced motion, so none is active. */
+    .flow[data-flow-state='0'] .step[data-index='0'],
+    .flow[data-flow-state='1'] .step[data-index='1'],
+    .flow[data-flow-state='2'] .step[data-index='2'],
+    .flow[data-flow-state='3'] .step[data-index='3'] {
+      background: var(--color-white);
+      color: var(--color-ink);
+      transform: translateY(calc(-1 * var(--space-4)));
+    }
+
+    .node {
+      transition:
+        background var(--dur-press),
+        border-color var(--dur-press),
+        transform var(--dur-press) var(--ease-out);
+    }
+
+    .node:hover {
+      transform: translateX(var(--space-6));
+    }
+  }
+</style>

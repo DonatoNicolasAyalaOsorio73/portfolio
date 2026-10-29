@@ -74,20 +74,27 @@ const meta = [
         <li>{name}</li>
       ))}
     </ul>
-    {project.actions.length > 0 && (
-      <div class="actions">
-        {project.actions.map((action) => (
-          <a
-            class:list={['action', { primary: action.primary }]}
-            href={action.href}
-            target="_blank"
-            rel="noopener"
-          >
-            {work.actions[action.label]}
-          </a>
-        ))}
-      </div>
-    )}
+    <div class:list={['actions', { 'js-only': project.actions.length === 0 }]}>
+      {project.actions.map((action) => (
+        <a
+          class:list={['action', { primary: action.primary }]}
+          href={action.href}
+          target="_blank"
+          rel="noopener"
+        >
+          {work.actions[action.label]}
+        </a>
+      ))}
+      <button
+        type="button"
+        class="action arch-open"
+        data-arch-open={project.id}
+        aria-haspopup="dialog"
+        aria-controls={`arch-${project.id}`}
+      >
+        {work.architecture.open}
+      </button>
+    </div>
     <div class="access">
       <span class="access-dot" data-access={project.access}></span>
       {work.access[project.access]}
@@ -186,6 +193,27 @@ const meta = [
     flex-wrap: wrap;
     gap: var(--space-8);
     align-items: center;
+  }
+
+  /* "View architecture" opens a dialog that needs JavaScript, so it shows only with it, and a
+     row holding nothing else shows only then too. */
+  .arch-open,
+  .actions.js-only {
+    display: none;
+  }
+
+  .arch-open {
+    font-family: inherit;
+    line-height: inherit;
+    cursor: pointer;
+  }
+
+  :global(html.js) .arch-open {
+    display: inline-block;
+  }
+
+  :global(html.js) .actions.js-only {
+    display: flex;
   }
 
   .action {
