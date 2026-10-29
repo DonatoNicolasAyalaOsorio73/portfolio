@@ -1,0 +1,24 @@
+/*
+ * Cross-section motion (AD-9): shared `mo-` keyframes, view-transition rules and
+ * the `[data-reveal]` rules. Every animation is applied inside
+ * `@media (prefers-reduced-motion: no-preference)`. A section may use these
+ * keyframes or define its own `local-` ones; it never redefines an `mo-` name.
+ *
+ * view-transition-name registry
+ * | Name | Element | Owner |
+ * | ---- | ------- | ----- |
+ * (none yet)
+ */
+
+/* Fade in while rising 40px into place. */
+@keyframes mo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-40));
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

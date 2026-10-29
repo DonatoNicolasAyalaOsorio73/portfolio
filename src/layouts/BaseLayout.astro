@@ -1,0 +1,103 @@
+---
+/**
+ * The document shell (AD-6): the only file that writes `<head>` content, including the
+ * site's single inline script (AD-7). The nav and footer arrive in later stories.
+ */
+import '../styles/global.css';
+import { t, type Locale } from '../i18n';
+import { href, type RouteKey } from '../i18n/routes';
+
+interface Props {
+  locale: Locale;
+  route: RouteKey;
+  ogImage?: string;
+}
+
+const { locale, route, ogImage = '/assets/og-image.jpg' } = Astro.props;
+const copy = t(locale);
+const { title, description } = copy.meta[route];
+const canonical = new URL(href(route, locale), Astro.site).href;
+const alternates = {
+  en: new URL(href(route, 'en'), Astro.site).href,
+  es: new URL(href(route, 'es'), Astro.site).href,
+};
+// English pages send legacy `?lang=es` links to their Spanish twin; Spanish pages never redirect.
+const legacyTarget = locale === 'en' ? href(route, 'es') : null;
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+const ogLocales: Record<Locale, string> = { en: 'en_US', es: 'es_CO' };
+const ogAlternate = locale === 'en' ? ogLocales.es : ogLocales.en;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={alternates.en} />
+    <link rel="alternate" hreflang="es" href={alternates.es} />
+    <link rel="alternate" hreflang="x-default" href={alternates.en} />
+    <script is:inline define:vars={{ legacyTarget }}>
+      document.documentElement.classList.add('js');
+      if (legacyTarget && new URLSearchParams(location.search).get('lang') === 'es') {
+        location.replace(legacyTarget + location.hash);
+      }
+    </script>
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={copy.meta.siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={copy.meta.ogImageAlt} />
+    <meta property="og:locale" content={ogLocales[locale]} />
+    <meta property="og:locale:alternate" content={ogAlternate} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="theme-color" content="#FFFFFF" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body>
+    <a class="skip" href="#top" data-skip>
+      {copy.chrome.skip}
+    </a>
+    <main id="top">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  .skip {
+    position: fixed;
+    top: var(--space-12);
+    left: var(--space-12);
+    z-index: var(--layer-skip);
+    padding: var(--space-12) var(--space-18);
+    border-radius: var(--radius-pill);
+    background: var(--color-ink);
+    color: var(--color-white);
+    font-size: var(--font-size-15);
+    font-weight: 600;
+    transform: translateY(-200%);
+  }
+
+  .skip:focus {
+    transform: none;
+    color: var(--color-white);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .skip {
+      transition: transform var(--dur-fast);
+    }
+  }
+</style>

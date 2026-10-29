@@ -1,0 +1,133 @@
+# Stories of epic-astro-site-parity. Table order is build order. `id` is permanent, never reused.
+
+[[entry]]
+id = 1
+type = "story"
+title = "Astro scaffold builds the English home hero through CI"
+description = "Creates the Astro project with the spine's tooling (EditorConfig, Prettier, ESLint, strict TypeScript), tokens, BaseLayout, routes and i18n skeleton, and a home page with the hero only; CI runs check, lint, format, build and the dist check without deploying."
+verify = "On a pull request CI is green, and npm run preview shows the English hero at / built from src/, with the legacy site untouched in production."
+covers = ["R1", "R5", "R6"]
+after = []
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 2
+type = "story"
+title = "Spanish twins, head tags and legacy links work"
+description = "Adds /es/ wrappers, routes.ts href and twin, BaseLayout canonical, hreflang, Open Graph and the inline script (?lang=es redirect, js class), the i18n sitemap and robots.txt, and public/assets at stable paths."
+verify = "The build has / and /es/ with correct canonical and hreflang, /?lang=es opens /es/, sitemap-index.xml lists both, and /assets/cv-donato-ayala.pdf resolves in preview."
+covers = ["R3", "R4", "R8"]
+after = [1]
+hitl = false
+risk = "high"
+
+[[entry]]
+id = 3
+type = "story"
+title = "Playwright smoke tests and parity screenshots"
+description = "Adds Playwright: CI smoke tests over every built URL (renders, hreflang, canonical, ?lang=es, empty storage, no third-party requests) and a local script that captures the legacy and Astro pages at 375 and 1280 px, EN and ES, side by side."
+verify = "CI runs the smoke tests green on the pages built so far, and the screenshot script writes paired legacy and Astro captures of the home page."
+covers = ["R9", "R2"]
+after = [2]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 4
+type = "story"
+title = "Nav, footer and language switch match the current site"
+description = "Ports the nav (with its current morph on scroll), footer, skip link and LangSwitch into components rendered once by BaseLayout, with their copy in both dictionaries and the scroll state set through data-nav-state."
+verify = "The parity captures of the home chrome match the legacy site at 375 and 1280 px in EN and ES, and switching language lands on the twin URL without storing anything."
+covers = ["R2", "R8"]
+after = [3]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 5
+type = "story"
+title = "Home hero, statement sequence and work section match"
+description = "Ports the full hero (photo, reveals, CTAs), the statement sequence and the work section with its project data in src/data, keeping today's motion."
+verify = "The parity captures of these sections match the legacy home in EN and ES at both widths, and the dist check keeps the home under 50 KB of JavaScript."
+covers = ["R2", "R5"]
+after = [4]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 6
+type = "story"
+title = "Home stack, journey, about and contact match"
+description = "Ports the remaining home sections, including certificates, education, the CV download and the contact links, completing the home page in both languages."
+verify = "The full-page parity captures of / and /es/ match the legacy home at both widths."
+covers = ["R2"]
+after = [5]
+hitl = false
+risk = "low"
+
+[[entry]]
+id = 7
+type = "story"
+title = "EcoBike page matches in both languages"
+description = "Ports ecobike.html as EcobikeView with its gallery, demo video and poster from public/assets, its own Open Graph image, and its /es/ twin."
+verify = "The parity captures of /ecobike.html and /es/ecobike.html match the legacy page at both widths, and the smoke tests cover both URLs."
+covers = ["R2", "R4"]
+after = [6]
+hitl = false
+risk = "low"
+
+[[entry]]
+id = 8
+type = "story"
+title = "Privacy page states no storage, and one bilingual 404"
+description = "Ports privacy.html with its EN and ES text updated to say the site stores nothing, and builds the single bilingual 404 (noindex, outside the sitemap) per AD-8."
+verify = "The privacy captures match the legacy layout with the new storage text in both languages, and /es/missing shows the Spanish 404 in preview."
+covers = ["R2", "R8"]
+after = [7]
+hitl = false
+risk = "low"
+
+[[entry]]
+id = 9
+type = "story"
+title = "AGENTS.md describes the Astro project"
+description = "Rewrites AGENTS.md for the Astro stack: commands to run, build, test and preview, where pages, copy, data and styles live, and the spine's conventions; removes the x-dc rules and keeps the privacy duty."
+verify = "A fresh agent following only AGENTS.md runs the dev server, the checks and the smoke tests successfully."
+covers = ["R7"]
+after = [2]
+hitl = false
+risk = "low"
+
+[[entry]]
+id = 10
+type = "story"
+title = "Parity sign-off, budget run and cutover to Actions"
+description = "Dona reviews every parity capture and the Lighthouse mobile runs; the deploy job is switched on, Dona sets the Pages source to GitHub Actions with the custom domain, the main ruleset and auto-delete head branches, and the Astro site goes live."
+verify = "donacode.link serves the Astro build deployed by Actions, Lighthouse mobile on home and EcoBike EN and ES meets the budget, and the smoke tests pass against production."
+covers = ["R2", "R5", "R6"]
+after = [3, 6, 7, 8]
+hitl = true
+risk = "high"
+
+[[entry]]
+id = 11
+type = "story"
+title = "Legacy x-dc site removed"
+description = "Deletes support.js, the legacy root HTML pages, the old sitemap.xml and the root assets now served from src/assets or public/assets, once production has run on Astro."
+verify = "The repository has no support.js or x-dc pages, CI is green, and every production URL still answers."
+covers = ["R1"]
+after = [10]
+hitl = false
+risk = "low"
+
+[[entry]]
+id = 12
+type = "story"
+title = "Refactor sweep"
+description = "Cleans up what the epic's plans and reviews deferred, without new scope."
+verify = "CI is green and the deferred items listed at its start are closed or moved to new stories."
+covers = []
+after = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+hitl = false
+risk = "low"
