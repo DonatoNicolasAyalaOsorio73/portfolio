@@ -3,6 +3,11 @@ dist/
 node_modules/
 .astro/
 
+# Playwright results and local parity captures (never committed)
+parity/
+test-results/
+playwright-report/
+
 # Logs and local env
 npm-debug.log*
 .env

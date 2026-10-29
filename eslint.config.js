@@ -46,6 +46,10 @@ export default defineConfig(
       'dist/',
       'node_modules/',
       '.astro/',
+      // Playwright results and local parity captures.
+      'parity/',
+      'test-results/',
+      'playwright-report/',
       // Legacy site, removed at the end of epic 1.
       'support.js',
       'assets/',

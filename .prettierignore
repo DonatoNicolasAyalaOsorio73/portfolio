@@ -1,6 +1,9 @@
 dist/
 node_modules/
 .astro/
+parity/
+test-results/
+playwright-report/
 package-lock.json
 
 # Legacy site, removed at the end of epic 1
