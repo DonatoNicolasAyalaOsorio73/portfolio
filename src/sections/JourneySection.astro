@@ -1,0 +1,164 @@
+---
+/**
+ * Experience, year by year: a timeline of eight entries. Each entry reveals once in view
+ * (`data-reveal="journey"` in `motion.css`): the year slides in and turns from grey to ink, the
+ * dot pops in while its ring expands and fades, the line draws down, and the stage and note rise
+ * into place. Without JavaScript or with reduced motion every entry is in its final state.
+ */
+import { journey } from '../data/about';
+import { t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale).journey;
+
+/** Joins each entry to its dictionary text; a missing one is a build error. */
+const entries = journey.map((entry) => {
+  const text = copy.entries.find((item) => item.id === entry.id);
+  if (!text) throw new Error(`No ${locale} copy for journey entry "${entry.id}"`);
+  return { ...entry, ...text };
+});
+---
+
+<section id="journey" class="journey" aria-labelledby="journey-title">
+  <div class="inner">
+    <h2 id="journey-title" class="heading">
+      <span class="line">{copy.headingLine1}</span>
+      <span class="line">{copy.headingLine2}</span>
+    </h2>
+    <ol class="entries">
+      {entries.map((entry) => (
+        <li class="entry" data-reveal="journey">
+          <div class="year" data-reveal-part="year">
+            {entry.year}
+          </div>
+          <div class="rail" aria-hidden="true">
+            <span class="marker">
+              <span class="ring" data-reveal-part="ring" />
+              <span class="dot" data-reveal-part="dot" />
+            </span>
+            <span class="track" data-reveal-part="line" />
+          </div>
+          <div class="text">
+            <div class="stage" data-reveal-part="stage">
+              {entry.stage}
+            </div>
+            <div class="note" data-reveal-part="note">
+              {entry.note}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<script>
+  import '../scripts/reveal';
+</script>
+
+<style>
+  .journey {
+    padding: var(--space-fluid-work) var(--space-24);
+  }
+
+  .inner {
+    max-width: var(--size-phil);
+    margin: 0 auto;
+  }
+
+  .heading {
+    font-size: var(--font-size-section-heading);
+    line-height: var(--line-height-heading);
+    letter-spacing: -0.05em;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .line {
+    display: block;
+  }
+
+  .entries {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-fluid-ai-top) 0 0;
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: minmax(0, var(--size-arch-logo)) var(--space-20) minmax(0, 1fr);
+    gap: var(--space-fluid-journey-gap);
+  }
+
+  .year {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-15);
+    font-weight: 600;
+    color: var(--color-ink);
+    padding-top: var(--space-4);
+    text-align: right;
+  }
+
+  .rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .marker {
+    position: relative;
+    width: var(--size-journey-dot);
+    height: var(--size-journey-dot);
+    margin-top: var(--space-6);
+    flex-shrink: 0;
+  }
+
+  .ring,
+  .dot {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-round);
+  }
+
+  /* The ring's final state: expanded and faded out. */
+  .ring {
+    background: var(--color-ring);
+    opacity: 0;
+    transform: scale(3.2);
+  }
+
+  .dot {
+    background: var(--color-ink);
+  }
+
+  .track {
+    flex: 1;
+    width: var(--space-2);
+    background: var(--color-track);
+    transform-origin: top;
+  }
+
+  .text {
+    padding-bottom: var(--space-40);
+    min-width: 0;
+  }
+
+  .stage {
+    font-size: var(--font-size-journey-stage);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .note {
+    font-size: var(--font-size-16);
+    line-height: var(--line-height-normal);
+    color: var(--color-muted);
+    margin-top: var(--space-6);
+    max-width: var(--size-journey-note);
+    text-wrap: pretty;
+  }
+</style>

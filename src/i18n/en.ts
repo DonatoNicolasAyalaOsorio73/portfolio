@@ -664,6 +664,86 @@ export const en = {
       },
     ],
   },
+  journey: {
+    headingLine1: 'Experience,',
+    headingLine2: 'year by year.',
+    entries: [
+      {
+        id: 'systems-engineering',
+        stage: 'Systems Engineering',
+        note: 'Universidad Mariana: algorithms, data structures, databases and software design. Scrum Fundamentals Certified in 2022.',
+      },
+      {
+        id: 'first-interfaces',
+        stage: 'First production interfaces',
+        note: 'Full-stack internship at Cognitios: Angular, REST APIs, GitLab. EcoBike is published as a book chapter by Editorial UNIMAR.',
+      },
+      {
+        id: 'institutional-software',
+        stage: 'Institutional software',
+        note: 'Centro de Estudios Andino: an Angular website, tests, documentation and automation.',
+      },
+      {
+        id: 'thesis',
+        stage: 'Thesis with distinction',
+        note: 'EcoBike. AWS Well-Architected Foundations.',
+      },
+      {
+        id: 'team-lead',
+        stage: 'Leading a team',
+        note: 'Scrum Master for a team of four, building a CRM on Supabase and Azure DevOps.',
+      },
+      {
+        id: 'shipping-products',
+        stage: 'Shipping products',
+        note: 'Steady Guardians: Next.js, Supabase, Vercel and automated tests.',
+      },
+      {
+        id: 'masters',
+        stage: "Master's degree",
+        note: 'Graduate specialization (2025) and master’s (2026) in Software Engineering at Javeriana Cali.',
+      },
+      {
+        id: 'reliability-ai',
+        stage: 'Reliability and AI-assisted engineering',
+        note: 'NariñoHoy: access control, audit trails, backups and rollback. BMAD with human review.',
+      },
+    ],
+  },
+  education: {
+    eyebrow: 'ABOUT ME',
+    heading: 'Education.',
+    schools: [
+      {
+        id: 'javeriana',
+        logoAlt: 'Pontificia Universidad Javeriana Cali logo',
+        degrees: [
+          { id: 'masters', title: "Master's in Software Engineering" },
+          { id: 'specialization', title: 'Graduate Specialization in Software Engineering' },
+        ],
+      },
+      {
+        id: 'mariana',
+        logoAlt: 'Universidad Mariana logo',
+        degrees: [
+          { id: 'systems-engineering', title: 'Systems Engineering' },
+          { id: 'thesis', title: 'Thesis with distinction · EcoBike' },
+        ],
+      },
+    ],
+  },
+  certificates: {
+    heading: 'Certifications.',
+    verified: 'Verified',
+    view: 'View certificate ↗',
+    viewLabel: 'View certificate',
+    items: [
+      { id: 'github', logoAlt: 'GitHub Foundations badge' },
+      { id: 'scrum', logoAlt: 'Scrum Fundamentals Certified badge' },
+      { id: 'csharp', logoAlt: 'Foundational C# with Microsoft certificate' },
+      { id: 'aws', logoAlt: 'AWS Well-Architected Foundations badge' },
+    ],
+  },
 } as const;
 
 /** Turns the literal types of `en` into `string`, keeping the key structure. */

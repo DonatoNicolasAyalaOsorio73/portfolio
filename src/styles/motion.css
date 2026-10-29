@@ -84,6 +84,156 @@
 }
 
 /*
+ * More one-time reveal looks, on the same `data-reveal-state="visible"`:
+ * - `data-reveal="journey"` (a timeline entry): the element stays put. At 0 ms its
+ *   `[data-reveal-part="year"]` slides in from −24px; at 140 ms the year turns from grey to ink,
+ *   the `dot` pops in with an overshoot while the `ring` expands and fades, and the `stage` rises
+ *   18px out of a 6px blur; at 300 ms the `line` draws down and the `note` rises 14px.
+ * - `data-reveal="card"` (an education card): tips up from 80px below, 20° back and 0.9 scale,
+ *   staggered 120ms per `data-index` (0–1). Its grid gives it the perspective.
+ * - `data-reveal="cert"` (a certificate card): tips up from 120px below, 28° back and 0.85 scale,
+ *   staggered 160ms per `data-index` (0–3); with it the logo (`[data-reveal-part="logo"]`)
+ *   springs in from 0.55 and −10°, 250ms later its `halo` grows from 0.3, and 750ms later its
+ *   `badge` pops in.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal='journey'] [data-reveal-part='year'] {
+    transition:
+      opacity var(--dur-nav-shape) ease,
+      transform var(--dur-reveal-xl) var(--ease-out),
+      color var(--dur-reveal) ease var(--dur-journey-step);
+  }
+
+  html.js [data-reveal='journey'] [data-reveal-part='ring'] {
+    transition:
+      transform var(--dur-reveal-photo) var(--ease-out) var(--dur-journey-step),
+      opacity var(--dur-reveal-photo) ease var(--dur-journey-step);
+  }
+
+  html.js [data-reveal='journey'] [data-reveal-part='dot'] {
+    transition: transform var(--dur-nav-shape) var(--ease-overshoot) var(--dur-journey-step);
+  }
+
+  html.js [data-reveal='journey'] [data-reveal-part='line'] {
+    transition: transform var(--dur-reveal-card) var(--ease-in-out) var(--dur-hover);
+  }
+
+  html.js [data-reveal='journey'] [data-reveal-part='stage'] {
+    transition:
+      opacity var(--dur-slide) ease var(--dur-journey-step),
+      transform var(--dur-reveal-xl) var(--ease-out) var(--dur-journey-step),
+      filter var(--dur-slide) ease var(--dur-journey-step);
+  }
+
+  html.js [data-reveal='journey'] [data-reveal-part='note'] {
+    transition:
+      opacity var(--dur-slide) ease var(--dur-hover),
+      transform var(--dur-reveal-xl) var(--ease-out) var(--dur-hover);
+  }
+
+  html.js [data-reveal='journey']:not([data-reveal-state='visible']) [data-reveal-part='year'] {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--space-24)));
+  }
+
+  html.js [data-reveal='journey']:not([data-reveal-state='visible']) [data-reveal-part='ring'] {
+    opacity: 1;
+    transform: scale(0.6);
+  }
+
+  html.js [data-reveal='journey']:not([data-reveal-state='visible']) [data-reveal-part='dot'] {
+    transform: scale(0);
+  }
+
+  html.js [data-reveal='journey']:not([data-reveal-state='visible']) [data-reveal-part='line'] {
+    transform: scaleY(0);
+  }
+
+  html.js [data-reveal='journey']:not([data-reveal-state='visible']) [data-reveal-part='stage'] {
+    opacity: 0;
+    transform: translateY(var(--space-18));
+    filter: blur(var(--size-blur-reveal));
+  }
+
+  html.js [data-reveal='journey']:not([data-reveal-state='visible']) [data-reveal-part='note'] {
+    opacity: 0;
+    transform: translateY(var(--space-14));
+  }
+
+  html.js [data-reveal='card'],
+  html.js [data-reveal='cert'] {
+    --reveal-delay: 0ms;
+    transition:
+      opacity var(--dur-reveal-xl) var(--ease-out) var(--reveal-delay),
+      transform var(--dur-reveal-card) var(--ease-out) var(--reveal-delay);
+  }
+
+  html.js [data-reveal='card'][data-index='1'] {
+    --reveal-delay: var(--dur-step);
+  }
+
+  html.js [data-reveal='card']:not([data-reveal-state='visible']) {
+    opacity: 0;
+    transform: translateY(var(--space-80)) rotateX(20deg) scale(0.9);
+  }
+
+  html.js [data-reveal='cert'][data-index='1'] {
+    --reveal-delay: var(--dur-cert-stagger);
+  }
+
+  html.js [data-reveal='cert'][data-index='2'] {
+    --reveal-delay: calc(2 * var(--dur-cert-stagger));
+  }
+
+  html.js [data-reveal='cert'][data-index='3'] {
+    --reveal-delay: calc(3 * var(--dur-cert-stagger));
+  }
+
+  html.js [data-reveal='cert'] [data-reveal-part='logo'] {
+    transition: transform var(--dur-spring) var(--ease-spring) var(--reveal-delay);
+  }
+
+  html.js [data-reveal='cert'] [data-reveal-part='halo'] {
+    transition:
+      transform var(--dur-zoom) var(--ease-out) calc(var(--reveal-delay) + var(--dur-press)),
+      opacity var(--dur-reveal-photo) ease calc(var(--reveal-delay) + var(--dur-press));
+  }
+
+  html.js [data-reveal='cert'] [data-reveal-part='badge'] {
+    transition:
+      opacity var(--dur-nav) ease calc(var(--reveal-delay) + var(--dur-badge)),
+      transform var(--dur-nav-shape) var(--ease-overshoot)
+        calc(var(--reveal-delay) + var(--dur-badge));
+  }
+
+  html.js [data-reveal='cert']:not([data-reveal-state='visible']) {
+    opacity: 0;
+    transform: translateY(var(--space-120)) rotateX(28deg) scale(0.85);
+  }
+
+  html.js [data-reveal='cert']:not([data-reveal-state='visible']) [data-reveal-part='logo'] {
+    transform: scale(0.55) rotate(-10deg);
+  }
+
+  html.js [data-reveal='cert']:not([data-reveal-state='visible']) [data-reveal-part='halo'] {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+
+  html.js [data-reveal='cert']:not([data-reveal-state='visible']) [data-reveal-part='badge'] {
+    opacity: 0;
+    transform: translateY(var(--space-10)) scale(0.6);
+  }
+}
+
+/* The unrevealed year's grey is screen-only, so a page printed before scrolling shows ink years. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal='journey']:not([data-reveal-state='visible']) [data-reveal-part='year'] {
+    color: var(--color-muted);
+  }
+}
+
+/*
  * Scroll scenes: `src/scripts/scenes.ts` writes `--p`, `--a`, `--b` and `--c` on each
  * `[data-scene]` (and `--lx`, `--ly`, `--ls` on sticky scenes with a flying logo). Sections read them with a final-state fallback (`var(--a, 1)`); these
  * starting values apply only with JavaScript and no reduced-motion preference, until the

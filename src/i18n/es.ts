@@ -679,4 +679,84 @@ export const es = {
       },
     ],
   },
+  journey: {
+    headingLine1: 'Trayectoria,',
+    headingLine2: 'año a año.',
+    entries: [
+      {
+        id: 'systems-engineering',
+        stage: 'Ingeniería de Sistemas',
+        note: 'Universidad Mariana: algoritmos, estructuras de datos, bases de datos y diseño de software. Certificación Scrum Fundamentals en 2022.',
+      },
+      {
+        id: 'first-interfaces',
+        stage: 'Primeras interfaces en producción',
+        note: 'Práctica full stack en Cognitios: Angular, APIs REST, GitLab. Editorial UNIMAR publica EcoBike como capítulo de libro.',
+      },
+      {
+        id: 'institutional-software',
+        stage: 'Software institucional',
+        note: 'Centro de Estudios Andino: sitio en Angular, pruebas, documentación y automatización.',
+      },
+      {
+        id: 'thesis',
+        stage: 'Tesis meritoria',
+        note: 'EcoBike. AWS Well-Architected Foundations.',
+      },
+      {
+        id: 'team-lead',
+        stage: 'Liderando un equipo',
+        note: 'Scrum Master de un equipo de cuatro, construyendo un CRM con Supabase y Azure DevOps.',
+      },
+      {
+        id: 'shipping-products',
+        stage: 'Entregando productos',
+        note: 'Steady Guardians: Next.js, Supabase, Vercel y pruebas automatizadas.',
+      },
+      {
+        id: 'masters',
+        stage: 'Maestría',
+        note: 'Especialización (2025) y maestría (2026) en Ingeniería de Software en la Javeriana Cali.',
+      },
+      {
+        id: 'reliability-ai',
+        stage: 'Confiabilidad e ingeniería con IA',
+        note: 'NariñoHoy: control de acceso, auditoría, backups y rollback. BMAD con revisión humana.',
+      },
+    ],
+  },
+  education: {
+    eyebrow: 'SOBRE MÍ',
+    heading: 'Formación académica.',
+    schools: [
+      {
+        id: 'javeriana',
+        logoAlt: 'Logo de la Pontificia Universidad Javeriana Cali',
+        degrees: [
+          { id: 'masters', title: 'Magíster en Ingeniería de Software' },
+          { id: 'specialization', title: 'Especialista en Ingeniería de Software' },
+        ],
+      },
+      {
+        id: 'mariana',
+        logoAlt: 'Logo de la Universidad Mariana',
+        degrees: [
+          { id: 'systems-engineering', title: 'Ingeniero de Sistemas' },
+          { id: 'thesis', title: 'Tesis meritoria · EcoBike' },
+        ],
+      },
+    ],
+  },
+  certificates: {
+    heading: 'Certificaciones.',
+    verified: 'Verificado',
+    view: 'Ver certificado ↗',
+    viewLabel: 'Ver certificado',
+    items: [
+      { id: 'github', logoAlt: 'Insignia de GitHub Foundations' },
+      { id: 'scrum', logoAlt: 'Insignia de Scrum Fundamentals Certified' },
+      { id: 'csharp', logoAlt: 'Certificado de Foundational C# with Microsoft' },
+      { id: 'aws', logoAlt: 'Insignia de AWS Well-Architected Foundations' },
+    ],
+  },
 } as const satisfies Dictionary;

@@ -2,7 +2,10 @@
 /** The home page composition, rendered by `src/pages/index.astro` and `src/pages/es/index.astro`. */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AiSection from '../sections/AiSection.astro';
+import CertificatesSection from '../sections/CertificatesSection.astro';
+import EducationSection from '../sections/EducationSection.astro';
 import HeroSection from '../sections/HeroSection.astro';
+import JourneySection from '../sections/JourneySection.astro';
 import PhilosophySection from '../sections/PhilosophySection.astro';
 import StackSection from '../sections/StackSection.astro';
 import StatementSequence from '../sections/StatementSequence.astro';
@@ -23,4 +26,7 @@ const { locale } = Astro.props;
   <WorkSection locale={locale} />
   <StackSection locale={locale} />
   <AiSection locale={locale} />
+  <JourneySection locale={locale} />
+  <EducationSection locale={locale} />
+  <CertificatesSection locale={locale} />
 </BaseLayout>
