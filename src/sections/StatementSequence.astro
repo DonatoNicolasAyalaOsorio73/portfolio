@@ -1,0 +1,186 @@
+---
+/**
+ * "How I work": four statements pinned in place while the section scrolls by, one shown at a
+ * time, with a progress bar and label per statement. `src/scripts/sequence.ts` sets the active
+ * index in `data-seq-state`; every look below hangs off it. Without JavaScript or with reduced
+ * motion the base styles apply: a static stacked list with every bar and label final.
+ */
+import { t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale).sequence;
+---
+
+<section class="seq" aria-label={copy.label} data-seq data-seq-state="0" data-print-seq>
+  <div class="stage">
+    <div class="statements">
+      {copy.items.map((item) => (
+        <p class="statement" data-seq-item>
+          {item.statement}
+        </p>
+      ))}
+    </div>
+    <div class="progress" aria-hidden="true">
+      {copy.items.map((item) => (
+        <div class="step">
+          <span class="bar" />
+          <span class="label">{item.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/sequence';
+</script>
+
+<style>
+  /* Base: the static stacked list (no JavaScript, reduced motion). */
+  .seq {
+    position: relative;
+  }
+
+  .stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-fluid-seq) var(--space-24);
+    overflow: hidden;
+  }
+
+  .statements {
+    position: relative;
+    width: 100%;
+    max-width: var(--size-seq);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .statement {
+    position: relative;
+    inset: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: var(--font-size-statement);
+    line-height: var(--line-height-heading);
+    letter-spacing: -0.05em;
+    font-weight: 800;
+    text-wrap: balance;
+  }
+
+  .progress {
+    display: flex;
+    gap: var(--space-10);
+    margin-top: var(--space-48);
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-10);
+  }
+
+  .bar {
+    height: var(--space-3);
+    width: var(--space-20);
+    border-radius: var(--radius-bar);
+    background: var(--color-ink);
+  }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-13);
+    color: var(--color-ink);
+  }
+
+  /* Pinned: a 300vh track with a sticky full-height stage; only the active statement shows. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js) .seq {
+      height: var(--size-seq-track);
+    }
+
+    :global(html.js) .stage {
+      position: sticky;
+      top: 0;
+      height: var(--size-screen);
+      padding: 0 var(--space-24);
+    }
+
+    :global(html.js) .statements {
+      height: var(--size-seq-stage);
+      gap: 0;
+    }
+
+    /* Default: a later statement, waiting below. */
+    :global(html.js) .statement {
+      position: absolute;
+      opacity: 0;
+      transform: translateY(var(--space-60)) scale(0.97);
+      transition:
+        opacity var(--dur-nav-shape) var(--ease-out),
+        transform var(--dur-reveal) var(--ease-out);
+    }
+
+    :global(html.js) .bar {
+      background: var(--color-track);
+      transition:
+        width var(--dur-nav) var(--ease-out),
+        background var(--dur-nav);
+    }
+
+    :global(html.js) .label {
+      color: var(--color-muted);
+      transition: color var(--dur-nav);
+    }
+
+    /* Earlier statements have moved up and out. */
+    :global(html.js) .seq[data-seq-state='1'] .statement:nth-child(-n + 1),
+    :global(html.js) .seq[data-seq-state='2'] .statement:nth-child(-n + 2),
+    :global(html.js) .seq[data-seq-state='3'] .statement:nth-child(-n + 3) {
+      transform: translateY(calc(-1 * var(--space-60))) scale(0.97);
+    }
+
+    /* The active statement. */
+    :global(html.js) .seq[data-seq-state='0'] .statement:nth-child(1),
+    :global(html.js) .seq[data-seq-state='1'] .statement:nth-child(2),
+    :global(html.js) .seq[data-seq-state='2'] .statement:nth-child(3),
+    :global(html.js) .seq[data-seq-state='3'] .statement:nth-child(4) {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Passed and active bars are ink; the active one is wide with an ink label. */
+    :global(html.js) .seq[data-seq-state='0'] .step:nth-child(-n + 1) .bar,
+    :global(html.js) .seq[data-seq-state='1'] .step:nth-child(-n + 2) .bar,
+    :global(html.js) .seq[data-seq-state='2'] .step:nth-child(-n + 3) .bar,
+    :global(html.js) .seq[data-seq-state='3'] .step:nth-child(-n + 4) .bar {
+      background: var(--color-ink);
+    }
+
+    :global(html.js) .seq[data-seq-state='0'] .step:nth-child(1) .bar,
+    :global(html.js) .seq[data-seq-state='1'] .step:nth-child(2) .bar,
+    :global(html.js) .seq[data-seq-state='2'] .step:nth-child(3) .bar,
+    :global(html.js) .seq[data-seq-state='3'] .step:nth-child(4) .bar {
+      width: var(--space-48);
+    }
+
+    :global(html.js) .seq[data-seq-state='0'] .step:nth-child(1) .label,
+    :global(html.js) .seq[data-seq-state='1'] .step:nth-child(2) .label,
+    :global(html.js) .seq[data-seq-state='2'] .step:nth-child(3) .label,
+    :global(html.js) .seq[data-seq-state='3'] .step:nth-child(4) .label {
+      color: var(--color-ink);
+    }
+  }
+</style>

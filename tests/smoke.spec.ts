@@ -191,3 +191,148 @@ test.describe('header scroll state', () => {
     });
   });
 });
+
+test.describe('statement sequence', () => {
+  test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'no-preference' });
+
+  /**
+   * Scrolls so that `progress` of the sequence's scroll distance (height − viewport) has passed,
+   * then waits for the scroll listener's next frame.
+   */
+  async function scrollSequence(page: BrowserPage, progress: number) {
+    await page.evaluate(async (fraction) => {
+      const section = document.querySelector<HTMLElement>('[data-seq]')!;
+      const top = section.getBoundingClientRect().top + window.scrollY;
+      const distance = section.offsetHeight - window.innerHeight;
+      window.scrollTo({ top: Math.round(top + fraction * distance), behavior: 'instant' });
+      await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+    }, progress);
+  }
+
+  for (const [progress, state] of [
+    [0, '0'],
+    [0.6, '2'],
+    [1, '3'],
+  ] as const) {
+    test(`is in state ${state} at progress ${progress}`, async ({ page }) => {
+      await load(page, '/');
+      await scrollSequence(page, progress);
+      const section = page.locator('[data-seq]');
+      await expect(section).toHaveAttribute('data-seq-state', state);
+      const active = section.locator('[data-seq-item]').nth(Number(state));
+      await expect(active).toHaveCSS('opacity', '1');
+      await expect(section.locator('[data-seq-item]').nth(state === '0' ? 1 : 0)).toHaveCSS(
+        'opacity',
+        '0',
+      );
+    });
+  }
+});
+
+/** Every statement, reveal and timeline step is in its final, fully visible state. */
+async function expectAllShown(page: BrowserPage) {
+  const statements = page.locator('[data-seq-item]');
+  await expect(statements).toHaveCount(4);
+  for (const statement of await statements.all()) {
+    await expect(statement).toBeVisible();
+    await expect(statement).toHaveCSS('opacity', '1');
+    await expect(statement).toHaveCSS('transform', 'none');
+  }
+  // Stacked, not pinned: the section is only as tall as its content.
+  await expect(page.locator('[data-seq] > *').first()).not.toHaveCSS('position', 'sticky');
+
+  for (const reveal of await page.locator('[data-reveal]').all()) {
+    await reveal.scrollIntoViewIfNeeded();
+    await expect(reveal).toHaveCSS('opacity', '1');
+  }
+
+  const steps = page.locator('[data-scene="pass"]');
+  await expect(steps).toHaveCount(5);
+  for (const step of await steps.all()) {
+    await expect(step).toBeVisible();
+    for (const part of await step.locator('.body > *').all()) {
+      await expect(part).toHaveCSS('opacity', '1');
+    }
+  }
+}
+
+for (const locale of LOCALES) {
+  const path = href('home', locale);
+
+  test.describe(`home (${locale}) with reduced motion`, () => {
+    test.use({ reducedMotion: 'reduce' });
+
+    test('shows every statement and step', async ({ page }) => {
+      await load(page, path);
+      await expectAllShown(page);
+    });
+  });
+
+  test.describe(`home (${locale}) without JavaScript`, () => {
+    test.use({ javaScriptEnabled: false });
+
+    test('shows every statement and step', async ({ page }) => {
+      await load(page, path);
+      await expectAllShown(page);
+    });
+  });
+}
+
+test.describe('philosophy scenes', () => {
+  test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'no-preference' });
+
+  /** The legacy `seg()` windows and cubic in-out `ease()` from `tick()`. */
+  const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  const clamp = (v: number) => Math.min(1, Math.max(0, v));
+  const seg = (p: number, a: number, b: number) => ease(clamp((p - a) / (b - a)));
+
+  /** Reads the step's progress properties and its own `pass` progress after the next frame. */
+  async function readStep(page: BrowserPage, index: number) {
+    return page.evaluate(async (i) => {
+      await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+      const step = document.querySelectorAll<HTMLElement>('[data-scene="pass"]')[i]!;
+      const rect = step.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const style = getComputedStyle(step);
+      return {
+        p: (vh - rect.top) / (vh + rect.height),
+        a: style.getPropertyValue('--a').trim(),
+        b: style.getPropertyValue('--b').trim(),
+        c: style.getPropertyValue('--c').trim(),
+      };
+    }, index);
+  }
+
+  test('a step below the fold starts undrawn', async ({ page }) => {
+    await load(page, '/');
+    const step = await readStep(page, 2);
+    expect(Number(step.a)).toBe(0);
+  });
+
+  test('a step halfway through its pass follows the eased windows', async ({ page }) => {
+    await load(page, '/');
+    await page.evaluate(() => {
+      const step = document.querySelectorAll<HTMLElement>('[data-scene="pass"]')[2]!;
+      const rect = step.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // p = (vh − top) ÷ (vh + height) = 0.5  ⇒  top = vh − 0.5 × (vh + height).
+      const targetTop = vh - 0.5 * (vh + rect.height);
+      window.scrollTo({ top: rect.top + window.scrollY - targetTop, behavior: 'instant' });
+    });
+    const step = await readStep(page, 2);
+    expect(step.p).toBeGreaterThan(0.45);
+    expect(step.p).toBeLessThan(0.55);
+    const expected = {
+      a: seg(step.p, 0.04, 0.38),
+      b: seg(step.p, 0.28, 0.66),
+      c: seg(step.p, 0.5, 0.82),
+    };
+    for (const name of ['a', 'b', 'c'] as const) {
+      const value = Number(step[name]);
+      expect(Number.isNaN(value), `--${name} is a number (${step[name]})`).toBe(false);
+      expect(value, `--${name}`).toBeGreaterThanOrEqual(0);
+      expect(value, `--${name}`).toBeLessThanOrEqual(1);
+      expect(value, `--${name} at p=${step.p}`).toBeCloseTo(expected[name], 2);
+    }
+  });
+});

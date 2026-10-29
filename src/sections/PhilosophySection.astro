@@ -1,0 +1,190 @@
+---
+/**
+ * Philosophy: heading and intro that reveal once in view, then a five-step timeline drawn by
+ * scroll. Each step is a `pass` scene; `src/scripts/scenes.ts` writes its `--a`, `--b` and `--c`
+ * progress. Every property reads them with a final-state fallback, so without JavaScript or
+ * with reduced motion the timeline is fully drawn.
+ */
+import { t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale).philosophy;
+const steps = copy.steps.map((step, index) => ({
+  ...step,
+  number: String(index + 1).padStart(2, '0'),
+}));
+---
+
+<section class="philosophy" aria-label={copy.label}>
+  <div class="inner">
+    <h2 class="heading" data-reveal>
+      {copy.heading}
+    </h2>
+    <p class="intro" data-reveal data-index="1">
+      {copy.intro}
+    </p>
+    <ol class="steps">
+      {steps.map((step) => (
+        <li class="step" data-scene="pass">
+          <div class="rail">
+            <span class="number">{step.number}</span>
+            <span class="dot" />
+            <span class="line" />
+          </div>
+          <div class="body">
+            <div class="word">{step.word}</div>
+            <div class="note">{step.note}</div>
+            <div class="how">
+              <span class="how-label">{copy.howLabel}</span> {step.how}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<script>
+  import '../scripts/reveal';
+  import '../scripts/scenes';
+</script>
+
+<style>
+  .philosophy {
+    padding: var(--space-fluid-phil) var(--space-24);
+    background: linear-gradient(var(--color-white), var(--color-surface));
+  }
+
+  .inner {
+    max-width: var(--size-phil);
+    margin: 0 auto;
+  }
+
+  .heading {
+    font-size: var(--font-size-heading);
+    line-height: var(--line-height-heading);
+    letter-spacing: -0.05em;
+    font-weight: 800;
+    margin: 0;
+    max-width: var(--size-phil-heading);
+    text-wrap: balance;
+  }
+
+  .intro {
+    font-size: var(--font-size-phil-intro);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text);
+    max-width: var(--size-phil-intro);
+    margin: var(--space-32) 0 0;
+    text-wrap: pretty;
+  }
+
+  .steps {
+    list-style: none;
+    margin: var(--space-fluid-steps) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: var(--size-step-rail) minmax(0, 1fr);
+    gap: var(--space-fluid-step-gap);
+  }
+
+  .rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .number {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-14);
+    color: var(--color-muted);
+    margin-top: var(--space-fluid-step-number);
+  }
+
+  .dot {
+    width: var(--space-14);
+    height: var(--space-14);
+    border-radius: var(--radius-round);
+    margin-top: var(--space-10);
+    border: var(--space-2) solid var(--color-ink);
+    background: var(--color-ink);
+    transform: scale(var(--b, 1));
+  }
+
+  .line {
+    flex: 1;
+    width: var(--space-2);
+    margin-top: var(--space-8);
+    background: var(--color-ink);
+    transform-origin: top;
+    transform: scaleY(var(--c, 1));
+  }
+
+  /* The timeline ends at the last dot. */
+  .step:last-child .line {
+    visibility: hidden;
+  }
+
+  .body {
+    padding-bottom: var(--space-fluid-step-end);
+  }
+
+  /* The word fills from grey to ink left to right as `--b` runs, sliding in with `--a`. */
+  .word {
+    font-size: var(--font-size-step);
+    line-height: var(--line-height-tight);
+    letter-spacing: -0.05em;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+    background: linear-gradient(90deg, var(--color-ink) 0 50%, var(--color-ghost) 50% 100%);
+    background-size: 200% 100%;
+    background-position: calc(100% - var(--b, 1) * 100%) 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transform: translateX(calc((1 - var(--a, 1)) * -1 * var(--space-60)));
+    opacity: calc(0.3 + var(--a, 1) * 0.7);
+  }
+
+  .note,
+  .how {
+    opacity: var(--c, 1);
+    transform: translateY(calc((1 - var(--c, 1)) * var(--space-20)));
+  }
+
+  .note {
+    font-size: var(--font-size-step-note);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text);
+    margin-top: var(--space-14);
+    max-width: var(--size-step-note);
+  }
+
+  .how {
+    font-size: var(--font-size-step-how);
+    line-height: var(--line-height-body);
+    color: var(--color-muted);
+    margin-top: var(--space-10);
+    max-width: var(--size-step-how);
+  }
+
+  .how-label {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .dot {
+      transition: transform var(--dur-fast);
+    }
+  }
+</style>

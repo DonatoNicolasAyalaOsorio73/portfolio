@@ -1,0 +1,16 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/sections/PhilosophySection.astro"
+        ],
+        "createdAt": "2026-10-29T02:19:20.584Z"
+      }
+    ]
+  }
+}

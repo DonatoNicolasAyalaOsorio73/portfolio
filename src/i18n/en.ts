@@ -31,6 +31,58 @@ export const en = {
     secondaryCta: 'Get in touch',
     subline: 'Full Stack · Software Architecture · Web & Mobile',
   },
+  sequence: {
+    label: 'How I work',
+    items: [
+      { id: 'reliability', statement: 'Reliable software, built to last.', label: 'RELIABILITY' },
+      {
+        id: 'scalability',
+        statement: 'Software that grows with your business.',
+        label: 'SCALABILITY',
+      },
+      { id: 'alignment', statement: 'Technology shaped around your goals.', label: 'ALIGNMENT' },
+      { id: 'speed', statement: 'Fast prototypes to validate your idea.', label: 'SPEED' },
+    ],
+  },
+  philosophy: {
+    label: 'Philosophy',
+    heading: 'Great software starts before the first commit.',
+    intro:
+      'I treat product, architecture, engineering and experience as one system: a decision in one layer changes the others.',
+    howLabel: 'How:',
+    steps: [
+      {
+        id: 'discovery',
+        word: 'Discovery',
+        note: 'Understand the business context, the users, and the objective behind the initiative.',
+        how: 'Stakeholder interviews · User research · Process mapping · Business analysis',
+      },
+      {
+        id: 'requirements',
+        word: 'Requirements',
+        note: 'Turn ambiguity into a scoped, prioritized, and verifiable definition of what to build.',
+        how: 'Requirements elicitation · Root-cause analysis · User stories · Acceptance criteria · Non-functional requirements · Wireframing · Prototyping · User flows',
+      },
+      {
+        id: 'architecture',
+        word: 'Architecture',
+        note: 'Define the structure of the solution against scalability, security, and maintainability constraints.',
+        how: 'System design · Architecture patterns · Data modeling · API design · Architecture decision records',
+      },
+      {
+        id: 'delivery',
+        word: 'Delivery',
+        note: 'Build in short iterations, with practices that keep the codebase reviewable, secure, and releasable.',
+        how: 'Git · Code review · CI/CD · Automated testing · Authentication & authorization · Secure coding practices (OWASP) · AI-assisted development (BMAD) with human review',
+      },
+      {
+        id: 'operation',
+        word: 'Operation and evolution',
+        note: 'Confirm the solution meets the need, keep it reliable in production, and improve it based on real usage.',
+        how: 'Acceptance testing · User feedback · Performance analysis · Observability · Technical documentation · Knowledge transfer · Iterative improvement',
+      },
+    ],
+  },
 } as const;
 
 /** Turns the literal types of `en` into `string`, keeping the key structure. */
