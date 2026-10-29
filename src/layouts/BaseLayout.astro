@@ -1,7 +1,7 @@
 ---
 /**
- * The document shell (AD-6): the only file that writes `<head>` content.
- * hreflang, the legacy `?lang=es` script and the nav/footer arrive in later stories.
+ * The document shell (AD-6): the only file that writes `<head>` content, including the
+ * site's single inline script (AD-7). The nav and footer arrive in later stories.
  */
 import '../styles/global.css';
 import { t, type Locale } from '../i18n';
@@ -17,6 +17,12 @@ const { locale, route, ogImage = '/assets/og-image.jpg' } = Astro.props;
 const copy = t(locale);
 const { title, description } = copy.meta[route];
 const canonical = new URL(href(route, locale), Astro.site).href;
+const alternates = {
+  en: new URL(href(route, 'en'), Astro.site).href,
+  es: new URL(href(route, 'es'), Astro.site).href,
+};
+// English pages send legacy `?lang=es` links to their Spanish twin; Spanish pages never redirect.
+const legacyTarget = locale === 'en' ? href(route, 'es') : null;
 const ogImageUrl = new URL(ogImage, Astro.site).href;
 const ogLocales: Record<Locale, string> = { en: 'en_US', es: 'es_CO' };
 const ogAlternate = locale === 'en' ? ogLocales.es : ogLocales.en;
@@ -30,6 +36,15 @@ const ogAlternate = locale === 'en' ? ogLocales.es : ogLocales.en;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={alternates.en} />
+    <link rel="alternate" hreflang="es" href={alternates.es} />
+    <link rel="alternate" hreflang="x-default" href={alternates.en} />
+    <script is:inline define:vars={{ legacyTarget }}>
+      document.documentElement.classList.add('js');
+      if (legacyTarget && new URLSearchParams(location.search).get('lang') === 'es') {
+        location.replace(legacyTarget + location.hash);
+      }
+    </script>
     <meta property="og:type" content="profile" />
     <meta property="og:site_name" content={copy.meta.siteName} />
     <meta property="og:title" content={title} />
