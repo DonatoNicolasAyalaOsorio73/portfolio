@@ -97,6 +97,15 @@ const meta = [
                   {work.actions[action.label]}
                 </a>
               ))}
+              <button
+                type="button"
+                class="action arch-open"
+                data-arch-open={project.id}
+                aria-haspopup="dialog"
+                aria-controls={`arch-${project.id}`}
+              >
+                {work.architecture.open}
+              </button>
             </div>
             <div class="access">
               <span class="access-dot" data-access={project.access}></span>
@@ -302,6 +311,18 @@ const meta = [
     flex-wrap: wrap;
     gap: var(--space-10);
     align-items: center;
+  }
+
+  /* "View architecture" opens a dialog that needs JavaScript, so it shows only with it. */
+  .arch-open {
+    display: none;
+    font-family: inherit;
+    line-height: inherit;
+    cursor: pointer;
+  }
+
+  :global(html.js) .arch-open {
+    display: inline-block;
   }
 
   .action {

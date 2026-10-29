@@ -3,8 +3,11 @@
  * Work: the heading and intro (revealed once in view), the three featured projects and the
  * "Other projects" grid. From 960px each featured project is a pinned scroll scene
  * (`FeaturedScene`); below it they are stacked cards (`FeaturedCard`). Both are rendered and CSS
- * shows one. Data comes from `src/data/projects.ts`, joined to the dictionary by `id`.
+ * shows one. Each project's "View architecture" buttons open its "Under the hood" dialog
+ * (`ArchDialog`), rendered once per project after the grid. Data comes from
+ * `src/data/projects.ts`, joined to the dictionary by `id`.
  */
+import ArchDialog from '../components/ArchDialog.astro';
 import FeaturedCard from '../components/FeaturedCard.astro';
 import FeaturedScene from '../components/FeaturedScene.astro';
 import OtherProject from '../components/OtherProject.astro';
@@ -67,6 +70,10 @@ const otherItems = join(others, copy.others).map(({ project, text }) => ({
       ))}
     </div>
   </div>
+
+  {[...featured, ...others].map((project) => (
+    <ArchDialog locale={locale} project={project} />
+  ))}
 </section>
 
 <script>
