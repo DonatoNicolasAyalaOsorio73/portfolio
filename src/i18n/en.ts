@@ -11,6 +11,11 @@ export const en = {
   },
   chrome: {
     skip: 'Skip to content',
+    navLabel: 'Primary',
+    langLabel: 'Language',
+    contact: 'Contact',
+    links: { work: 'Work', stack: 'Stack', journey: 'Journey', about: 'About' },
+    role: 'Software Engineer',
   },
   hero: {
     label: 'Introduction',

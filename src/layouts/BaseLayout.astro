@@ -1,9 +1,12 @@
 ---
 /**
  * The document shell (AD-6): the only file that writes `<head>` content, including the
- * site's single inline script (AD-7). The nav and footer arrive in later stories.
+ * site's single inline script (AD-7). It renders the nav and footer once, and is the only
+ * file that imports them.
  */
 import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 import { t, type Locale } from '../i18n';
 import { href, type RouteKey } from '../i18n/routes';
 
@@ -69,9 +72,11 @@ const ogAlternate = locale === 'en' ? ogLocales.es : ogLocales.en;
     <a class="skip" href="#top" data-skip>
       {copy.chrome.skip}
     </a>
+    <Nav locale={locale} route={route} />
     <main id="top">
       <slot />
     </main>
+    <Footer locale={locale} />
   </body>
 </html>
 

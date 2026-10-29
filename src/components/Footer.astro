@@ -1,0 +1,51 @@
+---
+/** The site footer, ported from the legacy one: name, role and year. Rendered once, by BaseLayout. */
+import { chrome } from '../data/chrome';
+import { t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale).chrome;
+---
+
+<footer class="footer">
+  <div class="inner">
+    <span>
+      <strong class="name">{chrome.fullName}</strong> · {copy.role}
+    </span>
+    <span class="end">
+      <span>{chrome.copyright}</span>
+    </span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: var(--size-hairline) solid var(--color-line);
+    padding: var(--space-32) var(--space-24);
+  }
+
+  .inner {
+    max-width: var(--size-content);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-16);
+    flex-wrap: wrap;
+    font-size: var(--font-size-15);
+    color: var(--color-muted);
+  }
+
+  .name {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .end {
+    display: flex;
+    gap: var(--space-20);
+  }
+</style>

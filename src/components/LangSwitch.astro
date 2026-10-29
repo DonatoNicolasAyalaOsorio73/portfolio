@@ -1,0 +1,90 @@
+---
+/**
+ * The EN/ES switch: two plain links, one to this page and one to its twin in the other
+ * language (AD-5). The current language is marked `aria-current`; nothing is stored.
+ * Its colours follow the header's `data-nav-state`, set by `src/scripts/nav.ts`.
+ */
+import { chrome } from '../data/chrome';
+import { locales, t, type Locale } from '../i18n';
+import { href, twin, type RouteKey } from '../i18n/routes';
+
+interface Props {
+  locale: Locale;
+  route: RouteKey;
+}
+
+const { locale, route } = Astro.props;
+const copy = t(locale).chrome;
+const here = href(route, locale);
+const options = locales.map((code) => ({
+  code,
+  label: chrome.langNames[code],
+  current: code === locale,
+  url: code === locale ? here : twin(here),
+}));
+---
+
+<div class="switch" role="group" aria-label={copy.langLabel}>
+  {options.map((option) => (
+    <a
+      class="option"
+      href={option.url}
+      lang={option.code}
+      hreflang={option.code}
+      aria-current={option.current ? 'true' : undefined}
+      data-lang-option={option.code}
+    >
+      {option.label}
+    </a>
+  ))}
+</div>
+
+<style>
+  .switch {
+    display: flex;
+    padding: var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--color-on-dark-fill);
+  }
+
+  .option {
+    font-size: var(--font-size-14);
+    font-weight: 600;
+    border-radius: var(--radius-pill);
+    padding: var(--space-6) var(--space-10);
+    background: var(--color-transparent);
+    color: var(--color-on-dark-muted);
+    box-shadow: none;
+  }
+
+  .option:hover {
+    color: var(--color-on-dark-muted);
+  }
+
+  .option[aria-current='true'],
+  .option[aria-current='true']:hover {
+    background: var(--color-white);
+    color: var(--color-ink);
+    box-shadow: var(--shadow-toggle);
+  }
+
+  :global(:is([data-nav-state='scrolled'], [data-nav-state='hidden'])) .switch {
+    background: var(--color-fill);
+  }
+
+  :global(:is([data-nav-state='scrolled'], [data-nav-state='hidden'])) .option:not([aria-current]),
+  :global(:is([data-nav-state='scrolled'], [data-nav-state='hidden']))
+    .option:not([aria-current]):hover {
+    color: var(--color-muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .switch {
+      transition: background var(--dur-nav);
+    }
+
+    .option {
+      transition: all var(--dur-press);
+    }
+  }
+</style>
