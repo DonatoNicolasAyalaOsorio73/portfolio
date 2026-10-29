@@ -1,0 +1,208 @@
+---
+/**
+ * The site header, ported from the legacy one. Its three looks hang off `data-nav-state`
+ * (`top`, `scrolled`, `hidden`), which only `src/scripts/nav.ts` changes (AD-10). Without
+ * JavaScript it stays in its rendered `top` state. Rendered once, by BaseLayout.
+ */
+import LangSwitch from './LangSwitch.astro';
+import { t, type Locale } from '../i18n';
+import { href, type RouteKey } from '../i18n/routes';
+
+interface Props {
+  locale: Locale;
+  route: RouteKey;
+}
+
+const { locale, route } = Astro.props;
+const dictionary = t(locale);
+const copy = dictionary.chrome;
+const links = (['work', 'stack', 'journey', 'about'] as const).map((id) => ({
+  id,
+  label: copy.links[id],
+  url: href('home', locale, id),
+}));
+---
+
+<header class="header" data-nav data-nav-state="top">
+  <nav class="bar" aria-label={copy.navLabel}>
+    <a class="brand" href={href('home', locale, 'top')}>
+      {dictionary.meta.siteName}
+    </a>
+    <div class="links">
+      {links.map((link) => (
+        <a class="link" href={link.url}>
+          {link.label}
+        </a>
+      ))}
+    </div>
+    <div class="end">
+      <LangSwitch locale={locale} route={route} />
+      <a class="cta" href={href('home', locale, 'contact')}>
+        {copy.contact}
+      </a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  import '../scripts/nav';
+</script>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--layer-nav);
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .bar {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-12);
+    width: 100%;
+    max-width: 100%;
+    padding: var(--space-14) max(var(--space-24), calc((100% - var(--size-content)) / 2));
+    border-radius: 0;
+    color: var(--color-white);
+    background: var(--color-black);
+    -webkit-backdrop-filter: saturate(180%) blur(var(--size-blur-nav));
+    backdrop-filter: saturate(180%) blur(var(--size-blur-nav));
+    border: var(--size-hairline) solid var(--color-transparent);
+    box-shadow: none;
+  }
+
+  .brand,
+  .brand:hover {
+    font-weight: 700;
+    font-size: var(--font-size-17);
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    color: var(--color-white);
+  }
+
+  .links {
+    display: none;
+    gap: var(--space-2);
+  }
+
+  .link,
+  .link:hover {
+    font-size: var(--font-size-15);
+    color: var(--color-on-dark-link);
+    padding: var(--space-8) var(--space-13);
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+
+  .link:hover {
+    background: var(--color-hover-fill);
+  }
+
+  .end {
+    display: flex;
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  .cta,
+  .cta:hover {
+    font-size: var(--font-size-15);
+    font-weight: 500;
+    background: var(--color-white);
+    color: var(--color-ink);
+    padding: var(--space-10) var(--space-18);
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+
+  .cta:hover {
+    transform: scale(1.04);
+  }
+
+  /* Scrolled: a centred white translucent pill. `hidden` keeps that look while off-screen. */
+  .header:is([data-nav-state='scrolled'], [data-nav-state='hidden']) {
+    padding: var(--space-12) var(--space-16);
+  }
+
+  :is([data-nav-state='scrolled'], [data-nav-state='hidden']) .bar {
+    max-width: var(--size-nav-pill);
+    padding: var(--space-8) var(--space-8) var(--space-8) var(--space-20);
+    border-radius: var(--radius-pill);
+    color: var(--color-ink);
+    background: var(--color-nav-glass);
+    border-color: var(--color-line);
+    box-shadow: var(--shadow-nav);
+  }
+
+  :is([data-nav-state='scrolled'], [data-nav-state='hidden']) .brand {
+    color: var(--color-ink);
+  }
+
+  :is([data-nav-state='scrolled'], [data-nav-state='hidden']) .link {
+    color: var(--color-text);
+  }
+
+  :is([data-nav-state='scrolled'], [data-nav-state='hidden']) .cta {
+    background: var(--color-ink);
+    color: var(--color-white);
+  }
+
+  .header[data-nav-state='hidden'] {
+    transform: translateY(-120%);
+  }
+
+  /* Anything inside the header taking focus brings it back on screen. */
+  .header[data-nav-state='hidden']:focus-within {
+    transform: none;
+  }
+
+  @media (min-width: 960px) {
+    .links {
+      display: flex;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .header {
+      transition:
+        transform var(--dur-nav) var(--ease-out),
+        padding var(--dur-nav) var(--ease-out);
+    }
+
+    .bar {
+      transition:
+        max-width var(--dur-nav-shape) var(--ease-out),
+        border-radius var(--dur-nav-shape) var(--ease-out),
+        padding var(--dur-nav-shape) var(--ease-out),
+        background var(--dur-nav),
+        color var(--dur-nav),
+        border-color var(--dur-nav),
+        box-shadow var(--dur-nav);
+    }
+
+    .brand {
+      transition: color var(--dur-nav);
+    }
+
+    .link {
+      transition:
+        background var(--dur-fast),
+        color var(--dur-nav);
+    }
+
+    .cta {
+      transition:
+        transform var(--dur-fast) var(--ease-out),
+        background var(--dur-nav),
+        color var(--dur-nav);
+    }
+  }
+</style>

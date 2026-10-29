@@ -79,6 +79,33 @@ for (const { key, paths } of PAGES) {
         expect(storage, `${path} storage`).toEqual({ localStorage: [], sessionStorage: [] });
       });
 
+      test('links the language switch to this page and its twin', async ({ page, context }) => {
+        await load(page, path);
+        const other = locale === 'en' ? 'es' : 'en';
+        const header = page.locator('header[data-nav]');
+        await expect(header).toHaveCount(1);
+        await expect(page.locator('footer')).toHaveCount(1);
+        const current = header.locator(`[data-lang-option="${locale}"]`);
+        const twinLink = header.locator(`[data-lang-option="${other}"]`);
+        await expect(current).toHaveAttribute('aria-current', 'true');
+        await expect(current).toHaveAttribute('href', paths[locale]);
+        await expect(twinLink).not.toHaveAttribute('aria-current', /.*/);
+        await expect(twinLink).toHaveAttribute('href', paths[other]);
+
+        await twinLink.click();
+        await expect(page).toHaveURL((url) => url.pathname === paths[other]);
+        await expect(page.locator('html')).toHaveAttribute('lang', other);
+        expect(await context.cookies(), 'cookies after switching').toEqual([]);
+        const storage = await page.evaluate(() => ({
+          localStorage: Object.keys(localStorage),
+          sessionStorage: Object.keys(sessionStorage),
+        }));
+        expect(storage, 'storage after switching').toEqual({
+          localStorage: [],
+          sessionStorage: [],
+        });
+      });
+
       test('requests only the preview origin', async ({ page, baseURL }) => {
         const { requests } = await load(page, path);
         await page.waitForLoadState('networkidle');
@@ -91,3 +118,76 @@ for (const { key, paths } of PAGES) {
     });
   }
 }
+
+test.describe('header scroll state', () => {
+  test.use({ viewport: { width: 1280, height: 400 } });
+
+  /** Makes the page tall enough that every `scrollTo` below lands exactly on its target. */
+  async function addSpacer(page: BrowserPage) {
+    await page.evaluate(() => {
+      const spacer = document.createElement('div');
+      spacer.setAttribute('aria-hidden', 'true');
+      spacer.style.height = '3000px';
+      document.querySelector('main')!.append(spacer);
+    });
+  }
+
+  /** Scrolls to `y` and waits for the scroll listener's next frame. */
+  async function scrollTo(page: BrowserPage, y: number) {
+    await page.evaluate(async (target) => {
+      window.scrollTo({ top: target, behavior: 'instant' });
+      await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+    }, y);
+    expect(await page.evaluate(() => window.scrollY), `scrolled to ${y}`).toBe(y);
+  }
+
+  test('goes top → scrolled → hidden → scrolled, and focus reveals it', async ({ page }) => {
+    await load(page, '/');
+    await addSpacer(page);
+    const header = page.locator('header[data-nav]');
+    await expect(header).toHaveAttribute('data-nav-state', 'top');
+
+    await scrollTo(page, 100);
+    await expect(header).toHaveAttribute('data-nav-state', 'scrolled');
+
+    await scrollTo(page, 300);
+    await scrollTo(page, 600);
+    await expect(header).toHaveAttribute('data-nav-state', 'hidden');
+
+    await scrollTo(page, 560);
+    await expect(header).toHaveAttribute('data-nav-state', 'scrolled');
+
+    await scrollTo(page, 700);
+    await expect(header).toHaveAttribute('data-nav-state', 'hidden');
+    await header.locator('a').first().focus();
+    await expect(header).toHaveAttribute('data-nav-state', 'scrolled');
+
+    await scrollTo(page, 0);
+    await expect(header).toHaveAttribute('data-nav-state', 'top');
+  });
+
+  test('shows the section links only on wide screens', async ({ page }) => {
+    await load(page, '/');
+    const links = page.locator('header[data-nav] a[href="/#work"]');
+    await expect(links).toBeVisible();
+    await page.setViewportSize({ width: 375, height: 800 });
+    await expect(links).toBeHidden();
+    await expect(page.locator('header[data-nav] [data-lang-option="es"]')).toBeVisible();
+  });
+
+  test.describe('without JavaScript', () => {
+    test.use({ javaScriptEnabled: false });
+
+    test('the header stays in its top state', async ({ page }) => {
+      await load(page, '/');
+      await addSpacer(page);
+      await page.mouse.wheel(0, 700);
+      await page.waitForTimeout(200);
+      await expect(page.locator('header[data-nav]')).toHaveAttribute('data-nav-state', 'top');
+      await expect(page.locator('header[data-nav] [data-lang-option="es"]')).toHaveAttribute(
+        'href',
+        '/es/',
+      );
+    });
+  });
+});

@@ -19,6 +19,13 @@ export default defineConfig({
     // URLs are `/`, `/es/` and the legacy `.html` ones (AD-5).
     format: 'preserve',
   },
+  vite: {
+    build: {
+      // Astro would inline small page scripts; BaseLayout's AD-7 script stays the only inline
+      // one (AD-6), so `src/scripts/` always ships as files.
+      assetsInlineLimit: 0,
+    },
+  },
   i18n: {
     locales: ['en', 'es'],
     defaultLocale: 'en',

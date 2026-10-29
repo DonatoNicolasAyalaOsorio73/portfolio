@@ -13,6 +13,11 @@ export const es = {
   },
   chrome: {
     skip: 'Saltar al contenido',
+    navLabel: 'Principal',
+    langLabel: 'Idioma',
+    contact: 'Contacto',
+    links: { work: 'Trabajo', stack: 'Stack', journey: 'Trayectoria', about: 'Sobre mí' },
+    role: 'Ingeniero de Software',
   },
   hero: {
     label: 'Introducción',
