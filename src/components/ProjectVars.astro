@@ -1,0 +1,24 @@
+---
+/**
+ * Passes a project's build-time style values (logo radius, blend mode, height, parallax speed)
+ * to its markup as custom properties, through `define:vars` (AD-2's one exception to "no
+ * `style=""`"). It wraps its content in a single `display: contents` element so the values sit
+ * on that one element and inherit, instead of being repeated on every element of a component.
+ */
+interface Props {
+  /** Custom property names without the leading `--`, e.g. `{ 'logo-radius': '22%' }`. */
+  vars: Record<string, string>;
+}
+
+const { vars } = Astro.props;
+---
+
+<div class="vars">
+  <slot />
+</div>
+
+<style define:vars={vars}>
+  .vars {
+    display: contents;
+  }
+</style>

@@ -1,0 +1,251 @@
+---
+/**
+ * One card of the "Other projects" grid. It fades up once in view, staggered by `index`
+ * (`data-reveal="far"` in `motion.css`); its logo row drifts with the grid's scroll progress
+ * `--p` (written by `scenes.ts` on the grid) at this project's `speed`, and the logo tilts toward
+ * the pointer (`tilt.ts`).
+ */
+import { Picture } from 'astro:assets';
+import type { OtherProject } from '../data/projects';
+import { t, type Locale } from '../i18n';
+import ProjectVars from './ProjectVars.astro';
+
+interface Props {
+  locale: Locale;
+  project: OtherProject;
+  index: number;
+  copy: {
+    kind: string;
+    summary: string;
+    client?: string;
+    role: string;
+    logoAlt: string;
+  };
+}
+
+const { locale, project, index, copy } = Astro.props;
+const work = t(locale).work;
+const meta = [
+  ...(copy.client ? [{ label: work.metaLabels.client, value: copy.client }] : []),
+  ...(project.when ? [{ label: work.metaLabels.when, value: project.when[locale] }] : []),
+  { label: work.metaLabels.role, value: copy.role },
+];
+---
+
+<ProjectVars
+  vars={{
+    'logo-radius': project.logoRadius,
+    'logo-blend': project.blend,
+    'logo-height': project.logoHeight,
+    speed: `${project.speed}px`,
+  }}
+>
+  <article class="other" data-reveal="far" data-index={index}>
+    <div class="float">
+      <Picture
+        src={project.logo}
+        formats={['avif', 'webp']}
+        widths={[Math.round(project.logo.width / 2), project.logo.width]}
+        sizes={`${Math.round((240 * project.logo.width) / project.logo.height)}px`}
+        width={project.logo.width}
+        height={project.logo.height}
+        alt={copy.logoAlt}
+        loading="lazy"
+        decoding="async"
+        fallbackFormat="webp"
+        data-tilt
+      />
+    </div>
+    <div class="kicker">
+      {project.number} · {copy.kind}
+    </div>
+    <h4 class="title">{project.name}</h4>
+    <p class="summary">{copy.summary}</p>
+    <dl class="meta">
+      {meta.map((row) => (
+        <>
+          <dt>{row.label}</dt>
+          <dd>{row.value}</dd>
+        </>
+      ))}
+    </dl>
+    <ul class="stack">
+      {project.stack.map((name) => (
+        <li>{name}</li>
+      ))}
+    </ul>
+    {project.actions.length > 0 && (
+      <div class="actions">
+        {project.actions.map((action) => (
+          <a
+            class:list={['action', { primary: action.primary }]}
+            href={action.href}
+            target="_blank"
+            rel="noopener"
+          >
+            {work.actions[action.label]}
+          </a>
+        ))}
+      </div>
+    )}
+    <div class="access">
+      <span class="access-dot" data-access={project.access}></span>
+      {work.access[project.access]}
+    </div>
+  </article>
+</ProjectVars>
+
+<style>
+  .other {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-18);
+  }
+
+  .float {
+    height: var(--size-others-row);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .float :global(picture) {
+    display: contents;
+  }
+
+  .float :global(img) {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: var(--logo-height);
+    object-fit: contain;
+    border-radius: var(--logo-radius);
+    mix-blend-mode: var(--logo-blend);
+    filter: drop-shadow(var(--shadow-logo-sm));
+  }
+
+  .kicker {
+    font-size: var(--font-size-14);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+
+  .title {
+    font-size: var(--font-size-30);
+    line-height: var(--line-height-card-title);
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .summary {
+    font-size: var(--font-size-16);
+    line-height: var(--line-height-normal);
+    margin: 0;
+    color: var(--color-text);
+    text-wrap: pretty;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-8) var(--space-16);
+    margin: 0;
+    font-size: var(--font-size-14);
+    line-height: var(--line-height-meta);
+  }
+
+  .meta dt {
+    color: var(--color-muted);
+  }
+
+  .meta dd {
+    margin: 0;
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .stack li {
+    font-size: var(--font-size-14);
+    font-weight: 500;
+    background: var(--color-white);
+    border-radius: var(--radius-pill);
+    padding: var(--space-5) var(--space-10);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  .action {
+    white-space: nowrap;
+    font-size: var(--font-size-14);
+    font-weight: 500;
+    padding: var(--space-9) var(--space-16);
+    border-radius: var(--radius-pill);
+    background: var(--color-transparent);
+    color: var(--color-ink);
+    border: var(--size-hairline) solid var(--color-line-strong);
+  }
+
+  .action.primary {
+    background: var(--color-ink);
+    color: var(--color-white);
+    border-color: var(--color-ink);
+  }
+
+  .action:hover {
+    transform: scale(1.04);
+    color: var(--color-ink);
+  }
+
+  .action.primary:hover {
+    color: var(--color-white);
+  }
+
+  .access {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-size: var(--font-size-14);
+    color: var(--color-muted);
+  }
+
+  .access-dot {
+    width: var(--size-dot);
+    height: var(--size-dot);
+    border-radius: var(--radius-round);
+    background: var(--color-success);
+  }
+
+  .access-dot[data-access='priv'] {
+    background: var(--color-transparent);
+    border: var(--size-ring) dashed var(--color-muted);
+  }
+
+  .access-dot[data-access='intern'] {
+    background: var(--color-ink);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Drifts from +speed/2 to −speed/2 as the grid passes through the viewport. */
+    .float {
+      transform: translateY(calc((0.5 - var(--p, 0.5)) * var(--speed)));
+    }
+
+    .action {
+      transition: transform var(--dur-press) var(--ease-out);
+    }
+  }
+</style>

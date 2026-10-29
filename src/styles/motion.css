@@ -24,30 +24,68 @@
 }
 
 /*
- * One-time reveals: `[data-reveal]` fades up 40px when `src/scripts/reveal.ts` sets
- * `data-reveal-state="visible"`. `data-index="1"` delays it by one step. Hidden only with
- * JavaScript and no reduced-motion preference, so it is never lost without them.
+ * One-time reveals: `src/scripts/reveal.ts` sets `data-reveal-state="visible"` once the element
+ * is in view. Hidden only with JavaScript and no reduced-motion preference, so it is never lost
+ * without them. Three looks:
+ * - `data-reveal` (no value): fades up 40px; `data-index="1"` delays it by one step.
+ * - `data-reveal="far"`: fades up 48px, staggered 110ms per `data-index` (0–2).
+ * - `data-reveal="parts"`: the element stays put; its `[data-reveal-part="pop"]` grows in from
+ *   0.7 with a −6° turn, and its `[data-reveal-part="rise"]` rises 40px from 0.96 a step later.
  */
 @media (prefers-reduced-motion: no-preference) {
-  html.js [data-reveal] {
+  html.js [data-reveal=''],
+  html.js [data-reveal='far'] {
     transition:
       opacity var(--dur-reveal) var(--ease-out),
       transform var(--dur-reveal) var(--ease-out);
   }
 
-  html.js [data-reveal][data-index='1'] {
+  html.js [data-reveal=''][data-index='1'] {
     transition-delay: var(--dur-step);
   }
 
-  html.js [data-reveal]:not([data-reveal-state='visible']) {
+  html.js [data-reveal='']:not([data-reveal-state='visible']) {
     opacity: 0;
     transform: translateY(var(--space-40));
+  }
+
+  html.js [data-reveal='far'][data-index='1'] {
+    transition-delay: var(--dur-stagger);
+  }
+
+  html.js [data-reveal='far'][data-index='2'] {
+    transition-delay: calc(2 * var(--dur-stagger));
+  }
+
+  html.js [data-reveal='far']:not([data-reveal-state='visible']) {
+    opacity: 0;
+    transform: translateY(var(--space-48));
+  }
+
+  html.js [data-reveal='parts'] [data-reveal-part] {
+    transition:
+      opacity var(--dur-reveal) var(--ease-out),
+      transform var(--dur-reveal-card) var(--ease-out);
+  }
+
+  html.js [data-reveal='parts'] [data-reveal-part='rise'] {
+    transition-delay: var(--dur-fast);
+  }
+
+  html.js [data-reveal='parts']:not([data-reveal-state='visible']) [data-reveal-part='pop'] {
+    opacity: 0;
+    transform: scale(0.7) rotate(-6deg);
+  }
+
+  html.js [data-reveal='parts']:not([data-reveal-state='visible']) [data-reveal-part='rise'] {
+    opacity: 0;
+    transform: translateY(var(--space-40)) scale(0.96);
   }
 }
 
 /*
  * Scroll scenes: `src/scripts/scenes.ts` writes `--p`, `--a`, `--b` and `--c` on each
- * `[data-scene]`. Sections read them with a final-state fallback (`var(--a, 1)`); these
+ * `[data-scene]` (and `--lx`, `--ly`, `--ls` on sticky scenes with a flying logo). Sections read them with a final-state fallback (`var(--a, 1)`); these
  * starting values apply only with JavaScript and no reduced-motion preference, until the
  * script's first frame.
  */
@@ -57,5 +95,22 @@
     --a: 0;
     --b: 0;
     --c: 0;
+  }
+}
+
+/*
+ * Hover tilt: `src/scripts/tilt.ts` writes `--tilt-x` and `--tilt-y` on a `[data-tilt]` element
+ * and sets `data-tilt-state="active"` while the pointer moves over it; it eases back on leave.
+ * Only on hover-capable devices with no reduced-motion preference.
+ */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  [data-tilt] {
+    transition: transform var(--dur-nav-shape) var(--ease-out);
+  }
+
+  [data-tilt][data-tilt-state='active'] {
+    transform: perspective(var(--size-tilt-perspective)) rotateX(var(--tilt-x, 0deg))
+      rotateY(var(--tilt-y, 0deg)) scale(1.06);
+    transition: transform var(--dur-step) ease-out;
   }
 }

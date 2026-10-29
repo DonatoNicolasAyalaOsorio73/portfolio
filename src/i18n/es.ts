@@ -93,4 +93,82 @@ export const es = {
       },
     ],
   },
+  work: {
+    heading: 'Proyectos destacados.',
+    intro:
+      'Sistemas en producción, productos y prototipos, cada uno con su arquitectura documentada.',
+    moreHeading: 'Otros proyectos.',
+    metaLabels: { client: 'Cliente', when: 'Cuándo', role: 'Rol' },
+    access: {
+      live: 'En línea',
+      livePriv: 'En línea · código privado',
+      priv: 'Código privado',
+      intern: 'Práctica profesional',
+    },
+    actions: {
+      visitNarinohoy: 'Visitar nariñohoy.com ↗',
+      visitSite: 'Visitar sitio ↗',
+      demo: 'Demo en vivo ↗',
+      repo: 'Repositorio ↗',
+    },
+    featured: [
+      {
+        id: 'narinohoy',
+        kind: 'PLATAFORMA DE NOTICIAS',
+        summary:
+          'CMS a medida sobre WordPress para un medio regional: acceso por roles para 13 editores, auditoría por usuario, backups diarios de registros, rollback y validación de integridad entre base de datos y contenido.',
+        client: 'NariñoHoy, medio digital',
+        role: 'Desarrollador Full Stack · Freelance',
+        logoAlt: 'Logo de NariñoHoy',
+        shotAlt: 'La página de inicio de NariñoHoy',
+      },
+      {
+        id: 'steady',
+        kind: 'PRODUCTO',
+        summary:
+          'Registro de certificaciones para una empresa de perros de asistencia: verificación pública por ID, código, QR o código de barras, y un panel administrativo privado. Toda lectura y escritura pasa por el servidor; la base de datos rechaza el acceso directo.',
+        client: 'Steady Guardians, Colombia',
+        role: 'Desarrollador Full Stack · Freelance',
+        logoAlt: 'Logo de Steady Guardians',
+        shotAlt: 'La página de inicio de Steady Guardians',
+      },
+      {
+        id: 'ecobike',
+        kind: 'TESIS MERITORIA',
+        summary:
+          'App de ciclismo para Nariño en iOS, Android y web desde un solo código Expo: recorridos GPS con pausa automática, Eco ruta con indicaciones giro a giro, puntos verificados por el servidor, premios con QR en 11 tiendas aliadas, amigos, chat, liga semanal y un panel de administración auditado.',
+        client: 'Universidad Mariana · tesis',
+        role: 'Autor',
+        logoAlt: 'Logo de EcoBike',
+        shotAlt: 'La demo web de EcoBike',
+      },
+    ],
+    others: [
+      {
+        id: 'andino',
+        kind: 'INSTITUCIONAL',
+        summary:
+          'Un sitio institucional en Angular (V01) que evolucionó a un CRM de registros estudiantiles en TypeScript y Supabase (V02), entregado con Scrum en Azure DevOps.',
+        role: 'Desarrollador Junior → Líder de desarrollo',
+        logoAlt: 'Logo del Centro de Estudios Andino',
+      },
+      {
+        id: 'siesa',
+        kind: 'PRUEBA TÉCNICA',
+        summary:
+          'Prototipo MES en Next.js 14 con integración bidireccional entre manufactura y calidad, dashboards con Recharts y un asistente de defectos con Gemini y respaldo offline.',
+        client: 'Siesa',
+        role: 'Desarrollador único, con Claude Code',
+        logoAlt: 'Logo de Siesa MES',
+      },
+      {
+        id: 'cognitios',
+        kind: 'PRÁCTICA PROFESIONAL',
+        summary:
+          'Interfaces responsive en Angular, servicios con RxJS, CRUD y reportes en JavaScript, y endpoints REST documentados y probados con Postman e Insomnia.',
+        role: 'Practicante Full Stack · Bogotá',
+        logoAlt: 'Logo de Cognitios',
+      },
+    ],
+  },
 } as const satisfies Dictionary;

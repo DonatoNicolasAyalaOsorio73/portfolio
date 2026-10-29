@@ -1,0 +1,201 @@
+---
+/**
+ * One featured project as a stacked card (narrow screens). Once in view, `reveal.ts` marks the
+ * card visible: the logo grows in with a slight turn and the screenshot rises a step later
+ * (`data-reveal="parts"` in `motion.css`). Without JavaScript or with reduced motion both are
+ * shown in place.
+ */
+import { Picture } from 'astro:assets';
+import type { FeaturedProject } from '../data/projects';
+import { t, type Locale } from '../i18n';
+import ProjectVars from './ProjectVars.astro';
+
+interface Props {
+  locale: Locale;
+  project: FeaturedProject;
+  copy: {
+    kind: string;
+    summary: string;
+    client: string;
+    role: string;
+    logoAlt: string;
+    shotAlt: string;
+  };
+}
+
+const { locale, project, copy } = Astro.props;
+const work = t(locale).work;
+const meta = [
+  { label: work.metaLabels.client, value: copy.client },
+  ...(project.when ? [{ label: work.metaLabels.when, value: project.when[locale] }] : []),
+  { label: work.metaLabels.role, value: copy.role },
+];
+---
+
+<ProjectVars vars={{ 'logo-radius': project.logoRadius, 'logo-blend': project.blend }}>
+  <article class="card" data-reveal="parts">
+    <div class="logo" data-reveal-part="pop">
+      <Picture
+        src={project.logo}
+        formats={['avif', 'webp']}
+        widths={[280, 560]}
+        sizes="min(62vw, 280px)"
+        width={560}
+        height={Math.round((560 * project.logo.height) / project.logo.width)}
+        alt={copy.logoAlt}
+        loading="lazy"
+        decoding="async"
+        fallbackFormat="webp"
+      />
+    </div>
+    <div class="kicker">
+      {project.number} · {copy.kind}
+    </div>
+    <h3 class="title">{project.name}</h3>
+    <p class="summary">{copy.summary}</p>
+    <dl class="meta">
+      {meta.map((row) => (
+        <>
+          <dt>{row.label}</dt>
+          <dd>{row.value}</dd>
+        </>
+      ))}
+    </dl>
+    <div class="actions">
+      {project.actions.map((action) => (
+        <a
+          class:list={['action', { primary: action.primary }]}
+          href={action.href}
+          target="_blank"
+          rel="noopener"
+        >
+          {work.actions[action.label]}
+        </a>
+      ))}
+    </div>
+    <div class="shot" data-reveal-part="rise">
+      <Picture
+        src={project.shot}
+        formats={['avif', 'webp']}
+        widths={[700, 1400]}
+        sizes="calc(100vw - 48px)"
+        width={1400}
+        height={Math.round((1400 * project.shot.height) / project.shot.width)}
+        alt={copy.shotAlt}
+        loading="lazy"
+        decoding="async"
+        fallbackFormat="webp"
+      />
+    </div>
+  </article>
+</ProjectVars>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-18);
+  }
+
+  .logo {
+    align-self: center;
+    width: var(--size-logo-card);
+  }
+
+  .logo :global(picture) {
+    display: contents;
+  }
+
+  .logo :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+    display: block;
+    border-radius: var(--logo-radius);
+    mix-blend-mode: var(--logo-blend);
+    filter: drop-shadow(var(--shadow-logo-md));
+  }
+
+  .kicker {
+    font-size: var(--font-size-14);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+    margin-top: var(--space-16);
+  }
+
+  .title {
+    font-size: var(--font-size-card-title);
+    line-height: var(--line-height-tight);
+    letter-spacing: -0.045em;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .summary {
+    font-size: var(--font-size-17);
+    line-height: var(--line-height-normal);
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-8) var(--space-16);
+    margin: 0;
+    font-size: var(--font-size-14);
+  }
+
+  .meta dt {
+    color: var(--color-muted);
+  }
+
+  .meta dd {
+    margin: 0;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-10);
+  }
+
+  .action {
+    white-space: nowrap;
+    font-size: var(--font-size-16);
+    font-weight: 500;
+    padding: var(--space-14) var(--space-22);
+    border-radius: var(--radius-pill);
+    background: var(--color-transparent);
+    color: var(--color-ink);
+    border: var(--size-hairline) solid var(--color-line-strong);
+  }
+
+  .action:hover {
+    color: var(--color-ink);
+  }
+
+  .action.primary {
+    background: var(--color-ink);
+    color: var(--color-white);
+    border-color: var(--color-ink);
+  }
+
+  .shot {
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+
+  .shot :global(picture) {
+    display: contents;
+  }
+
+  .shot :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

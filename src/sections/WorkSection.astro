@@ -1,0 +1,146 @@
+---
+/**
+ * Work: the heading and intro (revealed once in view), the three featured projects and the
+ * "Other projects" grid. From 960px each featured project is a pinned scroll scene
+ * (`FeaturedScene`); below it they are stacked cards (`FeaturedCard`). Both are rendered and CSS
+ * shows one. Data comes from `src/data/projects.ts`, joined to the dictionary by `id`.
+ */
+import FeaturedCard from '../components/FeaturedCard.astro';
+import FeaturedScene from '../components/FeaturedScene.astro';
+import OtherProject from '../components/OtherProject.astro';
+import { featured, others } from '../data/projects';
+import { t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale).work;
+
+/** Joins each data entry to its dictionary entry; a missing one is a build error. */
+function join<P extends { id: string }, C extends { id: string }>(
+  items: readonly P[],
+  texts: readonly C[],
+) {
+  return items.map((project) => {
+    const text = texts.find((entry) => entry.id === project.id);
+    if (!text) throw new Error(`No ${locale} copy for project "${project.id}"`);
+    return { project, text };
+  });
+}
+
+const featuredItems = join(featured, copy.featured);
+const otherItems = join(others, copy.others).map(({ project, text }) => ({
+  project,
+  text: { ...text, client: 'client' in text ? text.client : undefined },
+}));
+---
+
+<section id="work" class="work" aria-labelledby="work-title">
+  <div class="head">
+    <div data-reveal>
+      <h2 id="work-title" class="heading">
+        {copy.heading}
+      </h2>
+      <p class="intro">{copy.intro}</p>
+    </div>
+  </div>
+
+  <div class="scenes">
+    {featuredItems.map(({ project, text }) => (
+      <FeaturedScene locale={locale} project={project} copy={text} />
+    ))}
+  </div>
+
+  <div class="cards">
+    {featuredItems.map(({ project, text }) => (
+      <FeaturedCard locale={locale} project={project} copy={text} />
+    ))}
+  </div>
+
+  <div class="more" data-scene="pass">
+    <h3 class="more-heading">{copy.moreHeading}</h3>
+    <div class="grid">
+      {otherItems.map(({ project, text }, index) => (
+        <OtherProject locale={locale} project={project} index={index} copy={text} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/reveal';
+  import '../scripts/scenes';
+  import '../scripts/tilt';
+</script>
+
+<style>
+  .work {
+    background: var(--color-surface);
+  }
+
+  .head {
+    max-width: var(--size-content);
+    margin: 0 auto;
+    padding: var(--space-fluid-work) var(--space-24) var(--space-fluid-work-end);
+  }
+
+  .heading {
+    font-size: var(--font-size-work-heading);
+    line-height: var(--line-height-work-heading);
+    letter-spacing: -0.05em;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .intro {
+    font-size: var(--font-size-phil-intro);
+    line-height: var(--line-height-normal);
+    color: var(--color-muted);
+    max-width: var(--size-step-how);
+    margin: var(--space-24) 0 0;
+  }
+
+  /* Narrow: stacked cards; the pinned scenes start at 960px. */
+  .scenes {
+    display: none;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-96);
+    padding: var(--space-24) var(--space-24) 0;
+  }
+
+  @media (min-width: 960px) {
+    .scenes {
+      display: block;
+    }
+
+    .cards {
+      display: none;
+    }
+  }
+
+  .more {
+    max-width: var(--size-content);
+    margin: 0 auto;
+    padding: var(--space-fluid-work) var(--space-24);
+  }
+
+  .more-heading {
+    font-size: var(--font-size-more-heading);
+    letter-spacing: -0.04em;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--size-others-min)), 1fr));
+    gap: var(--space-fluid-grid-gap);
+    margin-top: var(--space-fluid-grid-top);
+  }
+</style>

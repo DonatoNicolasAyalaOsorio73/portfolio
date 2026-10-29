@@ -83,6 +83,83 @@ export const en = {
       },
     ],
   },
+  work: {
+    heading: 'Featured projects.',
+    intro: 'Production systems, products and prototypes, each with its architecture documented.',
+    moreHeading: 'Other projects.',
+    metaLabels: { client: 'Client', when: 'When', role: 'Role' },
+    access: {
+      live: 'Live',
+      livePriv: 'Live · private codebase',
+      priv: 'Private codebase',
+      intern: 'Internship',
+    },
+    actions: {
+      visitNarinohoy: 'Visit nariñohoy.com ↗',
+      visitSite: 'Visit site ↗',
+      demo: 'Live demo ↗',
+      repo: 'Repository ↗',
+    },
+    featured: [
+      {
+        id: 'narinohoy',
+        kind: 'NEWS PLATFORM',
+        summary:
+          'Custom WordPress CMS for a regional newsroom: role-based access for 13 editors, per-user audit trails, daily log backups, rollback and database-to-content integrity checks.',
+        client: 'NariñoHoy, digital news outlet',
+        role: 'Full Stack Developer · Freelance',
+        logoAlt: 'NariñoHoy logo',
+        shotAlt: 'The NariñoHoy home page',
+      },
+      {
+        id: 'steady',
+        kind: 'PRODUCT',
+        summary:
+          'Certification registry for an assistance-dog trainer: public verification by ID, code, QR or barcode, and a private admin panel. Every read and write goes through the server; the database rejects direct access.',
+        client: 'Steady Guardians, Colombia',
+        role: 'Full Stack Developer · Freelance',
+        logoAlt: 'Steady Guardians logo',
+        shotAlt: 'The Steady Guardians home page',
+      },
+      {
+        id: 'ecobike',
+        kind: 'THESIS WITH DISTINCTION',
+        summary:
+          'Cycling app for Nariño on iOS, Android and the web from one Expo codebase: GPS rides with auto-pause, Eco ruta bike routing with turn-by-turn directions, server-verified points, QR rewards at 11 partner stores, friends, chat, a weekly league and an audited admin panel.',
+        client: 'Universidad Mariana · thesis',
+        role: 'Author',
+        logoAlt: 'EcoBike logo',
+        shotAlt: 'The EcoBike web demo',
+      },
+    ],
+    others: [
+      {
+        id: 'andino',
+        kind: 'INSTITUTIONAL',
+        summary:
+          'An Angular institutional website (V01) that evolved into a TypeScript and Supabase student records CRM (V02), delivered with Scrum on Azure DevOps.',
+        role: 'Junior Developer → Development Lead',
+        logoAlt: 'Centro de Estudios Andino logo',
+      },
+      {
+        id: 'siesa',
+        kind: 'TECHNICAL ASSESSMENT',
+        summary:
+          'Next.js 14 MES prototype with two-way integration between manufacturing and quality, Recharts dashboards and a Gemini-powered defect assistant with an offline fallback.',
+        client: 'Siesa',
+        role: 'Sole developer, built with Claude Code',
+        logoAlt: 'Siesa MES logo',
+      },
+      {
+        id: 'cognitios',
+        kind: 'INTERNSHIP',
+        summary:
+          'Responsive Angular interfaces, RxJS services, JavaScript CRUD and reporting, and documented REST endpoints tested with Postman and Insomnia.',
+        role: 'Full Stack Intern · Bogotá',
+        logoAlt: 'Cognitios logo',
+      },
+    ],
+  },
 } as const;
 
 /** Turns the literal types of `en` into `string`, keeping the key structure. */
