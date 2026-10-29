@@ -2,6 +2,8 @@
 /** The home page composition, rendered by `src/pages/index.astro` and `src/pages/es/index.astro`. */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroSection from '../sections/HeroSection.astro';
+import PhilosophySection from '../sections/PhilosophySection.astro';
+import StatementSequence from '../sections/StatementSequence.astro';
 import type { Locale } from '../i18n';
 
 interface Props {
@@ -13,4 +15,6 @@ const { locale } = Astro.props;
 
 <BaseLayout locale={locale} route="home">
   <HeroSection locale={locale} />
+  <StatementSequence locale={locale} />
+  <PhilosophySection locale={locale} />
 </BaseLayout>

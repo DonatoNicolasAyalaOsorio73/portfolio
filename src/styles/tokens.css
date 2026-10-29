@@ -5,85 +5,117 @@
  * equal to an existing token reuses that token. Breakpoints are not tokens: write
  * 640px, 960px or 1280px literally in `@media (min-width: ...)`.
  *
- * | Token                 | Value                                                                   | Used by                                                  |
- * | --------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------- |
- * | --color-white         | #ffffff                                                                 | global, BaseLayout, Nav, LangSwitch, HeroSection         |
- * | --color-ink           | #111111                                                                 | global, BaseLayout, Nav, LangSwitch, Footer, HeroSection |
- * | --color-black         | #000000                                                                 | Nav                                                      |
- * | --color-text          | #3a3a3c                                                                 | Nav, HeroSection                                         |
- * | --color-muted         | #6e6e73                                                                 | global, LangSwitch, Footer, HeroSection                  |
- * | --color-surface       | #f5f5f7                                                                 | HeroSection                                              |
- * | --color-success       | #1f9d55                                                                 | HeroSection                                              |
- * | --color-line          | rgb(0 0 0 / 8%)                                                         | Nav, Footer, HeroSection                                 |
- * | --color-line-strong   | rgb(0 0 0 / 16%)                                                        | HeroSection                                              |
- * | --color-line-hover    | rgb(0 0 0 / 40%)                                                        | HeroSection                                              |
- * | --color-fill          | rgb(0 0 0 / 5%)                                                         | LangSwitch                                               |
- * | --color-hover-fill    | rgb(127 127 127 / 16%)                                                  | Nav                                                      |
- * | --color-nav-glass     | rgb(255 255 255 / 72%)                                                  | Nav                                                      |
- * | --color-on-dark-link  | rgb(255 255 255 / 78%)                                                  | Nav                                                      |
- * | --color-on-dark-muted | rgb(255 255 255 / 70%)                                                  | LangSwitch                                               |
- * | --color-on-dark-fill  | rgb(255 255 255 / 14%)                                                  | LangSwitch                                               |
- * | --color-focus         | oklch(0.55 0.19 255)                                                    | global                                                   |
- * | --color-transparent   | transparent                                                             | Nav, LangSwitch                                          |
- * | --space-2             | 2px                                                                     | Nav                                                      |
- * | --space-3             | 3px                                                                     | LangSwitch                                               |
- * | --space-6             | 6px                                                                     | LangSwitch, HeroSection                                  |
- * | --space-8             | 8px                                                                     | Nav, HeroSection                                         |
- * | --space-10            | 10px                                                                    | Nav, LangSwitch                                          |
- * | --space-12            | 12px                                                                    | BaseLayout, Nav, HeroSection                             |
- * | --space-13            | 13px                                                                    | Nav                                                      |
- * | --space-14            | 14px                                                                    | Nav                                                      |
- * | --space-16            | 16px                                                                    | Nav, Footer, HeroSection                                 |
- * | --space-18            | 18px                                                                    | BaseLayout, Nav                                          |
- * | --space-20            | 20px                                                                    | Nav, Footer, HeroSection                                 |
- * | --space-24            | 24px                                                                    | Nav, Footer, HeroSection                                 |
- * | --space-30            | 30px                                                                    | HeroSection                                              |
- * | --space-32            | 32px                                                                    | Footer, HeroSection                                      |
- * | --space-40            | 40px                                                                    | motion, HeroSection                                      |
- * | --space-64            | 64px                                                                    | HeroSection                                              |
- * | --space-120           | 120px                                                                   | HeroSection                                              |
- * | --space-fluid-gap     | clamp(24px, 3vw, 48px)                                                  | HeroSection                                              |
- * | --space-fluid-overlap | clamp(16px, 2.4vw, 40px)                                                | HeroSection                                              |
- * | --space-fluid-section | clamp(56px, 6vw, 96px)                                                  | HeroSection                                              |
- * | --space-fluid-rule    | clamp(24px, 3vw, 36px)                                                  | HeroSection                                              |
- * | --radius-focus        | 8px                                                                     | global                                                   |
- * | --radius-photo        | 32px                                                                    | HeroSection                                              |
- * | --radius-pill         | 999px                                                                   | BaseLayout, Nav, LangSwitch, HeroSection                 |
- * | --radius-round        | 50%                                                                     | HeroSection                                              |
- * | --shadow-photo        | 0 30px 60px -20px rgb(0 0 0 / 20%), 0 0 0 1px rgb(0 0 0 / 4%)           | HeroSection                                              |
- * | --shadow-lift         | 0 12px 30px rgb(0 0 0 / 16%)                                            | HeroSection                                              |
- * | --shadow-nav          | 0 10px 30px rgb(0 0 0 / 8%)                                             | Nav                                                      |
- * | --shadow-toggle       | 0 1px 3px rgb(0 0 0 / 12%)                                              | LangSwitch                                               |
- * | --font-sans           | -apple-system, BlinkMacSystemFont, system-ui, ui-sans-serif, sans-serif | global                                                   |
- * | --font-size-14        | 14px                                                                    | LangSwitch, HeroSection                                  |
- * | --font-size-15        | 15px                                                                    | BaseLayout, Nav, Footer, HeroSection                     |
- * | --font-size-17        | 17px                                                                    | Nav, HeroSection                                         |
- * | --font-size-lead      | clamp(18px, 1.55vw, 22px)                                               | HeroSection                                              |
- * | --font-size-display   | clamp(2.6rem, 6vw, 5rem)                                                | HeroSection                                              |
- * | --line-height-display | 0.92                                                                    | HeroSection                                              |
- * | --line-height-body    | 1.6                                                                     | HeroSection                                              |
- * | --layer-nav           | 50                                                                      | Nav                                                      |
- * | --layer-skip          | 200                                                                     | BaseLayout                                               |
- * | --size-content        | 1240px                                                                  | Nav, Footer, HeroSection                                 |
- * | --size-photo          | clamp(170px, 20vw, 280px)                                               | HeroSection                                              |
- * | --size-photo-column   | 200px                                                                   | HeroSection                                              |
- * | --size-nav-pill       | 900px                                                                   | Nav                                                      |
- * | --size-dot            | 7px                                                                     | HeroSection                                              |
- * | --size-hairline       | 1px                                                                     | Nav, Footer, HeroSection                                 |
- * | --size-focus-ring     | 2px                                                                     | global                                                   |
- * | --size-focus-offset   | 3px                                                                     | global                                                   |
- * | --size-blur-nav       | 20px                                                                    | Nav                                                      |
- * | --dur-step            | 120ms                                                                   | HeroSection                                              |
- * | --dur-fast            | 200ms                                                                   | BaseLayout, Nav, HeroSection                             |
- * | --dur-press           | 250ms                                                                   | LangSwitch, HeroSection                                  |
- * | --dur-step-2          | 280ms                                                                   | HeroSection                                              |
- * | --dur-nav             | 500ms                                                                   | Nav, LangSwitch                                          |
- * | --dur-nav-shape       | 700ms                                                                   | Nav                                                      |
- * | --dur-reveal          | 900ms                                                                   | HeroSection                                              |
- * | --dur-reveal-lg       | 1100ms                                                                  | HeroSection                                              |
- * | --dur-reveal-photo    | 1400ms                                                                  | HeroSection                                              |
- * | --dur-zoom            | 1800ms                                                                  | HeroSection                                              |
- * | --ease-out            | cubic-bezier(0.22, 1, 0.36, 1)                                          | Nav, HeroSection                                         |
+ * | Token                     | Value                                                                   | Used by                                                                                        |
+ * | ------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+ * | --color-white             | #ffffff                                                                 | global, BaseLayout, Nav, LangSwitch, HeroSection, PhilosophySection                            |
+ * | --color-ink               | #111111                                                                 | global, BaseLayout, Nav, LangSwitch, Footer, HeroSection, StatementSequence, PhilosophySection |
+ * | --color-black             | #000000                                                                 | Nav                                                                                            |
+ * | --color-text              | #3a3a3c                                                                 | Nav, HeroSection, PhilosophySection                                                            |
+ * | --color-muted             | #6e6e73                                                                 | global, LangSwitch, Footer, HeroSection, StatementSequence, PhilosophySection                  |
+ * | --color-surface           | #f5f5f7                                                                 | HeroSection, PhilosophySection                                                                 |
+ * | --color-success           | #1f9d55                                                                 | HeroSection                                                                                    |
+ * | --color-line              | rgb(0 0 0 / 8%)                                                         | Nav, Footer, HeroSection                                                                       |
+ * | --color-line-strong       | rgb(0 0 0 / 16%)                                                        | HeroSection                                                                                    |
+ * | --color-line-hover        | rgb(0 0 0 / 40%)                                                        | HeroSection                                                                                    |
+ * | --color-fill              | rgb(0 0 0 / 5%)                                                         | LangSwitch                                                                                     |
+ * | --color-hover-fill        | rgb(127 127 127 / 16%)                                                  | Nav                                                                                            |
+ * | --color-nav-glass         | rgb(255 255 255 / 72%)                                                  | Nav                                                                                            |
+ * | --color-on-dark-link      | rgb(255 255 255 / 78%)                                                  | Nav                                                                                            |
+ * | --color-on-dark-muted     | rgb(255 255 255 / 70%)                                                  | LangSwitch                                                                                     |
+ * | --color-on-dark-fill      | rgb(255 255 255 / 14%)                                                  | LangSwitch                                                                                     |
+ * | --color-focus             | oklch(0.55 0.19 255)                                                    | global                                                                                         |
+ * | --color-transparent       | transparent                                                             | Nav, LangSwitch                                                                                |
+ * | --color-track             | rgb(0 0 0 / 12%)                                                        | StatementSequence                                                                              |
+ * | --color-ghost             | #d2d2d7                                                                 | PhilosophySection                                                                              |
+ * | --space-2                 | 2px                                                                     | Nav, PhilosophySection                                                                         |
+ * | --space-3                 | 3px                                                                     | LangSwitch, StatementSequence                                                                  |
+ * | --space-6                 | 6px                                                                     | LangSwitch, HeroSection                                                                        |
+ * | --space-8                 | 8px                                                                     | Nav, HeroSection, PhilosophySection                                                            |
+ * | --space-10                | 10px                                                                    | Nav, LangSwitch, StatementSequence, PhilosophySection                                          |
+ * | --space-12                | 12px                                                                    | BaseLayout, Nav, HeroSection                                                                   |
+ * | --space-13                | 13px                                                                    | Nav                                                                                            |
+ * | --space-14                | 14px                                                                    | Nav, PhilosophySection                                                                         |
+ * | --space-16                | 16px                                                                    | Nav, Footer, HeroSection                                                                       |
+ * | --space-18                | 18px                                                                    | BaseLayout, Nav                                                                                |
+ * | --space-20                | 20px                                                                    | Nav, Footer, HeroSection, StatementSequence, PhilosophySection                                 |
+ * | --space-24                | 24px                                                                    | Nav, Footer, HeroSection, StatementSequence, PhilosophySection                                |
+ * | --space-30                | 30px                                                                    | HeroSection                                                                                    |
+ * | --space-32                | 32px                                                                    | Footer, HeroSection, PhilosophySection                                                         |
+ * | --space-40                | 40px                                                                    | motion, HeroSection                                                                            |
+ * | --space-64                | 64px                                                                    | HeroSection                                                                                    |
+ * | --space-120               | 120px                                                                   | HeroSection                                                                                    |
+ * | --space-fluid-gap         | clamp(24px, 3vw, 48px)                                                  | HeroSection                                                                                    |
+ * | --space-fluid-overlap     | clamp(16px, 2.4vw, 40px)                                                | HeroSection                                                                                    |
+ * | --space-fluid-section     | clamp(56px, 6vw, 96px)                                                  | HeroSection                                                                                    |
+ * | --space-fluid-rule        | clamp(24px, 3vw, 36px)                                                  | HeroSection                                                                                    |
+ * | --space-48                | 48px                                                                    | StatementSequence                                                                              |
+ * | --space-60                | 60px                                                                    | StatementSequence, PhilosophySection                                                           |
+ * | --space-fluid-seq         | clamp(96px, 12vw, 160px)                                                | StatementSequence                                                                              |
+ * | --space-fluid-phil        | clamp(96px, 14vw, 200px)                                                | PhilosophySection                                                                              |
+ * | --space-fluid-steps       | clamp(64px, 9vw, 120px)                                                 | PhilosophySection                                                                              |
+ * | --space-fluid-step-gap    | clamp(16px, 3vw, 40px)                                                  | PhilosophySection                                                                              |
+ * | --space-fluid-step-end    | clamp(32px, 5vw, 64px)                                                  | PhilosophySection                                                                              |
+ * | --space-fluid-step-number | clamp(10px, 2.4vw, 30px)                                                | PhilosophySection                                                                              |
+ * | --radius-focus            | 8px                                                                     | global                                                                                         |
+ * | --radius-photo            | 32px                                                                    | HeroSection                                                                                    |
+ * | --radius-pill             | 999px                                                                   | BaseLayout, Nav, LangSwitch, HeroSection                                                       |
+ * | --radius-round            | 50%                                                                     | HeroSection, PhilosophySection                                                                 |
+ * | --radius-bar              | 2px                                                                     | StatementSequence                                                                              |
+ * | --shadow-photo            | 0 30px 60px -20px rgb(0 0 0 / 20%), 0 0 0 1px rgb(0 0 0 / 4%)           | HeroSection                                                                                    |
+ * | --shadow-lift             | 0 12px 30px rgb(0 0 0 / 16%)                                            | HeroSection                                                                                    |
+ * | --shadow-nav              | 0 10px 30px rgb(0 0 0 / 8%)                                             | Nav                                                                                            |
+ * | --shadow-toggle           | 0 1px 3px rgb(0 0 0 / 12%)                                              | LangSwitch                                                                                     |
+ * | --font-sans               | -apple-system, BlinkMacSystemFont, system-ui, ui-sans-serif, sans-serif | global                                                                                         |
+ * | --font-mono               | ui-monospace, SFMono-Regular, Menlo, monospace                          | StatementSequence, PhilosophySection                                                           |
+ * | --font-size-14            | 14px                                                                    | LangSwitch, HeroSection, PhilosophySection                                                     |
+ * | --font-size-15            | 15px                                                                    | BaseLayout, Nav, Footer, HeroSection                                                           |
+ * | --font-size-17            | 17px                                                                    | Nav, HeroSection                                                                               |
+ * | --font-size-lead          | clamp(18px, 1.55vw, 22px)                                               | HeroSection                                                                                    |
+ * | --font-size-display       | clamp(2.6rem, 6vw, 5rem)                                                | HeroSection                                                                                    |
+ * | --font-size-13            | 13px                                                                    | StatementSequence                                                                              |
+ * | --font-size-statement     | clamp(2.6rem, 7vw, 7rem)                                                | StatementSequence                                                                              |
+ * | --font-size-heading       | clamp(2.8rem, 6.5vw, 6rem)                                              | PhilosophySection                                                                              |
+ * | --font-size-phil-intro    | clamp(19px, 2vw, 23px)                                                  | PhilosophySection                                                                              |
+ * | --font-size-step          | clamp(2.4rem, 8vw, 7.5rem)                                              | PhilosophySection                                                                              |
+ * | --font-size-step-note     | clamp(16px, 1.6vw, 19px)                                                | PhilosophySection                                                                              |
+ * | --font-size-step-how      | clamp(14px, 1.3vw, 16px)                                                | PhilosophySection                                                                              |
+ * | --line-height-display     | 0.92                                                                    | HeroSection                                                                                    |
+ * | --line-height-body        | 1.6                                                                     | HeroSection, PhilosophySection                                                                 |
+ * | --line-height-heading     | 0.98                                                                    | StatementSequence, PhilosophySection                                                           |
+ * | --line-height-tight       | 1                                                                       | PhilosophySection                                                                              |
+ * | --line-height-relaxed     | 1.55                                                                    | PhilosophySection                                                                              |
+ * | --layer-nav               | 50                                                                      | Nav                                                                                            |
+ * | --layer-skip              | 200                                                                     | BaseLayout                                                                                     |
+ * | --size-content            | 1240px                                                                  | Nav, Footer, HeroSection                                                                       |
+ * | --size-photo              | clamp(170px, 20vw, 280px)                                               | HeroSection                                                                                    |
+ * | --size-photo-column       | 200px                                                                   | HeroSection                                                                                    |
+ * | --size-nav-pill           | 900px                                                                   | Nav                                                                                            |
+ * | --size-dot                | 7px                                                                     | HeroSection                                                                                    |
+ * | --size-hairline           | 1px                                                                     | Nav, Footer, HeroSection                                                                       |
+ * | --size-focus-ring         | 2px                                                                     | global                                                                                         |
+ * | --size-focus-offset       | 3px                                                                     | global                                                                                         |
+ * | --size-blur-nav           | 20px                                                                    | Nav                                                                                            |
+ * | --size-screen             | 100vh                                                                   | StatementSequence                                                                              |
+ * | --size-seq-track          | 300vh                                                                   | StatementSequence                                                                              |
+ * | --size-seq-stage          | clamp(220px, 40vh, 420px)                                               | StatementSequence                                                                              |
+ * | --size-seq                | 1200px                                                                  | StatementSequence                                                                              |
+ * | --size-phil               | 1100px                                                                  | PhilosophySection                                                                              |
+ * | --size-phil-heading       | 960px                                                                   | PhilosophySection                                                                              |
+ * | --size-phil-intro         | 680px                                                                   | PhilosophySection                                                                              |
+ * | --size-step-note          | 600px                                                                   | PhilosophySection                                                                              |
+ * | --size-step-how           | 640px                                                                   | PhilosophySection                                                                              |
+ * | --size-step-rail          | clamp(40px, 6vw, 72px)                                                  | PhilosophySection                                                                              |
+ * | --dur-step                | 120ms                                                                   | HeroSection, motion                                                                            |
+ * | --dur-fast                | 200ms                                                                   | BaseLayout, Nav, HeroSection, PhilosophySection                                                |
+ * | --dur-press               | 250ms                                                                   | LangSwitch, HeroSection                                                                        |
+ * | --dur-step-2              | 280ms                                                                   | HeroSection                                                                                    |
+ * | --dur-nav                 | 500ms                                                                   | Nav, LangSwitch, StatementSequence                                                             |
+ * | --dur-nav-shape           | 700ms                                                                   | Nav, StatementSequence                                                                         |
+ * | --dur-reveal              | 900ms                                                                   | HeroSection, StatementSequence, motion                                                         |
+ * | --dur-reveal-lg           | 1100ms                                                                  | HeroSection                                                                                    |
+ * | --dur-reveal-photo        | 1400ms                                                                  | HeroSection                                                                                    |
+ * | --dur-zoom                | 1800ms                                                                  | HeroSection                                                                                    |
+ * | --ease-out                | cubic-bezier(0.22, 1, 0.36, 1)                                          | Nav, HeroSection, motion, StatementSequence                                                    |
  */
 
 :root {
@@ -105,6 +137,8 @@
   --color-on-dark-fill: rgb(255 255 255 / 14%);
   --color-focus: oklch(0.55 0.19 255);
   --color-transparent: transparent;
+  --color-track: rgb(0 0 0 / 12%);
+  --color-ghost: #d2d2d7;
 
   --space-2: 2px;
   --space-3: 3px;
@@ -127,11 +161,20 @@
   --space-fluid-overlap: clamp(16px, 2.4vw, 40px);
   --space-fluid-section: clamp(56px, 6vw, 96px);
   --space-fluid-rule: clamp(24px, 3vw, 36px);
+  --space-48: 48px;
+  --space-60: 60px;
+  --space-fluid-seq: clamp(96px, 12vw, 160px);
+  --space-fluid-phil: clamp(96px, 14vw, 200px);
+  --space-fluid-steps: clamp(64px, 9vw, 120px);
+  --space-fluid-step-gap: clamp(16px, 3vw, 40px);
+  --space-fluid-step-end: clamp(32px, 5vw, 64px);
+  --space-fluid-step-number: clamp(10px, 2.4vw, 30px);
 
   --radius-focus: 8px;
   --radius-photo: 32px;
   --radius-pill: 999px;
   --radius-round: 50%;
+  --radius-bar: 2px;
 
   --shadow-photo: 0 30px 60px -20px rgb(0 0 0 / 20%), 0 0 0 1px rgb(0 0 0 / 4%);
   --shadow-lift: 0 12px 30px rgb(0 0 0 / 16%);
@@ -139,13 +182,24 @@
   --shadow-toggle: 0 1px 3px rgb(0 0 0 / 12%);
 
   --font-sans: -apple-system, BlinkMacSystemFont, system-ui, ui-sans-serif, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-size-14: 14px;
   --font-size-15: 15px;
   --font-size-17: 17px;
   --font-size-lead: clamp(18px, 1.55vw, 22px);
   --font-size-display: clamp(2.6rem, 6vw, 5rem);
+  --font-size-13: 13px;
+  --font-size-statement: clamp(2.6rem, 7vw, 7rem);
+  --font-size-heading: clamp(2.8rem, 6.5vw, 6rem);
+  --font-size-phil-intro: clamp(19px, 2vw, 23px);
+  --font-size-step: clamp(2.4rem, 8vw, 7.5rem);
+  --font-size-step-note: clamp(16px, 1.6vw, 19px);
+  --font-size-step-how: clamp(14px, 1.3vw, 16px);
   --line-height-display: 0.92;
   --line-height-body: 1.6;
+  --line-height-heading: 0.98;
+  --line-height-tight: 1;
+  --line-height-relaxed: 1.55;
 
   --layer-nav: 50;
   --layer-skip: 200;
@@ -159,6 +213,16 @@
   --size-focus-ring: 2px;
   --size-focus-offset: 3px;
   --size-blur-nav: 20px;
+  --size-screen: 100vh;
+  --size-seq-track: 300vh;
+  --size-seq-stage: clamp(220px, 40vh, 420px);
+  --size-seq: 1200px;
+  --size-phil: 1100px;
+  --size-phil-heading: 960px;
+  --size-phil-intro: 680px;
+  --size-step-note: 600px;
+  --size-step-how: 640px;
+  --size-step-rail: clamp(40px, 6vw, 72px);
 
   --dur-step: 120ms;
   --dur-fast: 200ms;

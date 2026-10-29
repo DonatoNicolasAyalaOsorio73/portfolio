@@ -22,3 +22,40 @@
     transform: none;
   }
 }
+
+/*
+ * One-time reveals: `[data-reveal]` fades up 40px when `src/scripts/reveal.ts` sets
+ * `data-reveal-state="visible"`. `data-index="1"` delays it by one step. Hidden only with
+ * JavaScript and no reduced-motion preference, so it is never lost without them.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    transition:
+      opacity var(--dur-reveal) var(--ease-out),
+      transform var(--dur-reveal) var(--ease-out);
+  }
+
+  html.js [data-reveal][data-index='1'] {
+    transition-delay: var(--dur-step);
+  }
+
+  html.js [data-reveal]:not([data-reveal-state='visible']) {
+    opacity: 0;
+    transform: translateY(var(--space-40));
+  }
+}
+
+/*
+ * Scroll scenes: `src/scripts/scenes.ts` writes `--p`, `--a`, `--b` and `--c` on each
+ * `[data-scene]`. Sections read them with a final-state fallback (`var(--a, 1)`); these
+ * starting values apply only with JavaScript and no reduced-motion preference, until the
+ * script's first frame.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-scene] {
+    --p: 0;
+    --a: 0;
+    --b: 0;
+    --c: 0;
+  }
+}

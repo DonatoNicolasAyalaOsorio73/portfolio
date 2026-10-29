@@ -33,4 +33,64 @@ export const es = {
     secondaryCta: 'Contactar',
     subline: 'Full Stack · Arquitectura de software · Web y móvil',
   },
+  sequence: {
+    label: 'Cómo trabajo',
+    items: [
+      {
+        id: 'reliability',
+        statement: 'Software confiable, hecho para perdurar.',
+        label: 'CONFIABILIDAD',
+      },
+      {
+        id: 'scalability',
+        statement: 'Software que crece junto con tu negocio.',
+        label: 'ESCALABILIDAD',
+      },
+      {
+        id: 'alignment',
+        statement: 'Tecnología diseñada en torno a tus objetivos.',
+        label: 'ALINEACIÓN',
+      },
+      { id: 'speed', statement: 'Prototipos rápidos para validar tu idea.', label: 'VELOCIDAD' },
+    ],
+  },
+  philosophy: {
+    label: 'Filosofía',
+    heading: 'El gran software empieza antes del primer commit.',
+    intro:
+      'Trato producto, arquitectura, ingeniería y experiencia como un solo sistema: una decisión en una capa cambia las demás.',
+    howLabel: 'Cómo:',
+    steps: [
+      {
+        id: 'discovery',
+        word: 'Descubrimiento',
+        note: 'Comprender el contexto de negocio, los usuarios y el objetivo que motiva la iniciativa.',
+        how: 'Entrevistas con stakeholders · Investigación de usuarios · Mapeo de procesos · Análisis de negocio',
+      },
+      {
+        id: 'requirements',
+        word: 'Requerimientos',
+        note: 'Convertir la ambigüedad en una definición acotada, priorizada y verificable de lo que se debe construir.',
+        how: 'Levantamiento de requerimientos · Análisis de causa raíz · Historias de usuario · Criterios de aceptación · Requerimientos no funcionales · Wireframing · Prototipado · Flujos de usuario',
+      },
+      {
+        id: 'architecture',
+        word: 'Arquitectura',
+        note: 'Definir la estructura de la solución según las exigencias de escalabilidad, seguridad y mantenibilidad.',
+        how: 'Diseño de sistemas · Patrones de arquitectura · Modelado de datos · Diseño de APIs · Registros de decisiones de arquitectura (ADR)',
+      },
+      {
+        id: 'delivery',
+        word: 'Entrega',
+        note: 'Construir en iteraciones cortas, con prácticas que mantienen el código revisable, seguro y listo para desplegar.',
+        how: 'Git · Revisión de código · CI/CD · Pruebas automatizadas · Autenticación y autorización · Prácticas de codificación segura (OWASP) · Desarrollo asistido por IA (método BMAD) con revisión humana',
+      },
+      {
+        id: 'operation',
+        word: 'Operación y evolución',
+        note: 'Confirmar que la solución atiende la necesidad, mantenerla confiable en producción y mejorarla a partir del uso real.',
+        how: 'Pruebas de aceptación · Retroalimentación de usuarios · Análisis de rendimiento · Observabilidad · Documentación técnica · Transferencia de conocimiento · Mejora iterativa',
+      },
+    ],
+  },
 } as const satisfies Dictionary;

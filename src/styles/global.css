@@ -60,4 +60,34 @@ textarea {
   *::after {
     animation: none !important;
   }
+
+  /* Revealed and scroll-drawn content prints in its final state. */
+  [data-reveal],
+  [data-reveal] * {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  [data-scene] {
+    --p: 1 !important;
+    --a: 1 !important;
+    --b: 1 !important;
+    --c: 1 !important;
+  }
+
+  /* The pinned statement sequence prints as a plain list, without its progress bars. */
+  [data-print-seq],
+  [data-print-seq] * {
+    position: static !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  [data-print-seq] [aria-hidden='true'] {
+    display: none !important;
+  }
 }
