@@ -3,11 +3,12 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { gzipSync } from 'node:zlib';
+import { LOCALES, PAGES as SITE_PAGES, distFile } from './pages.mjs';
 
 const DIST = resolve(import.meta.dirname, '..', 'dist');
 
-// Later stories add ecobike.html, privacy.html, 404.html and the other es/ twins.
-const PAGES = ['index.html', 'es/index.html'];
+// Every page in both locales, from the shared list in `pages.mjs`.
+const PAGES = SITE_PAGES.flatMap((page) => LOCALES.map((locale) => distFile(page.paths[locale])));
 
 // Other files the build must emit.
 const FILES = ['sitemap-index.xml'];
