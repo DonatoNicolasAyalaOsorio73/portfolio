@@ -1,0 +1,194 @@
+---
+/**
+ * About me: education. Two school cards that tip up into place once in view, 120 ms apart
+ * (`data-reveal="card"` in `motion.css`). Each logo drifts with the section's scroll progress
+ * `--p` (written by `scenes.ts`) at its school's `speed` and tilts toward the pointer
+ * (`tilt.ts`). Without JavaScript or with reduced motion the cards are in place and the logos
+ * rest without offset.
+ */
+import { Picture } from 'astro:assets';
+import ProjectVars from '../components/ProjectVars.astro';
+import { schools } from '../data/about';
+import { t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale).education;
+
+/** The logo row's largest height in px (`--size-edu-logo`), for `sizes`. */
+const LOGO_HEIGHT = 300;
+
+/** Joins each school and its degrees to the dictionary; a missing one is a build error. */
+const cards = schools.map((school) => {
+  const text = copy.schools.find((item) => item.id === school.id);
+  if (!text) throw new Error(`No ${locale} copy for school "${school.id}"`);
+  const degrees = school.degrees.map((degree) => {
+    const title = text.degrees.find((item) => item.id === degree.id)?.title;
+    if (!title) throw new Error(`No ${locale} copy for degree "${school.id}.${degree.id}"`);
+    return { ...degree, title };
+  });
+  return { ...school, logoAlt: text.logoAlt, degrees };
+});
+---
+
+<section id="about" class="education" aria-labelledby="edu-title" data-scene="pass">
+  <div class="inner">
+    <div class="eyebrow">{copy.eyebrow}</div>
+    <h2 id="edu-title" class="heading">
+      {copy.heading}
+    </h2>
+    <div class="grid">
+      {cards.map((school, index) => (
+        <ProjectVars vars={{ speed: `${school.speed}px` }}>
+          <article class="card" data-reveal="card" data-index={index}>
+            <div class="float">
+              <Picture
+                src={school.logo}
+                formats={['avif', 'webp']}
+                widths={[Math.round(school.logo.width / 2), school.logo.width]}
+                sizes={`${Math.round((LOGO_HEIGHT * school.logo.width) / school.logo.height)}px`}
+                width={school.logo.width}
+                height={school.logo.height}
+                alt={school.logoAlt}
+                loading="lazy"
+                decoding="async"
+                fallbackFormat="webp"
+                data-tilt
+              />
+            </div>
+            <h3 class="school">{school.name}</h3>
+            <ul class="degrees">
+              {school.degrees.map((degree) => (
+                <li class="degree">
+                  <span class="title">{degree.title}</span>
+                  <span class="years">{degree.years}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        </ProjectVars>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/reveal';
+  import '../scripts/scenes';
+  import '../scripts/tilt';
+</script>
+
+<style>
+  .education {
+    padding: var(--space-fluid-work) var(--space-24);
+    background: linear-gradient(var(--color-white), var(--color-surface));
+  }
+
+  .inner {
+    max-width: var(--size-content);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-size: var(--font-size-15);
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    color: var(--color-muted);
+  }
+
+  .heading {
+    font-size: var(--font-size-heading);
+    line-height: var(--line-height-heading);
+    letter-spacing: -0.05em;
+    font-weight: 800;
+    margin: var(--space-20) 0 0;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--size-stack-intro)), 1fr));
+    gap: var(--space-fluid-edu-gap);
+    margin-top: var(--space-fluid-about-top);
+    perspective: var(--size-seq);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-32);
+  }
+
+  .float {
+    height: var(--size-edu-logo);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .float :global(picture) {
+    display: contents;
+  }
+
+  .float :global(img) {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(var(--shadow-logo-about));
+  }
+
+  .school {
+    font-size: var(--font-size-school);
+    line-height: var(--line-height-card-title);
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    margin: 0;
+    max-width: var(--size-school);
+    text-wrap: balance;
+  }
+
+  .degrees {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: var(--size-degrees);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .degree {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    align-items: center;
+    padding: var(--space-16) 0;
+    border-top: var(--size-hairline) solid var(--color-line);
+  }
+
+  .title {
+    font-size: var(--font-size-19);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .years {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-15);
+    color: var(--color-muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Drifts from +speed/2 to −speed/2 as the section passes through the viewport. */
+    .float {
+      transform: translateY(calc((0.5 - var(--p, 0.5)) * var(--speed)));
+    }
+  }
+</style>

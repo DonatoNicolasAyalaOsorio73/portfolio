@@ -1150,3 +1150,313 @@ for (const locale of LOCALES) {
     });
   });
 }
+
+/** Shown as is in both languages; kept here because `src/data/about.ts` imports images. */
+const SCHOOLS = ['Pontificia Universidad Javeriana Cali', 'Universidad Mariana'];
+const CERTIFICATES = [
+  'GitHub Foundations',
+  'Scrum Fundamentals Certified',
+  'Foundational C# with Microsoft',
+  'AWS Well-Architected Foundations',
+];
+const MUTED = 'rgb(110, 110, 115)';
+/** No transform, or one that leaves the element where it is. */
+const AT_REST = /^(none|matrix\(1, 0, 0, 1, 0, 0\))$/;
+
+/**
+ * Scrolls `section` to two points of its pass through the viewport and expects the `.float` in
+ * `card` to sit at `(0.5 − p) × speed` px each time, with `p = (vh − top) ÷ (vh + height)`, so it
+ * moves by the amount its speed implies.
+ */
+async function expectDrift(
+  page: BrowserPage,
+  section: ReturnType<BrowserPage['locator']>,
+  card: ReturnType<BrowserPage['locator']>,
+  speed: number,
+) {
+  const offsets: number[] = [];
+  for (const progress of [0.3, 0.6]) {
+    const p = await section.evaluate(async (el, progress) => {
+      const vh = window.innerHeight;
+      const rect = el.getBoundingClientRect();
+      const top = vh - progress * (vh + rect.height);
+      window.scrollTo({ top: window.scrollY + rect.top - top, behavior: 'instant' });
+      await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+      const now = el.getBoundingClientRect();
+      return Math.min(1, Math.max(0, (vh - now.top) / (vh + now.height)));
+    }, progress);
+    const offset = await card
+      .locator('.float')
+      .evaluate((el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).m42);
+    expect(Math.abs(offset - (0.5 - p) * speed), `offset at p=${p.toFixed(3)}`).toBeLessThan(1);
+    offsets.push(offset);
+  }
+  expect(Math.abs(offsets[0]! - offsets[1]!), 'the logo moved').toBeGreaterThan(speed * 0.2);
+}
+
+/** Moves the pointer over `target` and expects it to tilt, then to ease back on leave. */
+async function expectTilt(page: BrowserPage, target: ReturnType<BrowserPage['locator']>) {
+  await target.scrollIntoViewIfNeeded();
+  const box = (await target.boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.1);
+  await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.15);
+  await expect(target).toHaveAttribute('data-tilt-state', 'active');
+  await expect(target).not.toHaveCSS('transform', 'none');
+  await page.mouse.move(0, 0);
+  await expect(target).toHaveAttribute('data-tilt-state', 'idle');
+}
+
+for (const locale of LOCALES) {
+  const path = href('home', locale);
+  const journeyCopy = t(locale).journey;
+  const educationCopy = t(locale).education;
+  const certCopy = t(locale).certificates;
+
+  test.describe(`journey, education and certificates (${locale})`, () => {
+    test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'no-preference' });
+
+    test('a journey entry reveals its year, dot, line and text once in view', async ({ page }) => {
+      await load(page, path);
+      await expect(page.locator('#journey-title')).toHaveText(
+        `${journeyCopy.headingLine1}${journeyCopy.headingLine2}`,
+      );
+      const entries = page.locator('#journey [data-reveal="journey"]');
+      await expect(entries.locator('[data-reveal-part="stage"]')).toHaveText(
+        journeyCopy.entries.map((entry) => entry.stage),
+      );
+      await expect(entries.locator('[data-reveal-part="year"]')).toHaveText([
+        '2019',
+        '2023',
+        '2023',
+        '2024',
+        '2025',
+        '2025',
+        '2026',
+        '2026',
+      ]);
+
+      const entry = entries.first();
+      const part = (name: string) => entry.locator(`[data-reveal-part="${name}"]`);
+      await expect(part('year')).toHaveCSS('opacity', '0');
+      await expect(part('year')).toHaveCSS('color', MUTED);
+      await expect(part('dot')).toHaveCSS('transform', 'matrix(0, 0, 0, 0, 0, 0)');
+      await expect(part('stage')).toHaveCSS('filter', 'blur(6px)');
+      // 0 ms for the year's slide, 140 ms for its colour, the dot, ring and stage, 300 ms for the
+      // line and the note.
+      await expect(part('year')).toHaveCSS('transition-delay', '0s, 0s, 0.14s');
+      await expect(part('dot')).toHaveCSS('transition-delay', '0.14s');
+      await expect(part('ring')).toHaveCSS('transition-delay', '0.14s, 0.14s');
+      await expect(part('stage')).toHaveCSS('transition-delay', '0.14s, 0.14s, 0.14s');
+      await expect(part('line')).toHaveCSS('transition-delay', '0.3s');
+      await expect(part('note')).toHaveCSS('transition-delay', '0.3s, 0.3s');
+      await expect(part('dot')).toHaveCSS(
+        'transition-timing-function',
+        'cubic-bezier(0.34, 1.56, 0.64, 1)',
+      );
+      await expect(part('line')).toHaveCSS(
+        'transition-timing-function',
+        'cubic-bezier(0.65, 0, 0.35, 1)',
+      );
+
+      await entry.scrollIntoViewIfNeeded();
+      await expect(entry).toHaveAttribute('data-reveal-state', 'visible');
+      await expect(part('year')).toHaveCSS('opacity', '1');
+      await expect(part('year')).toHaveCSS('color', INK);
+      await expect(part('year')).toHaveCSS('transform', 'none');
+      await expect(part('dot')).toHaveCSS('transform', 'none');
+      await expect(part('ring')).toHaveCSS('opacity', '0');
+      await expect(part('line')).toHaveCSS('transform', 'none');
+      await expect(part('stage')).toHaveCSS('opacity', '1');
+      await expect(part('stage')).toHaveCSS('filter', 'none');
+      await expect(part('note')).toHaveCSS('opacity', '1');
+      await expect(part('note')).toHaveCSS('transform', 'none');
+      await expect(entries.last(), 'entries further down wait').not.toHaveAttribute(
+        'data-reveal-state',
+        'visible',
+      );
+    });
+
+    test('the education cards tip into place 120 ms apart', async ({ page }) => {
+      await load(page, path);
+      await expect(page.locator('#about')).toContainText(educationCopy.eyebrow);
+      await expect(page.locator('#edu-title')).toHaveText(educationCopy.heading);
+      const cards = page.locator('#about [data-reveal="card"]');
+      await expect(cards.locator('h3')).toHaveText(SCHOOLS);
+      await expect(cards.locator('.title')).toHaveText(
+        educationCopy.schools.flatMap((school) => school.degrees.map((degree) => degree.title)),
+      );
+      for (const [index, school] of educationCopy.schools.entries()) {
+        await expect(cards.nth(index).locator('img')).toHaveAttribute('alt', school.logoAlt);
+        await expect(cards.nth(index).locator('img')).toHaveAttribute('loading', 'lazy');
+      }
+      await expect(cards.first()).toHaveCSS('opacity', '0');
+      await expect(cards.nth(0)).toHaveCSS('transition-delay', '0s, 0s');
+      await expect(cards.nth(1)).toHaveCSS('transition-delay', '0.12s, 0.12s');
+
+      await cards.first().scrollIntoViewIfNeeded();
+      for (const card of await cards.all()) {
+        await expect(card).toHaveAttribute('data-reveal-state', 'visible');
+        await expect(card).toHaveCSS('opacity', '1');
+        await expect(card).toHaveCSS('transform', 'none');
+      }
+      await expectDrift(page, page.locator('#about'), cards.first(), 110);
+      await expectTilt(page, cards.first().locator('[data-tilt]'));
+    });
+
+    test('the certificates tip in 160 ms apart, badges last', async ({ page }) => {
+      await load(page, path);
+      await expect(page.locator('#cert-title')).toHaveText(certCopy.heading);
+      const cards = page.locator('[data-reveal="cert"]');
+      await expect(cards.locator('h3')).toHaveText(CERTIFICATES);
+      for (const [index, item] of certCopy.items.entries()) {
+        await expect(cards.nth(index).locator('img')).toHaveAttribute('alt', item.logoAlt);
+      }
+      await expect(cards.first()).toHaveCSS('opacity', '0');
+      await expect(cards.first().locator('[data-reveal-part="badge"]')).toHaveCSS('opacity', '0');
+      for (const [index, delay] of ['0s', '0.16s', '0.32s', '0.48s'].entries()) {
+        await expect(cards.nth(index)).toHaveCSS('transition-delay', `${delay}, ${delay}`);
+      }
+      await expect(cards.nth(1).locator('[data-reveal-part="badge"]')).toHaveCSS(
+        'transition-delay',
+        '0.91s, 0.91s',
+      );
+      await expect(cards.nth(1).locator('[data-reveal-part="halo"]')).toHaveCSS(
+        'transition-delay',
+        '0.41s, 0.41s',
+      );
+
+      await cards.first().scrollIntoViewIfNeeded();
+      for (const card of await cards.all()) {
+        await expect(card).toHaveAttribute('data-reveal-state', 'visible');
+        await expect(card).toHaveCSS('opacity', '1');
+        await expect(card).toHaveCSS('transform', 'none');
+        await expect(card.locator('[data-reveal-part="logo"]')).toHaveCSS('transform', 'none');
+        await expect(card.locator('[data-reveal-part="halo"]')).toHaveCSS('opacity', '1');
+        const badge = card.locator('[data-reveal-part="badge"]');
+        await expect(badge).toHaveText(certCopy.verified);
+        await expect(badge).toHaveCSS('opacity', '1');
+        await expect(badge).toHaveCSS('transform', 'none');
+      }
+      await expectDrift(page, page.locator('.certificates'), cards.first(), 140);
+      await expectTilt(page, cards.first().locator('[data-tilt]'));
+    });
+
+    test('each certificate has one keyboard stop, its link, which opens a new tab', async ({
+      page,
+      context,
+    }) => {
+      await load(page, path);
+      const cards = page.locator('[data-reveal="cert"]');
+      for (const card of await cards.all()) {
+        const logoLink = card.locator('a.float');
+        await expect(logoLink).toHaveAttribute('tabindex', '-1');
+        await expect(logoLink).toHaveAttribute('aria-hidden', 'true');
+        await expect(logoLink).toHaveAttribute('target', '_blank');
+        await expect(logoLink).toHaveAttribute('rel', 'noopener');
+      }
+      // Start the tab order at the heading, then step through the four certificates.
+      await page.locator('#cert-title').click();
+      for (const [index, name] of CERTIFICATES.entries()) {
+        await page.keyboard.press('Tab');
+        const link = cards.nth(index).locator('a.view');
+        await expect(link).toBeFocused();
+        await expect(link).toHaveText(certCopy.view);
+        await expect(link).toHaveAttribute('aria-label', `${name} — ${certCopy.viewLabel}`);
+        await expect(link).toHaveAttribute('target', '_blank');
+        await expect(link).toHaveAttribute('rel', 'noopener');
+      }
+
+      // The credential is answered locally, so the test never leaves the preview origin.
+      const link = cards.first().locator('a.view');
+      const target = (await link.getAttribute('href'))!;
+      await context.route(target, (route) => route.fulfill({ body: 'credential' }));
+      const [popup] = await Promise.all([page.waitForEvent('popup'), link.press('Enter')]);
+      await popup.waitForLoadState();
+      expect(popup.url()).toBe(target);
+      expect(page.url()).toContain(path);
+    });
+  });
+
+  test.describe(`journey, education and certificates (${locale}) on a touch device`, () => {
+    test.use({ viewport: { width: 1280, height: 800 }, hasTouch: true, isMobile: true });
+
+    test('does not tilt the logos', async ({ page }) => {
+      await load(page, path);
+      for (const logo of [
+        page.locator('#about [data-tilt]').first(),
+        page.locator('[data-reveal="cert"] [data-tilt]').first(),
+      ]) {
+        await logo.scrollIntoViewIfNeeded();
+        const box = (await logo.boundingBox())!;
+        await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.1);
+        await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.2);
+        await expect(logo).not.toHaveAttribute('data-tilt-state', 'active');
+        await expect(logo).toHaveCSS('transform', 'none');
+      }
+    });
+  });
+
+  /** Every entry, card, logo, halo and badge in its final state, the logos without offset. */
+  async function expectAboutShown(page: BrowserPage) {
+    for (const width of [1280, 375]) {
+      await page.setViewportSize({ width, height: 800 });
+      const entries = page.locator('#journey [data-reveal="journey"]');
+      await expect(entries).toHaveCount(8);
+      for (const entry of await entries.all()) {
+        for (const name of ['year', 'stage', 'note']) {
+          const part = entry.locator(`[data-reveal-part="${name}"]`);
+          await expect(part).toBeVisible();
+          await expect(part).toHaveCSS('opacity', '1');
+          await expect(part).toHaveCSS('transform', 'none');
+        }
+        await expect(entry.locator('[data-reveal-part="year"]')).toHaveCSS('color', INK);
+        await expect(entry.locator('[data-reveal-part="stage"]')).toHaveCSS('filter', 'none');
+        await expect(entry.locator('[data-reveal-part="dot"]')).toHaveCSS('transform', 'none');
+        await expect(entry.locator('[data-reveal-part="line"]')).toHaveCSS('transform', 'none');
+        await expect(entry.locator('[data-reveal-part="ring"]')).toHaveCSS('opacity', '0');
+      }
+
+      const cards = page.locator('#about [data-reveal="card"], [data-reveal="cert"]');
+      await expect(cards).toHaveCount(6);
+      for (const card of await cards.all()) {
+        await expect(card).toBeVisible();
+        await expect(card).toHaveCSS('opacity', '1');
+        await expect(card).toHaveCSS('transform', 'none');
+        await expect(card.locator('.float')).toHaveCSS('transform', AT_REST);
+      }
+      for (const card of await page.locator('[data-reveal="cert"]').all()) {
+        await expect(card.locator('[data-reveal-part="logo"]')).toHaveCSS('transform', 'none');
+        const halo = card.locator('[data-reveal-part="halo"]');
+        await expect(halo).toHaveCSS('opacity', '1');
+        await expect(halo).toHaveCSS('transform', /^matrix\(1, 0, 0, 1, /);
+        const badge = card.locator('[data-reveal-part="badge"]');
+        await expect(badge).toHaveCSS('opacity', '1');
+        await expect(badge).toHaveCSS('transform', 'none');
+      }
+    }
+  }
+
+  test.describe(`journey, education and certificates (${locale}) with reduced motion`, () => {
+    test.use({ reducedMotion: 'reduce' });
+
+    test('shows everything in its final state, logos at rest and untilted', async ({ page }) => {
+      await load(page, path);
+      await expectAboutShown(page);
+      const logo = page.locator('#about [data-tilt]').first();
+      await logo.scrollIntoViewIfNeeded();
+      const box = (await logo.boundingBox())!;
+      await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.1);
+      await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.2);
+      await expect(logo).toHaveCSS('transform', 'none');
+    });
+  });
+
+  test.describe(`journey, education and certificates (${locale}) without JavaScript`, () => {
+    test.use({ javaScriptEnabled: false });
+
+    test('shows everything in its final state, logos at rest', async ({ page }) => {
+      await load(page, path);
+      await expectAboutShown(page);
+    });
+  });
+}
