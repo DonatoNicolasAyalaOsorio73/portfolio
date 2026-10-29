@@ -47,8 +47,8 @@ risk = "medium"
 [[entry]]
 id = 5
 type = "story"
-title = "Home hero, statement sequence and work section match"
-description = "Ports the full hero (photo, reveals, CTAs), the statement sequence and the work section with its project data in src/data, keeping today's motion."
+title = "Home statement sequence and philosophy section match"
+description = "Ports the pinned statement sequence and the philosophy section with its scroll-drawn word timeline, keeping today's motion through the epic-1 scene script (AD-10 exception)."
 verify = "The parity captures of these sections match the legacy home in EN and ES at both widths, and the dist check keeps the home under 50 KB of JavaScript."
 covers = ["R2", "R5"]
 after = [4]
@@ -56,13 +56,35 @@ hitl = false
 risk = "medium"
 
 [[entry]]
-id = 6
+id = 13
 type = "story"
-title = "Home stack, journey, about and contact match"
-description = "Ports the remaining home sections, including certificates, education, the CV download and the contact links, completing the home page in both languages."
-verify = "The full-page parity captures of / and /es/ match the legacy home at both widths."
+title = "Home work section matches"
+description = "Ports the work section: the pinned featured-project scenes with the flying logo and browser-framed shots on wide screens, the stacked cards on narrow ones, and the 'more projects' grid, with project data in src/data."
+verify = "The parity captures of the work section match the legacy home in EN and ES at both widths."
 covers = ["R2"]
 after = [5]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 14
+type = "story"
+title = "Under-the-hood architecture dialog matches"
+description = "Ports the 'Under the hood' dialog each project opens, with its architecture nodes, keyboard and focus handling, and its copy in both languages."
+verify = "Opening, navigating and closing the dialog by mouse and keyboard behaves as on the legacy site in EN and ES, and the smoke tests cover it."
+covers = ["R2"]
+after = [13]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 6
+type = "story"
+title = "Home stack, AI, journey, about and contact match"
+description = "Ports the remaining home sections: stack, the AI-assisted development section, journey, education, certificates, the CV download, the contact links and the contact mail dialog, completing the home page in both languages."
+verify = "The full-page parity captures of / and /es/ match the legacy home at both widths."
+covers = ["R2"]
+after = [14]
 hitl = false
 risk = "low"
 
@@ -128,6 +150,6 @@ title = "Refactor sweep"
 description = "Cleans up what the epic's plans and reviews deferred, without new scope."
 verify = "CI is green and the deferred items listed at its start are closed or moved to new stories."
 covers = []
-after = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+after = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14]
 hitl = false
 risk = "low"
