@@ -64,5 +64,6 @@ Every visitor gets the same portfolio as today, served as prebuilt HTML in their
 - Decision: 2026-10-28 — No PRD, UX or research run for this epic.
 - Decision: 2026-10-28 — Tracer bullet is story 1: Astro scaffold, tooling, CI and the English home hero building end to end.
 - Decision: 2026-10-29 — Story 5 split three ways at Dona's choice (too large for one session): 5 keeps the statement sequence and the philosophy section, new 13 takes the work section, new 14 the 'Under the hood' dialog; 6 also takes the AI section and the contact mail dialog, which no entry owned. Lane: 4 → 5 → 13 → 14 → 6 → 7 → 8.
+- Decision: 2026-10-29 — Story 6 split three ways at Dona's choice: 6 keeps the stack and AI sections, new 15 takes journey, education and certificates, new 16 the contact section and mail dialog. Lane: 14 → 6 → 15 → 16 → 7 → 8.
 - Decision: 2026-10-29 — Epic-1 scroll scenes keep exact parity through one scene script writing scroll-progress custom properties (architecture AD-10 exception); epic 2 replaces it.
 - Decision: 2026-10-28 — Stories 4 to 8 run in one lane because each adds to `en.ts`, `es.ts` and `tokens.css`; parallel branches would conflict there.
