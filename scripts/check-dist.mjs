@@ -6,8 +6,11 @@ import { gzipSync } from 'node:zlib';
 
 const DIST = resolve(import.meta.dirname, '..', 'dist');
 
-// Story 2 appends the es/ twins; later stories add ecobike.html, privacy.html and 404.html.
-const PAGES = ['index.html'];
+// Later stories add ecobike.html, privacy.html, 404.html and the other es/ twins.
+const PAGES = ['index.html', 'es/index.html'];
+
+// Other files the build must emit.
+const FILES = ['sitemap-index.xml'];
 
 const HOME = 'index.html';
 const HOME_JS_BUDGET = 50 * 1024;
@@ -16,6 +19,10 @@ const failures = [];
 
 for (const page of PAGES) {
   if (!existsSync(join(DIST, page))) failures.push(`missing page: dist/${page}`);
+}
+
+for (const file of FILES) {
+  if (!existsSync(join(DIST, file))) failures.push(`missing file: dist/${file}`);
 }
 
 if (existsSync(join(DIST, HOME))) {
@@ -62,4 +69,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`check-dist: ${PAGES.length} page(s) present`);
+console.log(`check-dist: ${PAGES.length} page(s) and ${FILES.length} other file(s) present`);
