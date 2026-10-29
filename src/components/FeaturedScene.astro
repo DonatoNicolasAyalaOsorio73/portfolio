@@ -1,0 +1,479 @@
+---
+/**
+ * One featured project as a pinned scroll scene (wide screens). `src/scripts/scenes.ts` writes
+ * the scene's progress: `--p` lifts the giant background name, `--a` flies the logo from the
+ * stage centre into its slot (`--lx`, `--ly`, `--ls`), `--b` raises and flattens the screenshot
+ * and `--c` fades the text column in.
+ *
+ * Without JavaScript or with reduced motion the scene is a static full-height slide: every
+ * property falls back to its final value, and the flying logo is replaced by the same logo
+ * sitting in its slot.
+ */
+import { Picture } from 'astro:assets';
+import type { FeaturedProject } from '../data/projects';
+import { t, type Locale } from '../i18n';
+import ProjectVars from './ProjectVars.astro';
+
+interface Props {
+  locale: Locale;
+  project: FeaturedProject;
+  copy: {
+    kind: string;
+    summary: string;
+    client: string;
+    role: string;
+    logoAlt: string;
+    shotAlt: string;
+  };
+}
+
+const { locale, project, copy } = Astro.props;
+const work = t(locale).work;
+/**
+ * The screenshot column: 1.1 of 2 fractions of the stage width less two side paddings
+ * (clamp(32px, 5vw, 80px)) and the gap (clamp(32px, 4vw, 64px)). From 960px to 1600px both
+ * are their vw values, (100vw − 14vw) × 0.55 = 47.3vw; from 1600px they cap at 80px and 64px.
+ */
+const shotSizes = '(min-width: 1600px) calc((100vw - 224px) * 0.55), 47.3vw';
+const meta = [
+  { label: work.metaLabels.client, value: copy.client },
+  ...(project.when ? [{ label: work.metaLabels.when, value: project.when[locale] }] : []),
+  { label: work.metaLabels.role, value: copy.role },
+];
+---
+
+<ProjectVars vars={{ 'logo-radius': project.logoRadius, 'logo-blend': project.blend }}>
+  <article class="scene" data-scene="sticky" aria-label={project.name}>
+    <div class="stage" data-stage>
+      <div class="backdrop" aria-hidden="true">
+        {project.name}
+      </div>
+      <div class="layout">
+        <div class="column">
+          <div class="slot" data-logo-target>
+            <div class="slot-logo">
+              <Picture
+                src={project.logo}
+                formats={['avif', 'webp']}
+                widths={[140, 280]}
+                sizes="140px"
+                width={280}
+                height={Math.round((280 * project.logo.height) / project.logo.width)}
+                alt={copy.logoAlt}
+                loading="lazy"
+                decoding="async"
+                fallbackFormat="webp"
+              />
+            </div>
+          </div>
+          <div class="text">
+            <div class="kicker">
+              <span class="number">{project.number}</span>
+              <span class="kind">{copy.kind}</span>
+            </div>
+            <h3 class="title">{project.name}</h3>
+            <p class="summary">{copy.summary}</p>
+            <dl class="meta">
+              {meta.map((row) => (
+                <>
+                  <dt>{row.label}</dt>
+                  <dd>{row.value}</dd>
+                </>
+              ))}
+            </dl>
+            <ul class="stack">
+              {project.stack.map((name) => (
+                <li>{name}</li>
+              ))}
+            </ul>
+            <div class="actions">
+              {project.actions.map((action) => (
+                <a
+                  class:list={['action', { primary: action.primary }]}
+                  href={action.href}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {work.actions[action.label]}
+                </a>
+              ))}
+            </div>
+            <div class="access">
+              <span class="access-dot" data-access={project.access}></span>
+              {work.access[project.access]}
+            </div>
+          </div>
+        </div>
+        <div class="media">
+          <figure class="shot">
+            <div class="frame">
+              <div class="bar">
+                <div class="lights" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="url">{project.domain}</div>
+              </div>
+              <Picture
+                src={project.shot}
+                formats={['avif', 'webp']}
+                widths={[700, 1400]}
+                sizes={shotSizes}
+                width={1400}
+                height={Math.round((1400 * project.shot.height) / project.shot.width)}
+                alt={copy.shotAlt}
+                loading="lazy"
+                decoding="async"
+                fallbackFormat="webp"
+              />
+            </div>
+          </figure>
+        </div>
+      </div>
+      <div class="flyer" data-logo>
+        <Picture
+          src={project.logo}
+          formats={['avif', 'webp']}
+          widths={[500, Math.min(1000, project.logo.width)]}
+          sizes="min(48vmin, 500px)"
+          width={Math.min(1000, project.logo.width)}
+          height={Math.round(
+            (Math.min(1000, project.logo.width) * project.logo.height) / project.logo.width,
+          )}
+          alt={copy.logoAlt}
+          loading="lazy"
+          decoding="async"
+          fallbackFormat="webp"
+        />
+      </div>
+    </div>
+  </article>
+</ProjectVars>
+
+<style>
+  /* Base: a static full-height slide (no JavaScript, reduced motion). */
+  .scene {
+    position: relative;
+  }
+
+  .stage {
+    position: relative;
+    min-height: var(--size-screen);
+    overflow: hidden;
+  }
+
+  .backdrop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    text-align: center;
+    font-size: var(--font-size-scene-name);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: var(--line-height-tight);
+    color: var(--color-white);
+    white-space: nowrap;
+    transform: translateY(calc(-50% + var(--p, 1) * -1 * var(--size-name-rise)))
+      scale(calc(1 + var(--p, 1) * 0.08));
+    opacity: calc(1 - var(--c, 1) * 0.7);
+  }
+
+  .layout {
+    position: relative;
+    min-height: var(--size-screen);
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--space-fluid-scene-gap);
+    align-items: center;
+    padding: var(--space-80) var(--space-fluid-scene-x) var(--space-40);
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-fluid-scene-column);
+  }
+
+  .slot {
+    width: var(--size-logo-slot);
+    aspect-ratio: 1;
+  }
+
+  .slot-logo,
+  .slot-logo :global(picture) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .slot-logo :global(img),
+  .flyer :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: var(--logo-radius);
+    mix-blend-mode: var(--logo-blend);
+    filter: drop-shadow(var(--shadow-logo-lg));
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-fluid-scene-text);
+    opacity: var(--c, 1);
+    transform: translateY(calc((1 - var(--c, 1)) * var(--space-48)));
+  }
+
+  .kicker {
+    display: flex;
+    gap: var(--space-10);
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .number {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-15);
+    color: var(--color-muted);
+  }
+
+  .kind {
+    font-size: var(--font-size-14);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+
+  .title {
+    font-size: var(--font-size-scene-title);
+    line-height: var(--line-height-tight);
+    letter-spacing: -0.045em;
+    font-weight: 800;
+    margin: 0;
+  }
+
+  .summary {
+    font-size: var(--font-size-scene-summary);
+    line-height: var(--line-height-normal);
+    margin: 0;
+    color: var(--color-text);
+    text-wrap: pretty;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-6) var(--space-18);
+    margin: 0;
+    font-size: var(--font-size-14);
+    line-height: var(--line-height-meta);
+  }
+
+  .meta dt {
+    color: var(--color-muted);
+  }
+
+  .meta dd {
+    margin: 0;
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .stack li {
+    font-size: var(--font-size-14);
+    font-weight: 500;
+    background: var(--color-white);
+    border-radius: var(--radius-pill);
+    padding: var(--space-5) var(--space-11);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-10);
+    align-items: center;
+  }
+
+  .action {
+    white-space: nowrap;
+    font-size: var(--font-size-15);
+    font-weight: 500;
+    padding: var(--space-11) var(--space-20);
+    border-radius: var(--radius-pill);
+    background: var(--color-transparent);
+    color: var(--color-ink);
+    border: var(--size-hairline) solid var(--color-line-strong);
+  }
+
+  .action.primary {
+    background: var(--color-ink);
+    color: var(--color-white);
+    border-color: var(--color-ink);
+  }
+
+  .action:hover {
+    transform: scale(1.04);
+    color: var(--color-ink);
+  }
+
+  .action.primary:hover {
+    color: var(--color-white);
+  }
+
+  .access {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-size: var(--font-size-14);
+    color: var(--color-muted);
+  }
+
+  .access-dot {
+    width: var(--space-8);
+    height: var(--space-8);
+    border-radius: var(--radius-round);
+    background: var(--color-success);
+  }
+
+  .access-dot[data-access='priv'] {
+    background: var(--color-transparent);
+    border: var(--size-ring) dashed var(--color-muted);
+  }
+
+  .access-dot[data-access='intern'] {
+    background: var(--color-ink);
+  }
+
+  .media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .shot {
+    margin: 0;
+    width: 100%;
+    opacity: calc(var(--b, 1) * 1.6);
+    transform: translateY(calc((1 - var(--b, 1)) * var(--size-shot-rise)))
+      perspective(var(--size-shot-perspective)) rotateX(calc((1 - var(--b, 1)) * 26deg))
+      scale(calc(0.86 + var(--b, 1) * 0.14));
+    transform-origin: 50% 100%;
+  }
+
+  .frame {
+    border-radius: var(--radius-frame);
+    overflow: hidden;
+    background: var(--color-white);
+    box-shadow: var(--shadow-frame);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    padding: var(--space-10) var(--space-14);
+    background: var(--color-surface);
+    border-bottom: var(--size-hairline) solid var(--color-line-faint);
+  }
+
+  .lights {
+    display: flex;
+    gap: var(--space-6);
+  }
+
+  .lights span {
+    width: var(--space-10);
+    height: var(--space-10);
+    border-radius: var(--radius-round);
+    background: var(--color-dot-off);
+  }
+
+  .url {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    font-size: var(--font-size-14);
+    color: var(--color-muted);
+    background: var(--color-white);
+    border-radius: var(--radius-focus);
+    padding: var(--space-5) var(--space-10);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .frame :global(picture) {
+    display: contents;
+  }
+
+  .frame :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* The flying logo exists only while the scene is pinned and animated. */
+  .flyer {
+    display: none;
+  }
+
+  /* Pinned: a 300vh track with a sticky full-height stage; the logo flies into its slot. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js) .scene {
+      height: var(--size-seq-track);
+    }
+
+    :global(html.js) .stage {
+      position: sticky;
+      top: 0;
+      height: var(--size-screen);
+    }
+
+    :global(html.js) .layout {
+      position: absolute;
+      inset: 0;
+      min-height: 0;
+    }
+
+    :global(html.js) .slot-logo {
+      display: none;
+    }
+
+    :global(html.js) .shot {
+      will-change: transform;
+    }
+
+    :global(html.js) .flyer {
+      display: block;
+      position: absolute;
+      left: calc(50% * (1 - var(--a, 1)) + var(--lx, 50%) * var(--a, 1));
+      top: calc(50% * (1 - var(--a, 1)) + var(--ly, 50%) * var(--a, 1));
+      width: var(--size-logo-fly);
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%) scale(calc(1 - var(--a, 1) * (1 - var(--ls, 0.3))))
+        rotate(calc((1 - var(--a, 1)) * -5deg));
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    :global(html.js) .flyer :global(picture) {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .action {
+      transition: transform var(--dur-press) var(--ease-out);
+    }
+  }
+</style>

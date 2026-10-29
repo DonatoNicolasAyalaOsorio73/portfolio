@@ -242,11 +242,13 @@ async function expectAllShown(page: BrowserPage) {
   await expect(page.locator('[data-seq] > *').first()).not.toHaveCSS('position', 'sticky');
 
   for (const reveal of await page.locator('[data-reveal]').all()) {
+    // The featured cards and scenes are alternatives: one of them is `display: none`.
+    if (!(await reveal.isVisible())) continue;
     await reveal.scrollIntoViewIfNeeded();
     await expect(reveal).toHaveCSS('opacity', '1');
   }
 
-  const steps = page.locator('[data-scene="pass"]');
+  const steps = page.locator('li[data-scene="pass"]');
   await expect(steps).toHaveCount(5);
   for (const step of await steps.all()) {
     await expect(step).toBeVisible();
@@ -290,7 +292,7 @@ test.describe('philosophy scenes', () => {
   async function readStep(page: BrowserPage, index: number) {
     return page.evaluate(async (i) => {
       await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
-      const step = document.querySelectorAll<HTMLElement>('[data-scene="pass"]')[i]!;
+      const step = document.querySelectorAll<HTMLElement>('li[data-scene="pass"]')[i]!;
       const rect = step.getBoundingClientRect();
       const vh = window.innerHeight;
       const style = getComputedStyle(step);
@@ -312,7 +314,7 @@ test.describe('philosophy scenes', () => {
   test('a step halfway through its pass follows the eased windows', async ({ page }) => {
     await load(page, '/');
     await page.evaluate(() => {
-      const step = document.querySelectorAll<HTMLElement>('[data-scene="pass"]')[2]!;
+      const step = document.querySelectorAll<HTMLElement>('li[data-scene="pass"]')[2]!;
       const rect = step.getBoundingClientRect();
       const vh = window.innerHeight;
       // p = (vh − top) ÷ (vh + height) = 0.5  ⇒  top = vh − 0.5 × (vh + height).
@@ -336,3 +338,222 @@ test.describe('philosophy scenes', () => {
     }
   });
 });
+
+test.describe('work section, wide scenes', () => {
+  test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'no-preference' });
+
+  /** Scrolls the first featured scene to `progress` of its pinned distance and reads it. */
+  async function readScene(page: BrowserPage, progress: number) {
+    return page.evaluate(async (fraction) => {
+      const scene = document.querySelector<HTMLElement>('[data-scene="sticky"]')!;
+      const top = scene.getBoundingClientRect().top + window.scrollY;
+      const distance = scene.offsetHeight - window.innerHeight;
+      window.scrollTo({ top: Math.round(top + fraction * distance), behavior: 'instant' });
+      await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+      const centre = (el: Element) => {
+        const r = el.getBoundingClientRect();
+        return { x: r.left + r.width / 2, y: r.top + r.height / 2, width: r.width };
+      };
+      const stage = scene.querySelector('[data-stage]')!;
+      return {
+        a: Number(getComputedStyle(scene).getPropertyValue('--a')),
+        stage: centre(stage),
+        stagePosition: getComputedStyle(stage).position,
+        logo: centre(scene.querySelector('[data-logo]')!),
+        target: centre(scene.querySelector('[data-logo-target]')!),
+        text: Number(getComputedStyle(scene.querySelector('.text')!).opacity),
+        shot: Number(getComputedStyle(scene.querySelector('figure')!).opacity),
+      };
+    }, progress);
+  }
+
+  test('pins three scenes in legacy order and hides the narrow cards', async ({ page }) => {
+    await load(page, '/');
+    const scenes = page.locator('[data-scene="sticky"]');
+    await expect(scenes).toHaveCount(3);
+    await expect(scenes.locator('h3')).toHaveText(['NariñoHoy', 'Steady Guardians', 'EcoBike']);
+    await expect(page.locator('#work [data-reveal="parts"]').first()).toBeHidden();
+  });
+
+  test('reveals the heading and intro once in view', async ({ page }) => {
+    await load(page, '/');
+    const head = page.locator('#work [data-reveal=""]');
+    await expect(head).toHaveCount(1);
+    await expect(head).toHaveCSS('opacity', '0');
+    await head.scrollIntoViewIfNeeded();
+    await expect(head).toHaveAttribute('data-reveal-state', 'visible');
+    await expect(head).toHaveCSS('opacity', '1');
+  });
+
+  test('starts with the logo centred and large, text and shot hidden', async ({ page }) => {
+    await load(page, '/');
+    const scene = await readScene(page, 0);
+    expect(scene.stagePosition).toBe('sticky');
+    expect(scene.a).toBe(0);
+    expect(Math.abs(scene.logo.x - scene.stage.x)).toBeLessThan(1);
+    expect(Math.abs(scene.logo.y - scene.stage.y)).toBeLessThan(1);
+    expect(scene.logo.width).toBeGreaterThan(scene.target.width * 2);
+    expect(scene.text).toBe(0);
+    expect(scene.shot).toBe(0);
+  });
+
+  test('ends with the logo in its slot at slot size, text and shot in place', async ({ page }) => {
+    await load(page, '/');
+    const scene = await readScene(page, 0.9);
+    expect(scene.a).toBe(1);
+    expect(Math.abs(scene.logo.x - scene.target.x)).toBeLessThan(1);
+    expect(Math.abs(scene.logo.y - scene.target.y)).toBeLessThan(1);
+    expect(Math.abs(scene.logo.width - scene.target.width)).toBeLessThan(1);
+    expect(scene.text).toBe(1);
+    expect(scene.shot).toBe(1);
+  });
+
+  test('opens every external link in a new tab with rel="noopener"', async ({ page }) => {
+    await load(page, '/');
+    const links = page.locator('#work a[href^="http"]');
+    // 1 + 1 + 2 featured actions, twice (scenes and cards), and 2 in the grid.
+    await expect(links).toHaveCount(10);
+    for (const link of await links.all()) {
+      await expect(link).toHaveAttribute('target', '_blank');
+      await expect(link).toHaveAttribute('rel', /\bnoopener\b/);
+    }
+  });
+});
+
+test.describe('work section, narrow cards', () => {
+  test.use({ viewport: { width: 375, height: 800 }, reducedMotion: 'no-preference' });
+
+  test('stacks the featured projects as cards that reveal in view', async ({ page }) => {
+    await load(page, '/');
+    await expect(page.locator('[data-scene="sticky"]').first()).toBeHidden();
+    const cards = page.locator('#work [data-reveal="parts"]');
+    await expect(cards).toHaveCount(3);
+    const card = cards.first();
+    await expect(card.locator('[data-reveal-part="pop"]')).toHaveCSS('opacity', '0');
+    await card.scrollIntoViewIfNeeded();
+    await expect(card).toHaveAttribute('data-reveal-state', 'visible');
+    await expect(card.locator('[data-reveal-part="pop"]')).toHaveCSS('opacity', '1');
+    await expect(card.locator('[data-reveal-part="rise"]')).toHaveCSS('opacity', '1');
+  });
+});
+
+test.describe('work section, other projects', () => {
+  test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: 'no-preference' });
+
+  test('reveal together with a 0 / 110 / 220 ms stagger', async ({ page }) => {
+    await load(page, '/');
+    const others = page.locator('#work [data-reveal="far"]');
+    await expect(others).toHaveCount(3);
+    await expect(others.locator('h4')).toHaveText([
+      'Centro de Estudios Andino',
+      'Siesa MES',
+      'Cognitios',
+    ]);
+    for (const [index, delay] of ['0s', '0.11s', '0.22s'].entries()) {
+      // One value, or the same value for both opacity and transform.
+      await expect(others.nth(index)).toHaveCSS(
+        'transition-delay',
+        new RegExp(`^${delay}(, ${delay})?$`),
+      );
+    }
+    await others.first().scrollIntoViewIfNeeded();
+    for (const other of await others.all()) {
+      await expect(other).toHaveAttribute('data-reveal-state', 'visible');
+      await expect(other).toHaveCSS('opacity', '1');
+    }
+  });
+
+  test('a logo tilts toward the pointer and eases back on leave', async ({ page }) => {
+    await load(page, '/');
+    const logo = page.locator('#work [data-tilt]').first();
+    await logo.scrollIntoViewIfNeeded();
+    const box = (await logo.boundingBox())!;
+    await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.1);
+    await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.15);
+    await expect(logo).toHaveAttribute('data-tilt-state', 'active');
+    await expect(logo).not.toHaveCSS('transform', 'none');
+    await page.mouse.move(0, 0);
+    await expect(logo).toHaveAttribute('data-tilt-state', 'idle');
+    await expect(logo).toHaveCSS('transform', 'none');
+  });
+});
+
+test.describe('work section on a touch device', () => {
+  test.use({ viewport: { width: 1280, height: 800 }, hasTouch: true, isMobile: true });
+
+  test('does not tilt the logos', async ({ page }) => {
+    await load(page, '/');
+    const logo = page.locator('#work [data-tilt]').first();
+    await logo.scrollIntoViewIfNeeded();
+    const box = (await logo.boundingBox())!;
+    await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.1);
+    await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.2);
+    await expect(logo).not.toHaveAttribute('data-tilt-state', 'active');
+    await expect(logo).toHaveCSS('transform', 'none');
+  });
+});
+
+/** The work section in its final state: nothing pinned, hidden or tilted. */
+async function expectWorkShown(page: BrowserPage) {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  const scenes = page.locator('[data-scene="sticky"]');
+  await expect(scenes).toHaveCount(3);
+  for (const scene of await scenes.all()) {
+    await expect(scene.locator('[data-stage]')).not.toHaveCSS('position', 'sticky');
+    const height = await scene.evaluate((el) => (el as HTMLElement).offsetHeight);
+    expect(height, 'scene is not a 300vh track').toBeLessThan(800 * 2);
+    await expect(scene.locator('[data-logo-target] img')).toBeVisible();
+    await expect(scene.locator('[data-logo]')).toBeHidden();
+    await expect(scene.locator('.text')).toHaveCSS('opacity', '1');
+    await expect(scene.locator('figure')).toHaveCSS('opacity', '1');
+  }
+
+  const others = page.locator('#work [data-reveal="far"]');
+  for (const other of await others.all()) {
+    await expect(other).toHaveCSS('opacity', '1');
+    await expect(other).toHaveCSS('transform', 'none');
+    // The logo row rests in place: no parallax offset.
+    await expect(other.locator('.float')).toHaveCSS(
+      'transform',
+      /^(none|matrix\(1, 0, 0, 1, 0, 0\))$/,
+    );
+  }
+  const logo = page.locator('#work [data-tilt]').first();
+  await logo.scrollIntoViewIfNeeded();
+  const box = (await logo.boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.1);
+  await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.2);
+  await expect(logo).toHaveCSS('transform', 'none');
+
+  await page.setViewportSize({ width: 375, height: 800 });
+  const cards = page.locator('#work [data-reveal="parts"]');
+  await expect(cards).toHaveCount(3);
+  for (const card of await cards.all()) {
+    await expect(card.locator('[data-reveal-part="pop"]')).toHaveCSS('opacity', '1');
+    await expect(card.locator('[data-reveal-part="pop"]')).toHaveCSS('transform', 'none');
+    await expect(card.locator('[data-reveal-part="rise"]')).toHaveCSS('opacity', '1');
+    await expect(card.locator('[data-reveal-part="rise"]')).toHaveCSS('transform', 'none');
+  }
+}
+
+for (const locale of LOCALES) {
+  const path = href('home', locale);
+
+  test.describe(`work (${locale}) with reduced motion`, () => {
+    test.use({ reducedMotion: 'reduce' });
+
+    test('shows every project in place, unpinned and untilted', async ({ page }) => {
+      await load(page, path);
+      await expectWorkShown(page);
+    });
+  });
+
+  test.describe(`work (${locale}) without JavaScript`, () => {
+    test.use({ javaScriptEnabled: false });
+
+    test('shows every project in place, unpinned and untilted', async ({ page }) => {
+      await load(page, path);
+      await expectWorkShown(page);
+    });
+  });
+}
